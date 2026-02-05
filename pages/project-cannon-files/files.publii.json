@@ -2,7 +2,7 @@
     {
         "path": "404.html",
         "type": "file",
-        "md5": "5902387b7f7c81528a1858c87a270998"
+        "md5": "d853f7b18c94467182a3e4ce57fa95c8"
     },
     {
         "path": "assets",
@@ -112,27 +112,42 @@
     {
         "path": "/authors/crossie/index.html",
         "type": "file",
-        "md5": "66a89212dfd2ddad8cb0e8d52157788e"
+        "md5": "51794be0769b9a513cc07d7b6054d07a"
     },
     {
         "path": "index.html",
         "type": "file",
-        "md5": "c90000a683d9d1bdf95088ba94b322a7"
+        "md5": "acbf50cc9f68ae328eed277890b10984"
     },
     {
         "path": "koboltcpp-webapp.html",
         "type": "file",
-        "md5": "727000a96d974ace5da335d71f2d7a43"
+        "md5": "dcebfa0a1f4e8b8bdfb3d9013071ab1d"
     },
     {
         "path": "loficraft.html",
         "type": "file",
-        "md5": "20c59a110db404c0d746250383d4e184"
+        "md5": "f91b17a7c9274529eaa95c8f0bbf9d1f"
     },
     {
         "path": "media",
         "type": "directory",
         "md5": false
+    },
+    {
+        "path": "media/plugins",
+        "type": "directory",
+        "md5": false
+    },
+    {
+        "path": "media/plugins/pagePrefetching",
+        "type": "directory",
+        "md5": false
+    },
+    {
+        "path": "/media/plugins/pagePrefetching/quicklink.umd.js",
+        "type": "file",
+        "md5": "9bf2c039e22db3d0962eb567cbe5954d"
     },
     {
         "path": "media/posts",
@@ -337,11 +352,11 @@
     {
         "path": "/tags/index.html",
         "type": "file",
-        "md5": "128c63b5e6c62f4c7703633aa003b397"
+        "md5": "74e9d76e3a8ebc9e909a7b5ca0486468"
     },
     {
         "path": "unfair-parkour.html",
         "type": "file",
-        "md5": "70f792e8726e31bfe68bfb00f03ebc90"
+        "md5": "eace206ab0ef5b04566d66bb8154ae3d"
     }
 ]
