@@ -22,17 +22,17 @@
     {
         "path": "akera-devlog-2-from-janky-skies-to-soothing-souls.html",
         "type": "file",
-        "md5": "5e2bd45459e8f601e73a5a1ce1974d8c"
+        "md5": "4c0d1978ec4160ecdd8a60d7d6e9e095"
     },
     {
         "path": "akera-devlog-3-making-the-world-breathe.html",
         "type": "file",
-        "md5": "338292a570d4d81f05951407f1d1e031"
+        "md5": "68014ddad6605f5785eea309d204aa6c"
     },
     {
         "path": "akera-devlog-4-rare-moments-slow-progress.html",
         "type": "file",
-        "md5": "0893fb9e300f111c98723f5d7be38781"
+        "md5": "b61c078b9e26aa2520b325eb61b9a790"
     },
     {
         "path": "are-video-games-art-a-digital-gremlins-take.html",
@@ -323,6 +323,36 @@
         "path": "media/plugins",
         "type": "directory",
         "md5": false
+    },
+    {
+        "path": "media/plugins/coreLightboxGallery",
+        "type": "directory",
+        "md5": false
+    },
+    {
+        "path": "/media/plugins/coreLightboxGallery/photoswipe-lightbox.esm.min.js",
+        "type": "file",
+        "md5": "b505ee081119c5be142e0dbac4762f99"
+    },
+    {
+        "path": "/media/plugins/coreLightboxGallery/photoswipe-lightbox.umd.min.js",
+        "type": "file",
+        "md5": "96c2a65aa83c62a874ddcd85cbdf69fb"
+    },
+    {
+        "path": "/media/plugins/coreLightboxGallery/photoswipe.esm.min.js",
+        "type": "file",
+        "md5": "97ca880233a37aa88ecd4e06b53c45bd"
+    },
+    {
+        "path": "/media/plugins/coreLightboxGallery/photoswipe.min.css",
+        "type": "file",
+        "md5": "bbfcfcfc7aff4620107555b1d668227d"
+    },
+    {
+        "path": "/media/plugins/coreLightboxGallery/photoswipe.umd.min.js",
+        "type": "file",
+        "md5": "80574f1ec4486c3613d668756ad7e600"
     },
     {
         "path": "media/plugins/pagePrefetching",
