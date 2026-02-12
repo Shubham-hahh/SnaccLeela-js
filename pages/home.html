@@ -37,6 +37,11 @@
         /* --- RESET & BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+        /* HIDE DEFAULT CURSOR GLOBALLY */
+        html, body, button, a, input {
+            cursor: none !important;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -50,7 +55,77 @@
             color: #4A4A4A;
         }
 
-        /* --- ANIMATIONS --- */
+        /* --- PIXEL HEART CURSOR --- */
+        #custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 20px; height: 20px;
+            pointer-events: none;
+            z-index: 100000;
+            transform: translate(-50%, -50%);
+            will-change: transform;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Pixel Art Drawing with Black Border */
+        .pixel-heart {
+            width: 1px; height: 1px;
+            background: transparent;
+            transform: scale(2); /* Scale: 2 makes it small but visible */
+            
+            /* 
+               PIXEL ART MATRIX 
+               Coord 0,0 is the center.
+               First block is Black Border, Second block is Pink Fill.
+            */
+            box-shadow: 
+                /* --- BLACK BORDER --- */
+                -2px -3px #000, -1px -3px #000, 1px -3px #000, 2px -3px #000, /* Top Arches */
+                -3px -2px #000, 0px -2px #000, 3px -2px #000, /* Upper Sides & Center Dip */
+                -3px -1px #000, 3px -1px #000, /* Mid Sides */
+                -3px 0px #000, 3px 0px #000,   /* Lower Sides */
+                -2px 1px #000, 2px 1px #000,   /* Taper 1 */
+                -1px 2px #000, 1px 2px #000,   /* Taper 2 */
+                0px 3px #000,                  /* Tip */
+
+                /* --- BUBBLEGUM PINK FILL --- */
+                -2px -2px #ffb7c5, -1px -2px #ffb7c5, 1px -2px #ffb7c5, 2px -2px #ffb7c5,
+                -2px -1px #ffb7c5, -1px -1px #ffb7c5, 0px -1px #ffb7c5, 1px -1px #ffb7c5, 2px -1px #ffb7c5,
+                -2px 0px #ffb7c5, -1px 0px #ffb7c5, 0px 0px #ffb7c5, 1px 0px #ffb7c5, 2px 0px #ffb7c5,
+                -1px 1px #ffb7c5, 0px 1px #ffb7c5, 1px 1px #ffb7c5,
+                0px 2px #ffb7c5;
+            
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* Interaction States */
+        #custom-cursor.hovered .pixel-heart {
+            transform: scale(3); /* Pop up bigger on hover */
+        }
+
+        #custom-cursor.clicking .pixel-heart {
+            transform: scale(1.5); /* Shrink slightly on click */
+        }
+
+        /* Pixel Trail */
+        .cursor-trail {
+            position: fixed;
+            width: 4px; height: 4px; /* Square pixels */
+            background: #ffb7c5;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0.6;
+            box-shadow: 0 0 0 1px #000; /* Tiny border on trail too for consistency */
+            animation: pixelFade 0.6s steps(4) forwards;
+        }
+
+        @keyframes pixelFade {
+            to { opacity: 0; transform: translateY(5px); }
+        }
+
+        /* --- ANIMATIONS (Existing) --- */
         @keyframes float {
             0%, 100% { transform: translate(-50%, -50%); }
             50% { transform: translate(-50%, -53%); } 
@@ -73,8 +148,6 @@
             from { opacity: 0; transform: translate(-50%, -45%); }
             to { opacity: 1; transform: translate(-50%, -50%); }
         }
-
-        /* --- OPTIMIZED WAVE ANIMATION --- */
         @keyframes iconWave {
             0% { transform: rotate(0deg); }
             20% { transform: rotate(-25deg); }
@@ -180,7 +253,7 @@
             border-radius: 20px;
             font-size: 24px;
             font-weight: 800;
-            cursor: pointer;
+            cursor: none; 
             display: flex;
             align-items: center;
             justify-content: center;
@@ -249,7 +322,7 @@
             font-weight: 700;
             min-width: 90px;
             text-align: center;
-            cursor: pointer;
+            cursor: none;
             user-select: none;
             transition: transform 0.1s ease;
         }
@@ -274,7 +347,7 @@
             border: 1px solid rgba(255,255,255,0.5);
             border-radius: 12px;
             padding: 6px 12px;
-            cursor: pointer;
+            cursor: none;
             transition: all 0.3s ease;
             display: flex; align-items: center; justify-content: center;
         }
@@ -297,7 +370,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            cursor: default;
+            cursor: none;
             user-select: none;
             animation: softPulse 4s infinite ease-in-out;
         }
@@ -308,29 +381,25 @@
             border-radius: 50%;
             width: 36px; height: 36px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
+            cursor: none;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 10px rgba(215, 38, 96, 0.1);
         }
 
         .credits-btn img {
-            /* Optimization: Isolate for performance */
             will-change: transform;
             transition: transform 0.3s ease;
         }
 
-        /* Hover: Scale button, Wave icon */
         .made-with-love:hover .credits-btn {
             transform: scale(1.15);
             background: #dbd6d8;
         }
 
-        /* The waving animation triggers on hover */
         .made-with-love:hover .credits-btn img {
             animation: iconWave 1.2s ease-in-out infinite;
         }
 
-        /* Click Pop */
         .credits-btn:active {
             transform: scale(0.8) !important;
         }
@@ -343,6 +412,7 @@
             z-index: 20000;
             display: none;
             align-items: center; justify-content: center;
+            cursor: none;
         }
         .credits-modal-content {
             background: linear-gradient(160deg, #ffffff 0%, #fff0f5 100%);
@@ -366,7 +436,7 @@
             position: absolute; top: 15px; right: 20px;
             background: none; border: none;
             font-size: 2rem; color: #ff89b9;
-            cursor: pointer; transition: 0.2s; line-height: 1;
+            cursor: none; transition: 0.2s; line-height: 1;
         }
 
         /* --- MARKDOWN TYPOGRAPHY --- */
@@ -377,7 +447,7 @@
         .credits-text p { margin-bottom: 0.6em; margin-top: 0; }
         .credits-text ul { padding-left: 20px; margin-bottom: 10px; }
         .credits-text li { margin-bottom: 4px; marker: #ffb7c5; }
-        .credits-text a { color: #d72660; text-decoration: none; font-weight: 700; transition: 0.2s; border-bottom: 1px solid transparent;}
+        .credits-text a { color: #d72660; text-decoration: none; font-weight: 700; transition: 0.2s; border-bottom: 1px solid transparent; cursor: none;}
         .credits-text a:hover { border-bottom: 1px solid #d72660; }
         .credits-text blockquote { background: #fff; border-left: 4px solid #ffb7c5; padding: 8px 12px; margin: 10px 0; color: #888; border-radius: 0 8px 8px 0; font-style: italic; }
 
@@ -391,7 +461,7 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.25);
             z-index: 3000; 
             transition: top 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            cursor: pointer;
+            cursor: none;
             border: 4px solid #ffffff; 
             border-top: none; 
         }
@@ -413,6 +483,12 @@
             .site-title { font-size: 1.8rem; }
             .site-header { padding: 10px 25px; top: 40px; }
             
+            /* Revert cursor on mobile */
+            html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .pride-curtain {
+                cursor: auto !important;
+            }
+            #custom-cursor, .cursor-trail { display: none !important; }
+
             .main-nav { 
                 padding: 25px 15px; 
                 width: 85%; 
@@ -468,6 +544,11 @@
 </head>
 <body>
 
+    <!-- CUSTOM CURSOR (PIXEL HEART) -->
+    <div id="custom-cursor">
+        <div class="pixel-heart"></div>
+    </div>
+
     <!-- EASTER EGG ELEMENTS -->
     <div id="curtain-left" class="pride-curtain" title="Pride"></div>
     <div id="curtain-right" class="pride-curtain" title="Trans Pride"></div>
@@ -514,6 +595,51 @@
     </audio>
 
     <script>
+        // --- CUSTOM CURSOR LOGIC ---
+        const cursor = document.getElementById('custom-cursor');
+        const interactiveElements = document.querySelectorAll('button, a, .clock-text, .pride-curtain');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        // Mouse tracking with linear interpolation (Lerp)
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Create Square Pixel Trail
+            if (Math.random() > 0.75) { 
+                const trail = document.createElement('div');
+                trail.classList.add('cursor-trail');
+                trail.style.left = mouseX + 'px';
+                trail.style.top = mouseY + 'px';
+                document.body.appendChild(trail);
+                setTimeout(() => trail.remove(), 600);
+            }
+        });
+
+        // Animation loop for physics lag
+        function animateCursor() {
+            let dx = mouseX - cursorX;
+            let dy = mouseY - cursorY;
+            cursorX += dx * 0.15; // Smooth lag
+            cursorY += dy * 0.15;
+
+            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Interactive States
+        document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
+        document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
+
+        const addHoverListeners = (el) => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        };
+
+        interactiveElements.forEach(addHoverListeners);
+
         // --- CLOCK ---
         const updateClock = () => {
             const now = new Date();
@@ -560,6 +686,7 @@
 
         curtains.forEach(flag => {
             flag.addEventListener('click', toggleFlags);
+            addHoverListeners(flag); 
         });
 
         // --- MARKDOWN PARSER ---
@@ -621,19 +748,27 @@
         // --- CREDITS MODAL ---
         const modal = document.getElementById('creditsModal');
         const txt = document.getElementById('creditsText');
+        const creditsBtn = document.getElementById('creditsBtn');
+        const closeCredits = document.getElementById('closeCredits');
         
-        document.getElementById('creditsBtn').addEventListener('click', () => {
+        addHoverListeners(creditsBtn);
+        addHoverListeners(closeCredits);
+
+        creditsBtn.addEventListener('click', () => {
             modal.style.display = 'flex';
             txt.innerHTML = '<div style="text-align:center;color:#d72660;">Loading...</div>';
             
             fetch('../texts/credits.md')
                 .then(r => r.ok ? r.text() : Promise.reject())
-                .then(t => txt.innerHTML = parseMarkdown(t))
+                .then(t => {
+                    txt.innerHTML = parseMarkdown(t);
+                    txt.querySelectorAll('a').forEach(addHoverListeners);
+                })
                 .catch(() => txt.innerHTML = "<h3>Credits</h3><p><b>Created by Crossie</b></p><p>(File not found)</p>");
         });
 
         const closeModal = () => modal.style.display = 'none';
-        document.getElementById('closeCredits').addEventListener('click', closeModal);
+        closeCredits.addEventListener('click', closeModal);
         modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
     </script>
 </body>

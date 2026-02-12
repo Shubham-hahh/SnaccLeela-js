@@ -3,33 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Added description for SEO -->
     <meta name="description" content="Welcome to the space portal. Enter to explore.">
-    <!-- Matches browser toolbar color to background on mobile -->
     <meta name="theme-color" content="#ffc0cb">
     <title>WELCOME</title>
     
-    <!-- FIX: Closed the quote and changed backslashes to forward slashes -->
     <link rel="icon" type="image/svg+xml" href="assets/icons/welcome.svg">
     
     <style>
+        /* --- FONTS --- */
+        @font-face {
+            font-family: 'GochiHand-Regular';
+            src: url('assets/fonts/welcome_page/GochiHand-Regular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap; 
+        }
+
         @font-face {
             font-family: 'Bahiana';
-            /* FIX: Updated path to assets folder */
             src: url('assets/fonts/welcome_page/Bahiana-Regular.woff2') format('woff2');
             font-weight: normal;
             font-style: normal;
             font-display: swap; 
         }
-         @font-face {
-         font-family: 'GochiHand-Regular';
-         /* Updated path fonts to avoid font copyright */
-         src: url('assets/fonts/welcome_page/GochiHand-Regular.woff2') format('woff2');
-         font-weight: normal;
-         font-style: normal;
-         font-display: swap; 
-}
 
+        /* --- GLOBAL --- */
         body {
             margin: 0;
             height: 100vh;
@@ -37,12 +35,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, pink, blue);
+            background: linear-gradient(135deg, #2a0845, #6441a5, #ffc0cb);
             background-size: 400% 400%;
             animation: gradientAnimation 20s linear infinite;
-            font-family: Arial, sans-serif;
             overflow: hidden; 
-            will-change: background-position; 
+            font-family: Arial, sans-serif;
+            cursor: crosshair; 
+            position: relative; /* Needed for absolute children positioning */
         }
 
         @keyframes gradientAnimation {
@@ -51,102 +50,164 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* --- STARS --- */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            background: transparent;
+            /* z-index 0 places it on top of background, but behind text */
+            z-index: 0; 
+            pointer-events: none;
+            animation: twinkle 4s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* --- TEXT --- */
         h1.welcome-text {
-            font-size: 180px;
-            font-weight: bold;
+            font-family: 'GochiHand-Regular', cursive;
+            font-size: 160px;
             color: white;
-            margin: 0 0 20px 0; 
-            font-family: 'Bahiana', cursive;
-            letter-spacing: 2px;
+            margin: 0 0 40px 0; 
             position: relative;
             line-height: 1; 
             cursor: default;
+            text-shadow: 0 0 20px rgba(255,255,255,0.4);
+            animation: float 6s ease-in-out infinite;
+            /* High z-index ensures text sits above stars */
+            z-index: 2; 
         }
 
         h1.welcome-text::after {
             content: "!";
-            font-size: 180px;
+            font-size: 160px;
             color: yellow;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             position: absolute;
             right: -40px;
             top: 0;
+            text-shadow: 0 0 15px rgba(255, 255, 0, 0.6);
         }
 
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- BUTTON --- */
         .enter-button {
-            padding: 15px 30px;
-            font-size: 20px;
+            font-family: 'Bahiana', cursive;
+            font-size: 32px; 
+            letter-spacing: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             color: white;
-            background-color: rgba(0, 0, 0, 0.7);
-            border: none;
-            border-radius: 5px;
+            padding: 15px 40px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.1s;
-            font-family: 'Monday Feelings', cursive;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2; /* Sits above stars */
         }
 
         .enter-button:hover {
-            background-color: white;
-            color: black;
-        }
-
-        .enter-button:focus-visible {
-            outline: 3px solid yellow;
-            outline-offset: 4px;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 20px rgba(255, 192, 203, 0.6);
+            transform: scale(1.05);
         }
 
         .enter-button:active {
-            transform: scale(0.98); 
+            transform: scale(0.95); 
         }
 
-        /* Responsive Styles */
+        /* --- CURSOR DUST --- */
+        .magic-dust {
+            position: fixed;
+            pointer-events: none;
+            width: 6px;
+            height: 6px;
+            background: white;
+            border-radius: 50%;
+            animation: fadeOut 1s forwards;
+            box-shadow: 0 0 8px white;
+            z-index: 9999; /* Always on top */
+        }
+
+        @keyframes fadeOut {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
-            h1.welcome-text {
-                font-size: 120px;
-                text-align: center;
-            }
-            h1.welcome-text::after {
-                font-size: 120px;
-                right: -30px;
-            }
-            .enter-button {
-                padding: 12px 24px;
-                font-size: 18px;
-            }
+            h1.welcome-text { font-size: 100px; }
+            h1.welcome-text::after { font-size: 100px; right: -20px; }
+            .enter-button { font-size: 24px; padding: 12px 30px; }
         }
-
         @media (max-width: 480px) {
-            h1.welcome-text {
-                font-size: 80px;
-                text-align: center;
-            }
-            h1.welcome-text::after {
-                font-size: 80px;
-                right: -20px;
-            }
-            .enter-button {
-                padding: 10px 20px;
-                font-size: 16px;
-            }
-        }
-
-        @media (max-width: 320px) {
-            h1.welcome-text {
-                font-size: 60px;
-            }
-            h1.welcome-text::after {
-                font-size: 60px;
-                right: -15px;
-            }
-            .enter-button {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
+            h1.welcome-text { font-size: 70px; }
+            h1.welcome-text::after { font-size: 70px; right: -15px; }
         }
     </style>
 </head>
 <body>
+    <!-- Container for the stars -->
+    <div class="stars"></div>
+
     <h1 class="welcome-text">WELCOME</h1>
-    <button class="enter-button" onclick="location.href='pages/home.html'" aria-label="Enter Space">Enter Space</button>
+    
+    <button class="enter-button" onclick="location.href='pages/home.html'" aria-label="Enter Space">ENTER SPACE</button>
+
+    <script>
+        // --- 1. GENERATE STAR BACKGROUND ---
+        // We use JS to create random box-shadow coordinates so we don't have to type 200 manually.
+        const starContainer = document.querySelector('.stars');
+        const starCount = 200;
+        let boxShadowValues = '';
+
+        for(let i = 0; i < starCount; i++) {
+            // Random x (0-100vw) and random y (0-100vh)
+            const x = Math.random() * 100; 
+            const y = Math.random() * 100;
+            // Append coordinate to the string
+            boxShadowValues += `${x}vw ${y}vh #FFF, `;
+        }
+        
+        // Remove trailing comma and apply
+        starContainer.style.boxShadow = boxShadowValues.slice(0, -2);
+
+
+        // --- 2. MAGIC CURSOR DUST ---
+        document.addEventListener('mousemove', function(e) {
+            const dust = document.createElement('div');
+            dust.classList.add('magic-dust');
+            dust.style.left = e.pageX + 'px';
+            dust.style.top = e.pageY + 'px';
+            
+            // Randomize size and color slightly
+            const size = Math.random() * 6 + 2; 
+            dust.style.width = size + 'px';
+            dust.style.height = size + 'px';
+            
+            const colors = ['#ffffff', '#ffc0cb', '#e0e0e0'];
+            dust.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+            document.body.appendChild(dust);
+
+            setTimeout(() => {
+                dust.remove();
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
