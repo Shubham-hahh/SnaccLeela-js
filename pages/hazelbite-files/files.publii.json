@@ -222,7 +222,7 @@
     {
         "path": "/authors/crossie/index.html",
         "type": "file",
-        "md5": "7d3645d37717cc1961014f826f901114"
+        "md5": "2464c8022ee9a97a49127a9a02b4fddb"
     },
     {
         "path": "authors/crossie/page",
@@ -237,7 +237,7 @@
     {
         "path": "/authors/crossie/page/2/index.html",
         "type": "file",
-        "md5": "0ad215c1973db0d4900b83b1a7bc9e75"
+        "md5": "8731cc40d560433a31bebef98ed98a31"
     },
     {
         "path": "authors/crossie/page/3",
@@ -247,7 +247,7 @@
     {
         "path": "/authors/crossie/page/3/index.html",
         "type": "file",
-        "md5": "36438c62602aa21e4a778fdb6cd59f1b"
+        "md5": "c64da901b9467e1dedde8ffb8a03c37d"
     },
     {
         "path": "authors/crossie/page/4",
@@ -257,7 +257,7 @@
     {
         "path": "/authors/crossie/page/4/index.html",
         "type": "file",
-        "md5": "c5f59784b3d7722266592f1370d6ace3"
+        "md5": "85d8fb9eb0752998a9c5f5359bea5db9"
     },
     {
         "path": "between-smoothness-and-splinters.html",
@@ -303,6 +303,51 @@
         "path": "media",
         "type": "directory",
         "md5": false
+    },
+    {
+        "path": "media/authors",
+        "type": "directory",
+        "md5": false
+    },
+    {
+        "path": "media/authors/1",
+        "type": "directory",
+        "md5": false
+    },
+    {
+        "path": "/media/authors/1/MEJustAvatar1.png",
+        "type": "file",
+        "md5": "8bb81a82e6f6f6e45b110553f88faa30"
+    },
+    {
+        "path": "media/authors/1/responsive",
+        "type": "directory",
+        "md5": false
+    },
+    {
+        "path": "/media/authors/1/responsive/MEJustAvatar1-lg.webp",
+        "type": "file",
+        "md5": "743529247c45ee1b7a57595c72397155"
+    },
+    {
+        "path": "/media/authors/1/responsive/MEJustAvatar1-md.webp",
+        "type": "file",
+        "md5": "b118fa92f4954eb38bc1f86bf4e01c13"
+    },
+    {
+        "path": "/media/authors/1/responsive/MEJustAvatar1-sm.webp",
+        "type": "file",
+        "md5": "446b1780fb9cef7c24c1f1e34da8e920"
+    },
+    {
+        "path": "/media/authors/1/responsive/MEJustAvatar1-xl.webp",
+        "type": "file",
+        "md5": "743529247c45ee1b7a57595c72397155"
+    },
+    {
+        "path": "/media/authors/1/responsive/MEJustAvatar1-xs.webp",
+        "type": "file",
+        "md5": "45711a0eaa1a5feb8ec1d2168b26c1f7"
     },
     {
         "path": "media/files",
@@ -1690,9 +1735,9 @@
         "md5": "7f25b2ab89d2c3c936059e6915bcb0de"
     },
     {
-        "path": "/media/website/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview.png",
+        "path": "/media/website/MEJustAvatar1.png",
         "type": "file",
-        "md5": "ebab3487be5268fcd598e1c8b7ee34fd"
+        "md5": "8bb81a82e6f6f6e45b110553f88faa30"
     },
     {
         "path": "/media/website/OIP-446178773_imgupscaler.ai_Beta_2K.jpg",
@@ -1705,34 +1750,34 @@
         "md5": false
     },
     {
-        "path": "/media/website/responsive/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview-2xl.webp",
+        "path": "/media/website/responsive/MEJustAvatar1-2xl.webp",
         "type": "file",
-        "md5": "227d223fc92231f1e35027065bc969ad"
+        "md5": "743529247c45ee1b7a57595c72397155"
     },
     {
-        "path": "/media/website/responsive/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview-lg.webp",
+        "path": "/media/website/responsive/MEJustAvatar1-lg.webp",
         "type": "file",
-        "md5": "227d223fc92231f1e35027065bc969ad"
+        "md5": "743529247c45ee1b7a57595c72397155"
     },
     {
-        "path": "/media/website/responsive/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview-md.webp",
+        "path": "/media/website/responsive/MEJustAvatar1-md.webp",
         "type": "file",
-        "md5": "227d223fc92231f1e35027065bc969ad"
+        "md5": "b118fa92f4954eb38bc1f86bf4e01c13"
     },
     {
-        "path": "/media/website/responsive/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview-sm.webp",
+        "path": "/media/website/responsive/MEJustAvatar1-sm.webp",
         "type": "file",
-        "md5": "47ebf66b117ec15e50c0160df1b8124b"
+        "md5": "446b1780fb9cef7c24c1f1e34da8e920"
     },
     {
-        "path": "/media/website/responsive/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview-xl.webp",
+        "path": "/media/website/responsive/MEJustAvatar1-xl.webp",
         "type": "file",
-        "md5": "227d223fc92231f1e35027065bc969ad"
+        "md5": "743529247c45ee1b7a57595c72397155"
     },
     {
-        "path": "/media/website/responsive/anime-character-cat-girl-with-blue-eyes-pink-bow-generative-ai_958124-30398-2640073706-removebg-preview-xs.webp",
+        "path": "/media/website/responsive/MEJustAvatar1-xs.webp",
         "type": "file",
-        "md5": "d1342d7ac82386e2eae7bb554d0c9044"
+        "md5": "afaff1323fa2d701d6199bfffcb99c40"
     },
     {
         "path": "/media/website/responsive/OIP-446178773_imgupscaler.ai_Beta_2K-2xl.webp",
@@ -1887,6 +1932,6 @@
     {
         "path": "what-is-hzelbite~.html",
         "type": "file",
-        "md5": "6ce11a98c6556a70f3731a5c0073fb70"
+        "md5": "fa2a274d30de7b5343d01d388aaae24c"
     }
 ]
