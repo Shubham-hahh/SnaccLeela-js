@@ -44,7 +44,76 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-x: hidden; 
+            overflow-x: hidden;
+            /* HIDE DEFAULT CURSOR */
+            cursor: none; 
+        }
+
+        /* Hide cursor on interactive elements too so the custom one takes over */
+        a, button, input, .nav-icon-btn, .bmc-button {
+            cursor: none !important;
+        }
+
+        /* --- CUSTOM CURSOR STYLES --- */
+        #cursor-dot {
+            position: fixed;
+            top: 0; left: 0;
+            width: 8px; height: 8px;
+            background-color: var(--sage-green);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s, border 0.3s;
+            mix-blend-mode: multiply;
+        }
+
+        #cursor-nib {
+            position: fixed;
+            top: 0; left: 0;
+            width: 0; height: 0;
+            pointer-events: none;
+            z-index: 10001;
+            /* Triangle Shape */
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 18px solid var(--wood-dark);
+            /* Angle to look like a held pen */
+            transform-origin: top center;
+            transform: translate(-50%, -50%) rotate(35deg) translate(0, 10px);
+            transition: transform 0.1s ease-out;
+            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+        }
+
+        /* The slit in the pen nib */
+        .nib-slit {
+            position: absolute;
+            top: -18px; left: -1px;
+            width: 2px; height: 10px;
+            background-color: rgba(255,255,255,0.4);
+        }
+
+        /* Hover State: Ink expands */
+        body.hovering #cursor-dot {
+            width: 40px; height: 40px;
+            background-color: rgba(85, 107, 47, 0.15);
+            border: 2px solid var(--wood-dark);
+        }
+        
+        /* Hover State: Pen lifts slightly */
+        body.hovering #cursor-nib {
+            transform: translate(-50%, -50%) rotate(35deg) translate(0, 5px) scale(0.9);
+        }
+
+        /* Click State: Pen presses down */
+        body.clicking #cursor-nib {
+            transform: translate(-50%, -50%) rotate(35deg) translate(0, 15px) scale(0.85);
+        }
+
+        /* Disable custom cursor on touch devices to prevent artifacts */
+        @media (hover: none) and (pointer: coarse) {
+            #cursor-dot, #cursor-nib { display: none; }
+            body, a, button { cursor: auto !important; }
         }
 
         /* --- MAIN CONTAINER --- */
@@ -62,6 +131,11 @@
             position: relative;
             margin: 40px 0;
             animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            /* Ensure text selection color matches theme */
+            ::selection {
+                background: var(--wood-light);
+                color: var(--parchment);
+            }
         }
 
         @keyframes slideUp {
@@ -128,7 +202,6 @@
             padding-top: 25px;
         }
 
-        /* Container for the 3 navigation buttons */
         .nav-row {
             display: flex;
             gap: 20px;
@@ -136,7 +209,6 @@
             flex-wrap: wrap;
         }
 
-        /* New Visual Button Style (Based on previous .go-back) */
         .nav-icon-btn {
             display: flex;
             align-items: center;
@@ -149,15 +221,13 @@
             border: 2px solid #3e2723;
             box-shadow: 0 4px 0 #2d1b18; 
             transition: all 0.2s ease;
-            cursor: pointer;
+            cursor: none; /* Changed for custom cursor */
         }
 
         .nav-icon-btn img {
             width: 32px;
             height: 32px;
             object-fit: contain;
-            /* Ensures icons are visible against dark wood if they are black SVGs */
-            /* Remove this filter if your SVGs are already white/colored */
             filter: brightness(0) invert(1); 
         }
 
@@ -204,7 +274,6 @@
             
             .bmc-button img { height: 45px !important; }
 
-            /* Adjust button size slightly for very small screens if needed */
             .nav-icon-btn {
                 width: 50px;
                 height: 50px;
@@ -217,6 +286,12 @@
     </style>
 </head>
 <body>
+
+    <!-- CUSTOM CURSOR ELEMENTS -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-nib">
+        <div class="nib-slit"></div>
+    </div>
 
     <div class="about-container">
         <img src="../assets/icons/about.svg" alt="About Icon" class="about-icon">
@@ -233,7 +308,7 @@
                 </a>
             </div>
             
-            <!-- New Navigation Icons -->
+            <!-- Navigation Icons -->
             <div class="nav-row">
                 <a href="home.html" class="nav-icon-btn" title="Go Home">
                     <img src="../assets/icons/gohome.svg" alt="Home">
@@ -251,6 +326,7 @@
     <script>
         const contentDiv = document.getElementById('content');
 
+        // --- MARKDOWN PARSER ---
         function parseMarkdown(markdown) {
             let html = markdown
                 .replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -266,6 +342,7 @@
             return `<p>${html}</p>`;
         }
 
+        // --- FETCH CONTENT ---
         fetch('../texts/about.md')
             .then(response => {
                 if (!response.ok) throw new Error("Parchment not found.");
@@ -274,11 +351,54 @@
             .then(text => {
                 contentDiv.innerHTML = parseMarkdown(text);
                 if(!text.trim()) throw new Error("Empty file");
+                
+                // IMPORTANT: Re-scan for links now that content is loaded
+                updateHoverListeners();
             })
             .catch(error => {
                 console.error("Error loading text:", error);
                 contentDiv.innerHTML = `<div class="error-text">⚠️ Could not retrieve the parchment. <br><small>(${error.message})</small></div>`;
             });
+
+        // --- CUSTOM CURSOR LOGIC ---
+        const cursorNib = document.getElementById('cursor-nib');
+        const cursorDot = document.getElementById('cursor-dot');
+        let mouseX = 0;
+        let mouseY = 0;
+
+        // Track mouse position
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            
+            // Move nib instantly for responsiveness
+            cursorNib.style.left = mouseX + 'px';
+            cursorNib.style.top = mouseY + 'px';
+            
+            // Move dot instantly (CSS transition handles smoothing)
+            cursorDot.style.left = mouseX + 'px';
+            cursorDot.style.top = mouseY + 'px';
+        });
+
+        // Handle Clicking
+        document.addEventListener('mousedown', () => document.body.classList.add('clicking'));
+        document.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
+
+        // Handle Hover Effects
+        function updateHoverListeners() {
+            // Select all interactive elements (static buttons AND dynamic links)
+            const interactiveElements = document.querySelectorAll('a, button, .nav-icon-btn, .bmc-button');
+            
+            interactiveElements.forEach(el => {
+                // Remove old listeners to avoid duplicates if called multiple times
+                el.onmouseenter = () => document.body.classList.add('hovering');
+                el.onmouseleave = () => document.body.classList.remove('hovering');
+            });
+        }
+
+        // Initial call for static elements (navigation buttons)
+        updateHoverListeners();
+
     </script>
 </body>
 </html>

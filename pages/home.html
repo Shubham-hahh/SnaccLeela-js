@@ -42,6 +42,18 @@
             cursor: none !important;
         }
 
+        /* --- TEXT SELECTION HIGHLIGHT --- */
+        ::selection {
+            background: #ffb7c5; /* Bubblegum Pink */
+            color: #d72660;      /* Deep Berry Pink */
+            text-shadow: none;
+        }
+        ::-moz-selection {
+            background: #ffb7c5;
+            color: #d72660;
+            text-shadow: none;
+        }
+
         body {
             margin: 0;
             padding: 0;
@@ -73,22 +85,18 @@
         .pixel-heart {
             width: 1px; height: 1px;
             background: transparent;
-            transform: scale(2); /* Scale: 2 makes it small but visible */
+            transform: scale(2); 
             
-            /* 
-               PIXEL ART MATRIX 
-               Coord 0,0 is the center.
-               First block is Black Border, Second block is Pink Fill.
-            */
+            /* PIXEL ART MATRIX */
             box-shadow: 
                 /* --- BLACK BORDER --- */
-                -2px -3px #000, -1px -3px #000, 1px -3px #000, 2px -3px #000, /* Top Arches */
-                -3px -2px #000, 0px -2px #000, 3px -2px #000, /* Upper Sides & Center Dip */
-                -3px -1px #000, 3px -1px #000, /* Mid Sides */
-                -3px 0px #000, 3px 0px #000,   /* Lower Sides */
-                -2px 1px #000, 2px 1px #000,   /* Taper 1 */
-                -1px 2px #000, 1px 2px #000,   /* Taper 2 */
-                0px 3px #000,                  /* Tip */
+                -2px -3px #000, -1px -3px #000, 1px -3px #000, 2px -3px #000,
+                -3px -2px #000, 0px -2px #000, 3px -2px #000,
+                -3px -1px #000, 3px -1px #000,
+                -3px 0px #000, 3px 0px #000,
+                -2px 1px #000, 2px 1px #000,
+                -1px 2px #000, 1px 2px #000,
+                0px 3px #000,
 
                 /* --- BUBBLEGUM PINK FILL --- */
                 -2px -2px #ffb7c5, -1px -2px #ffb7c5, 1px -2px #ffb7c5, 2px -2px #ffb7c5,
@@ -100,24 +108,18 @@
             transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Interaction States */
-        #custom-cursor.hovered .pixel-heart {
-            transform: scale(3); /* Pop up bigger on hover */
-        }
-
-        #custom-cursor.clicking .pixel-heart {
-            transform: scale(1.5); /* Shrink slightly on click */
-        }
+        #custom-cursor.hovered .pixel-heart { transform: scale(3); }
+        #custom-cursor.clicking .pixel-heart { transform: scale(1.5); }
 
         /* Pixel Trail */
         .cursor-trail {
             position: fixed;
-            width: 4px; height: 4px; /* Square pixels */
+            width: 4px; height: 4px; 
             background: #ffb7c5;
             pointer-events: none;
             z-index: 99999;
             opacity: 0.6;
-            box-shadow: 0 0 0 1px #000; /* Tiny border on trail too for consistency */
+            box-shadow: 0 0 0 1px #000;
             animation: pixelFade 0.6s steps(4) forwards;
         }
 
@@ -125,7 +127,7 @@
             to { opacity: 0; transform: translateY(5px); }
         }
 
-        /* --- ANIMATIONS (Existing) --- */
+        /* --- ANIMATIONS --- */
         @keyframes float {
             0%, 100% { transform: translate(-50%, -50%); }
             50% { transform: translate(-50%, -53%); } 
@@ -156,6 +158,14 @@
             80% { transform: rotate(10deg); }
             100% { transform: rotate(0deg); }
         }
+        
+        /* Gentle Sway for Curtains */
+        @keyframes curtainSway {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
+        }
 
         /* --- HANGING GLASS HEADER --- */
         .site-header {
@@ -180,61 +190,34 @@
             transform-style: preserve-3d;
         }
 
-        .site-header::before,
-        .site-header::after {
-            content: '';
-            position: absolute;
-            top: -1000px; 
-            bottom: 100%; 
-            width: 2px;
-            background: #1a1a1a; 
-            z-index: -1; 
-            box-shadow: 1px 0 2px rgba(255,255,255,0.3); 
+        .site-header::before, .site-header::after {
+            content: ''; position: absolute; top: -1000px; bottom: 100%; width: 2px;
+            background: #1a1a1a; z-index: -1; box-shadow: 1px 0 2px rgba(255,255,255,0.3); 
         }
-        
-        .site-header::before { left: 25px; }
-        .site-header::after { right: 25px; }
+        .site-header::before { left: 25px; } .site-header::after { right: 25px; }
 
         .bolt-l, .bolt-r {
-            position: absolute;
-            top: 8px;
-            width: 8px;
-            height: 8px;
-            background: #333;
-            border-radius: 50%;
-            box-shadow: 0 1px 2px rgba(255,255,255,0.8);
-            z-index: 2;
+            position: absolute; top: 8px; width: 8px; height: 8px;
+            background: #333; border-radius: 50%; box-shadow: 0 1px 2px rgba(255,255,255,0.8); z-index: 2;
         }
-        .bolt-l { left: 22px; } 
-        .bolt-r { right: 22px; }
+        .bolt-l { left: 22px; } .bolt-r { right: 22px; }
 
         .site-title {
             font-family: 'Comfortaa', sans-serif;
-            color: #2d2d2d;
-            font-size: 2.5rem;
-            margin: 0;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
-            position: relative;
-            z-index: 2; 
+            color: #2d2d2d; font-size: 2.5rem; margin: 0;
+            letter-spacing: 1px; text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
+            position: relative; z-index: 2; 
         }
 
         /* --- MAIN NAVIGATION --- */
         .main-nav {
             position: fixed;
-            top: 55%; 
-            left: 50%;
+            top: 55%; left: 50%;
             transform: translate(-50%, -50%);
-            width: auto;
-            min-width: 320px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 24px;
+            width: auto; min-width: 320px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
             background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(20px) saturate(1.2);
-            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            backdrop-filter: blur(20px) saturate(1.2); -webkit-backdrop-filter: blur(20px) saturate(1.2);
             border-radius: 32px;
             box-shadow: 0 15px 45px rgba(0, 0, 0, 0.1);
             padding: 40px;
@@ -246,19 +229,10 @@
         }
 
         .main-nav button {
-            width: 250px;
-            height: 65px;
-            padding: 0;
-            border: none;
-            border-radius: 20px;
-            font-size: 24px;
-            font-weight: 800;
-            cursor: none; 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            width: 250px; height: 65px; padding: 0; border: none; border-radius: 20px;
+            font-size: 24px; font-weight: 800; cursor: none; 
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
             font-family: 'Nunito', sans-serif;
             color: #5d405c;
             background: linear-gradient(135deg, #FFB7C5 0%, #ffe8ee 100%);
@@ -267,7 +241,6 @@
             box-shadow: 0 5px 15px rgba(255, 183, 197, 0.4);
             touch-action: manipulation;
         }
-
         .main-nav button span { z-index: 2; position: relative; }
 
         @media (hover: hover) {
@@ -279,287 +252,243 @@
             }
             .main-nav button:hover::before { left: 100%; }
         }
-
         .main-nav button:active { transform: scale(0.96); }
-
         .main-nav button::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: 0.5s;
-            z-index: 1;
+            transition: 0.5s; z-index: 1;
         }
 
         /* --- BOTTOM BAR --- */
         .bottom-bar {
-            position: fixed;
-            left: 50%;
-            bottom: 25px;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: center;
-            gap: 15px;
+            position: fixed; left: 50%; bottom: 25px; transform: translateX(-50%);
+            display: flex; align-items: center; gap: 15px;
             background: rgba(255, 255, 255, 0.25);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 10px 25px;
-            z-index: 1000;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px; padding: 10px 25px;
+            z-index: 1000; border: 1px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 5px 20px rgba(0,0,0,0.05);
             transition: transform 0.3s ease;
         }
-        @media (hover: hover) {
-            .bottom-bar:hover { transform: translateX(-50%) translateY(-3px); }
-        }
+        @media (hover: hover) { .bottom-bar:hover { transform: translateX(-50%) translateY(-3px); } }
 
         .clock-text {
-            font-family: 'Caveat', cursive;
-            font-size: 22px;
-            color: #000000; 
-            font-weight: 700;
-            min-width: 90px;
-            text-align: center;
-            cursor: none;
-            user-select: none;
-            transition: transform 0.1s ease;
+            font-family: 'Caveat', cursive; font-size: 22px; color: #000000; font-weight: 700;
+            min-width: 90px; text-align: center; cursor: none; user-select: none; transition: transform 0.1s ease;
         }
-        .clock-text:active {
-            transform: scale(0.9);
-            color: #d72660;
-        }
-
-        .bar-separator {
-            width: 2px; height: 24px;
-            background: rgba(0,0,0,0.3); 
-            border-radius: 5px;
-        }
-        .music-label {
-            color: #000000; 
-            font-family: 'Caveat', cursive;
-            font-size: 22px;
-            font-weight: 700;
-        }
+        .clock-text:active { transform: scale(0.9); color: #d72660; }
+        .bar-separator { width: 2px; height: 24px; background: rgba(0,0,0,0.3); border-radius: 5px; }
+        .music-label { color: #000000; font-family: 'Caveat', cursive; font-size: 22px; font-weight: 700; }
         .toggle-btn {
-            background: rgba(255,255,255,0.5);
-            border: 1px solid rgba(255,255,255,0.5);
-            border-radius: 12px;
-            padding: 6px 12px;
-            cursor: none;
-            transition: all 0.3s ease;
-            display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.5); border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 12px; padding: 6px 12px; cursor: none;
+            transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;
         }
         .toggle-btn:active { transform: scale(0.9); }
 
         /* --- CREDITS BUTTON & MODAL --- */
         .made-with-love {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            font-family: 'Caveat', cursive;
-            font-size: 1.2rem;
-            color: #d72660;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 50px;
-            padding: 8px 20px;
-            z-index: 1200;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: none;
-            user-select: none;
+            position: fixed; right: 20px; bottom: 20px;
+            font-family: 'Caveat', cursive; font-size: 1.2rem; color: #d72660;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            border-radius: 50px; padding: 8px 20px;
+            z-index: 1200; display: flex; align-items: center; gap: 10px;
+            cursor: none; user-select: none;
             animation: softPulse 4s infinite ease-in-out;
+            transition: background 0.3s ease, transform 0.3s ease;
         }
 
         .credits-btn {
-            background: #fff;
-            border: 1px solid #ffdde5;
-            border-radius: 50%;
-            width: 36px; height: 36px;
+            background: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 50%; width: 36px; height: 36px;
             display: flex; align-items: center; justify-content: center;
             cursor: none;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 2px 10px rgba(215, 38, 96, 0.1);
         }
 
-        .credits-btn img {
-            will-change: transform;
-            transition: transform 0.3s ease;
-        }
+        /* --- ICON WAVE ANIMATION --- */
+        .credits-btn img { transform-origin: center; will-change: transform; }
+        .credits-btn:hover img, .credits-btn:active img { animation: iconWave 0.6s ease-in-out; }
 
-        .made-with-love:hover .credits-btn {
-            transform: scale(1.15);
-            background: #dbd6d8;
-        }
-
-        .made-with-love:hover .credits-btn img {
-            animation: iconWave 1.2s ease-in-out infinite;
-        }
-
-        .credits-btn:active {
-            transform: scale(0.8) !important;
+        .made-with-love:hover {
+            background: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            border-color: rgba(255, 255, 255, 0.6);
         }
         
-        /* Modal Styles */
+        /* MODAL BACKGROUND */
         .credits-modal {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(90, 62, 107, 0.15);
-            backdrop-filter: blur(5px);
-            z-index: 20000;
-            display: none;
-            align-items: center; justify-content: center;
-            cursor: none;
+            background: rgba(255, 183, 197, 0.25); /* Slight pink dimmer */
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            z-index: 20000; display: none; align-items: center; justify-content: center;
+            cursor: none; opacity: 0; animation: fadeInModal 0.3s forwards;
         }
-        .credits-modal-content {
-            background: linear-gradient(160deg, #ffffff 0%, #fff0f5 100%);
-            border-radius: 24px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
-            padding: 30px;
-            width: 400px;
-            max-width: 90vw;
-            max-height: 85vh;
-            position: relative;
-            border: 2px solid #fff;
-            overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #ffb7c5 transparent;
-        }
-        .credits-modal-content::-webkit-scrollbar { width: 6px; }
-        .credits-modal-content::-webkit-scrollbar-track { background: transparent; }
-        .credits-modal-content::-webkit-scrollbar-thumb { background-color: #ffb7c5; border-radius: 10px; }
+        @keyframes fadeInModal { to { opacity: 1; } }
 
+        /* MODAL CONTENT - PROMINENT PINK FROSTED GLASS */
+        .credits-modal-content {
+            background: rgba(255, 183, 197, 0.45); 
+            background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 183, 197, 0.3) 100%);
+            backdrop-filter: blur(20px) saturate(200%); -webkit-backdrop-filter: blur(20px) saturate(200%);
+            border: 2px solid rgba(255, 255, 255, 0.7); 
+            box-shadow: 0 25px 50px rgba(215, 38, 96, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.4);
+            border-radius: 24px; padding: 30px;
+            width: 400px; max-width: 90vw; max-height: 85vh;
+            position: relative; overflow-y: auto;
+            scrollbar-width: thin; scrollbar-color: rgba(215, 38, 96, 0.5) rgba(255, 255, 255, 0.3);
+            transform: scale(0.95); animation: popInModal 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            color: #5d405c; 
+        }
+        @keyframes popInModal { to { transform: scale(1); } }
+
+        .credits-modal-content::-webkit-scrollbar { width: 6px; }
+        .credits-modal-content::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .credits-modal-content::-webkit-scrollbar-thumb { 
+            background-color: rgba(215, 38, 96, 0.5); border-radius: 10px; border: 1px solid rgba(255,255,255,0.4);
+        }
+
+        /* --- CLOSE BUTTON --- */
         .close-credits {
             position: absolute; top: 15px; right: 20px;
-            background: none; border: none;
-            font-size: 2rem; color: #ff89b9;
-            cursor: none; transition: 0.2s; line-height: 1;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            border: 1px solid rgba(255,255,255,0.6);
+            font-size: 1.5rem; color: #d72660;
+            display: flex; align-items: center; justify-content: center;
+            cursor: none; 
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            line-height: 1; padding-bottom: 2px;
+        }
+        .close-credits:hover {
+            background: rgba(255,255,255,0.9); border-color: #d72660;
+            transform: rotate(90deg) scale(1.1);
         }
 
-        /* --- MARKDOWN TYPOGRAPHY --- */
-        .credits-text { font-family: 'Nunito', sans-serif; font-size: 1rem; color: #555; line-height: 1.5; }
-        .credits-text h1 { color: #d72660; font-size: 1.6rem; margin: 10px 0 10px 0; border-bottom: 2px dashed #ffb7c5; padding-bottom: 5px; }
-        .credits-text h2 { color: #d72660; font-size: 1.3rem; margin: 20px 0 8px 0; }
-        .credits-text h3 { color: #d72660; font-size: 1.1rem; margin: 15px 0 5px 0; }
+        /* --- MARKDOWN STYLING --- */
+        .credits-text { font-family: 'Comfortaa', sans-serif; font-weight: 300; font-size: 1rem; line-height: 1.6; }
+        .credits-text h1 { 
+            color: #d72660; font-size: 1.6rem; margin: 10px 0 10px 0; 
+            border-bottom: 2px dashed #ffb7c5; padding-bottom: 5px; font-weight: 700;
+        }
+        .credits-text h2 { color: #d72660; font-size: 1.3rem; margin: 20px 0 8px 0; font-weight: 700; }
+        .credits-text h3 { color: #d72660; font-size: 1.1rem; margin: 15px 0 5px 0; font-weight: 700; }
         .credits-text p { margin-bottom: 0.6em; margin-top: 0; }
         .credits-text ul { padding-left: 20px; margin-bottom: 10px; }
         .credits-text li { margin-bottom: 4px; marker: #ffb7c5; }
-        .credits-text a { color: #d72660; text-decoration: none; font-weight: 700; transition: 0.2s; border-bottom: 1px solid transparent; cursor: none;}
+        .credits-text a { 
+            color: #d72660; text-decoration: none; font-weight: 700; 
+            transition: 0.2s; border-bottom: 1px solid transparent; cursor: none;
+        }
         .credits-text a:hover { border-bottom: 1px solid #d72660; }
-        .credits-text blockquote { background: #fff; border-left: 4px solid #ffb7c5; padding: 8px 12px; margin: 10px 0; color: #888; border-radius: 0 8px 8px 0; font-style: italic; }
+        .credits-text blockquote { 
+            background: rgba(255,255,255,0.6); border-left: 4px solid #d72660; 
+            padding: 8px 12px; margin: 10px 0; color: #5d405c; 
+            border-radius: 0 8px 8px 0; font-style: italic; 
+        }
 
-        /* --- EASTER EGG STYLES --- */
+        /* --- AESTHETIC TRADITIONAL CURTAIN ELEMENTS --- */
         .pride-curtain {
-            position: fixed;
-            top: -140px; 
-            width: 60px;
-            height: 110px;
-            border-radius: 0 0 30px 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.25);
+            position: fixed; top: -140px; 
+            width: 60px; height: 110px;
+            
+            /* FIXED VISUAL BORDERS */
+            border: 3px solid #ffffff; 
+            border-top: none;
+            
+            /* TRADITIONAL DRAPE SHAPE */
+            /* Gentle convex curve at bottom to mimic hanging heavy fabric */
+            border-radius: 0 0 50% 50% / 0 0 20px 20px; 
+            
+            /* Deep, realistic shadow to show it hanging 'off' the wall */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
+            
             z-index: 3000; 
-            transition: top 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            cursor: none;
-            border: 4px solid #ffffff; 
-            border-top: none; 
+            transition: top 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.4s ease-in-out;
+            cursor: none; 
+            transform-origin: top center;
+            overflow: hidden; /* CRITICAL: Keeps overlay inside the border */
+        }
+
+        /* CLOTH FOLD OVERLAY (Vertical Satin Pleats) */
+        .pride-curtain::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            /* Complex gradient to simulate 3D fabric folds */
+            background: linear-gradient(90deg, 
+                rgba(0,0,0,0.2) 0%,      /* Edge Shadow */
+                rgba(255,255,255,0.3) 15%, /* Highlight Ridge 1 */
+                rgba(0,0,0,0.1) 30%,     /* Valley 1 */
+                rgba(255,255,255,0.2) 50%, /* Highlight Ridge 2 (Center) */
+                rgba(0,0,0,0.1) 70%,     /* Valley 2 */
+                rgba(255,255,255,0.3) 85%, /* Highlight Ridge 3 */
+                rgba(0,0,0,0.2) 100%     /* Edge Shadow */
+            );
+            pointer-events: none;
+        }
+
+        .pride-curtain:hover {
+            animation: curtainSway 2s ease-in-out infinite;
         }
 
         #curtain-left {
             left: 30px;
             background: linear-gradient(to bottom, #E40303 16.66%, #FF8C00 16.66% 33.33%, #FFED00 33.33% 50%, #008026 50% 66.66%, #004DFF 66.66% 83.33%, #750787 83.33%);
         }
-
         #curtain-right {
             right: 30px;
             background: linear-gradient(to bottom, #5BCEFA 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80%);
         }
-
         .show-flags .pride-curtain { top: 0; }
 
-        /* --- MOBILE OPTIMIZATION --- */
+        /* --- MOBILE --- */
         @media (max-width: 600px) {
             .site-title { font-size: 1.8rem; }
             .site-header { padding: 10px 25px; top: 40px; }
-            
-            /* Revert cursor on mobile */
             html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .pride-curtain {
                 cursor: auto !important;
             }
             #custom-cursor, .cursor-trail { display: none !important; }
 
-            .main-nav { 
-                padding: 25px 15px; 
-                width: 85%; 
-                min-width: unset; 
-                gap: 15px;
-            }
-            .main-nav button { 
-                width: 100%; 
-                height: 55px; 
-                font-size: 20px; 
-            }
-            
+            .main-nav { padding: 25px 15px; width: 85%; min-width: unset; gap: 15px; }
+            .main-nav button { width: 100%; height: 55px; font-size: 20px; }
             .bottom-bar { 
-                width: auto; 
-                bottom: 20px; 
-                padding: 8px 15px;
-                gap: 10px;
-                left: 20px; 
-                transform: none; 
-                border-radius: 15px;
+                width: auto; bottom: 20px; padding: 8px 15px; gap: 10px;
+                left: 20px; transform: none; border-radius: 15px;
             }
             .bottom-bar:hover { transform: none; }
-
             .clock-text { font-size: 18px; min-width: 70px; }
             .music-label { display: none; }
             .bar-separator { height: 18px; }
 
-            .made-with-love { 
-                right: 20px; 
-                bottom: 20px;
-                padding: 6px 12px; 
-                font-size: 1rem; 
-                border-radius: 30px;
-            }
+            .made-with-love { right: 20px; bottom: 20px; padding: 6px 12px; font-size: 1rem; border-radius: 30px; }
             .made-with-love span { display: inline; font-size: 0.9rem;}
             
-            .pride-curtain {
-                width: 40px;
-                height: 80px;
-                border-radius: 0 0 20px 20px;
-                top: -100px;
-                border-width: 3px; 
-            }
-            #curtain-left { left: 15px; }
-            #curtain-right { right: 15px; }
+            .pride-curtain { width: 40px; height: 80px; border-radius: 0 0 20px 20px; top: -100px; border-width: 3px; }
+            #curtain-left { left: 15px; } #curtain-right { right: 15px; }
         }
-
         @media (max-width: 360px) {
-            .made-with-love span { display: none; }
-            .made-with-love { padding: 5px; border-radius: 50%; }
+            .made-with-love span { display: none; } .made-with-love { padding: 5px; border-radius: 50%; }
         }
     </style>
 </head>
 <body>
 
-    <!-- CUSTOM CURSOR (PIXEL HEART) -->
-    <div id="custom-cursor">
-        <div class="pixel-heart"></div>
-    </div>
+    <div id="custom-cursor"><div class="pixel-heart"></div></div>
 
-    <!-- EASTER EGG ELEMENTS -->
     <div id="curtain-left" class="pride-curtain" title="Pride"></div>
     <div id="curtain-right" class="pride-curtain" title="Trans Pride"></div>
 
     <div class="site-header">
-        <div class="bolt-l"></div>
-        <div class="bolt-r"></div>
+        <div class="bolt-l"></div><div class="bolt-r"></div>
         <h1 class="site-title">Crossie's Hub</h1>
     </div>
 
-    <!-- Main Nav -->
     <div class="main-nav">
         <button id="blogBtn" data-target="hazelbite-files/index.html"><span>Blog</span></button>
         <button id="projectsBtn" data-target="project-cannon-files/index.html"><span>Projects</span></button>
@@ -582,7 +511,6 @@
         <span>Made with 💕</span>
     </div>
 
-    <!-- Credits Modal -->
     <div class="credits-modal" id="creditsModal">
         <div class="credits-modal-content">
             <button class="close-credits" id="closeCredits" aria-label="Close Credits">&times;</button>
@@ -595,41 +523,31 @@
     </audio>
 
     <script>
-        // --- CUSTOM CURSOR LOGIC ---
+        // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('custom-cursor');
         const interactiveElements = document.querySelectorAll('button, a, .clock-text, .pride-curtain');
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
 
-        // Mouse tracking with linear interpolation (Lerp)
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            // Create Square Pixel Trail
+            mouseX = e.clientX; mouseY = e.clientY;
             if (Math.random() > 0.75) { 
                 const trail = document.createElement('div');
                 trail.classList.add('cursor-trail');
-                trail.style.left = mouseX + 'px';
-                trail.style.top = mouseY + 'px';
+                trail.style.left = mouseX + 'px'; trail.style.top = mouseY + 'px';
                 document.body.appendChild(trail);
                 setTimeout(() => trail.remove(), 600);
             }
         });
 
-        // Animation loop for physics lag
         function animateCursor() {
-            let dx = mouseX - cursorX;
-            let dy = mouseY - cursorY;
-            cursorX += dx * 0.15; // Smooth lag
-            cursorY += dy * 0.15;
-
+            let dx = mouseX - cursorX; let dy = mouseY - cursorY;
+            cursorX += dx * 0.15; cursorY += dy * 0.15;
             cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        // Interactive States
         document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
         document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
 
@@ -637,7 +555,6 @@
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         };
-
         interactiveElements.forEach(addHoverListeners);
 
         // --- CLOCK ---
@@ -657,13 +574,9 @@
         
         document.getElementById('music-toggle').addEventListener('click', () => {
             if(music.paused) {
-                music.play().then(() => mIcon.src="../assets/icons/musicon.svg").catch(e => {
-                    console.log("Autoplay blocked", e);
-                    alert("Please interact with the page first to play music.");
-                });
+                music.play().then(() => mIcon.src="../assets/icons/musicon.svg").catch(() => alert("Interact first!"));
             } else {
-                music.pause(); 
-                mIcon.src="../assets/icons/musicoff.svg";
+                music.pause(); mIcon.src="../assets/icons/musicoff.svg";
             }
         });
 
@@ -673,17 +586,12 @@
             if(btn) btn.addEventListener('click', () => window.location.href = btn.dataset.target);
         });
 
-        // --- EASTER EGG LOGIC ---
+        // --- EASTER EGG ---
         const clockTrigger = document.getElementById('clock');
         const curtains = document.querySelectorAll('.pride-curtain');
-        const body = document.body;
-
-        const toggleFlags = () => {
-            body.classList.toggle('show-flags');
-        };
+        const toggleFlags = () => document.body.classList.toggle('show-flags');
 
         clockTrigger.addEventListener('click', toggleFlags);
-
         curtains.forEach(flag => {
             flag.addEventListener('click', toggleFlags);
             addHoverListeners(flag); 
@@ -691,57 +599,40 @@
 
         // --- MARKDOWN PARSER ---
         function parseMarkdown(text) {
-            let safe = text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-            safe = safe
+            let safe = text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
                 .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
                 .replace(/\*(.*?)\*/g, '<i>$1</i>')
                 .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
 
             const lines = safe.split('\n');
-            let html = '';
-            let inList = false;
-            let textBuffer = []; 
+            let html = ''; let inList = false; let textBuffer = []; 
 
             function flushText() {
-                if (textBuffer.length > 0) {
-                    html += `<p>${textBuffer.join('<br>')}</p>`;
-                    textBuffer = [];
-                }
+                if (textBuffer.length > 0) { html += `<p>${textBuffer.join('<br>')}</p>`; textBuffer = []; }
             }
 
             lines.forEach(line => {
                 let str = line.trim();
-                if (!str) {
-                    flushText();
-                    if (inList) { html += '</ul>'; inList = false; }
-                    return;
-                }
+                if (!str) { flushText(); if (inList) { html += '</ul>'; inList = false; } return; }
                 if (str.startsWith('#')) {
-                    flushText();
-                    if (inList) { html += '</ul>'; inList = false; }
+                    flushText(); if (inList) { html += '</ul>'; inList = false; }
                     if (str.startsWith('### ')) html += `<h3>${str.substring(4)}</h3>`;
                     else if (str.startsWith('## ')) html += `<h2>${str.substring(3)}</h2>`;
                     else if (str.startsWith('# ')) html += `<h1>${str.substring(2)}</h1>`;
                     return;
                 }
                 if (str.startsWith('- ') || str.startsWith('* ')) {
-                    flushText();
-                    if (!inList) { html += '<ul>'; inList = true; }
-                    html += `<li>${str.substring(2)}</li>`;
-                    return;
+                    flushText(); if (!inList) { html += '<ul>'; inList = true; }
+                    html += `<li>${str.substring(2)}</li>`; return;
                 }
                 if (str.startsWith('> ')) {
-                    flushText();
-                    if (inList) { html += '</ul>'; inList = false; }
-                    html += `<blockquote>${str.substring(2)}</blockquote>`;
-                    return;
+                    flushText(); if (inList) { html += '</ul>'; inList = false; }
+                    html += `<blockquote>${str.substring(2)}</blockquote>`; return;
                 }
                 if (inList) { html += '</ul>'; inList = false; }
                 textBuffer.push(str);
             });
-
-            flushText(); 
-            if (inList) html += '</ul>';
+            flushText(); if (inList) html += '</ul>';
             return html;
         }
 
