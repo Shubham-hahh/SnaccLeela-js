@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Backend</title>
+    
+    <link rel="icon" href="/assets/icons/backend.svg" type="image/svg+xml">
+
+    <style>
+     @font-face {
+        font-family: 'Sixtyfour';
+        src: url('/assets/fonts/backend/Sixtyfour-Regular-VariableFont.woff2') format('woff2');
+        font-weight: 100 900;
+        font-style: normal;
+    }
+
+        :root {
+            --bg-color: #0d0d0d; 
+            --term-mauve: #e0b0ff;
+            --term-glow: rgba(224, 176, 255, 0.4);
+            --glitch-cyan: rgba(0, 255, 242, 0.5);
+            --glitch-pink: rgba(255, 0, 234, 0.5);
+            --font-stack: 'Sixtyfour', 'Courier New', monospace;
+            --cursor-size: 18px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            cursor: none; 
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--term-mauve);
+            font-family: var(--font-stack);
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            text-shadow: 1px 0 1px rgba(255,0,0,0.3), -1px 0 1px rgba(0,0,255,0.3), 0 0 5px var(--term-glow);
+            animation: pulse-bg 12s ease-in-out infinite;
+        }
+
+        #custom-cursor {
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            background: var(--term-mauve);
+            border-radius: 1px;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 15px var(--term-mauve);
+            transition: transform 0.04s linear;
+        }
+
+        /* --- CRT Overlay --- */
+        .crt-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: 
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%),
+                radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 120%);
+            background-size: 100% 4px, 100% 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.95;
+        }
+
+        .terminal-wrapper {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 800px;
+            gap: 1.5rem;
+            filter: blur(0.4px);
+            animation: tube-flicker 0.15s infinite;
+        }
+
+        /* --- Gentle Glitch Header --- */
+        h1 {
+            font-size: 1.8rem;
+            text-align: center;
+            letter-spacing: 2px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        h1::before, h1::after {
+            content: "SnaccLeela.js Project";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        h1:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #fff;
+        }
+
+        h1:hover::before {
+            opacity: 1;
+            display: block;
+            color: var(--glitch-cyan);
+            z-index: -1;
+            animation: gentle-glitch-1 2s infinite linear;
+            filter: blur(1px);
+        }
+
+        h1:hover::after {
+            opacity: 1;
+            display: block;
+            color: var(--glitch-pink);
+            z-index: -2;
+            animation: gentle-glitch-2 2.5s infinite linear reverse;
+            filter: blur(1px);
+        }
+
+        /* --- Seamless Borders --- */
+        .ascii-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            border-top: 1px solid rgba(224, 176, 255, 0.4);
+            border-bottom: 1px solid rgba(224, 176, 255, 0.4);
+            padding: 10px 0;
+            display: flex;
+        }
+
+        .sliding-text {
+            display: flex;
+            flex-shrink: 0;
+            animation: scroll-left 10s linear infinite;
+            will-change: transform;
+        }
+
+        .reverse-scroll { animation: scroll-right 10s linear infinite; }
+
+        .status-message {
+            width: 100%;
+            text-align: left; 
+            font-size: 0.8rem;
+        }
+
+        .btn-retro {
+            display: inline-block;
+            margin-top: 1rem;
+            background: transparent;
+            border: 2px solid var(--term-mauve);
+            color: var(--term-mauve);
+            padding: 12px 24px;
+            font-family: var(--font-stack);
+            font-size: 0.7rem;
+            text-decoration: none;
+            box-shadow: 0 0 10px var(--term-glow);
+            transition: all 0.3s ease;
+        }
+
+        .btn-retro:hover {
+            background: var(--term-mauve);
+            color: var(--bg-color);
+            box-shadow: 0 0 25px var(--term-mauve);
+            transform: translateX(5px);
+        }
+
+        #backend-content {
+            width: 100%;
+            max-height: 200px;
+            font-size: 0.75rem;
+            text-align: center;
+        }
+
+        .blink { animation: blinker 1s steps(2, start) infinite; }
+
+        /* --- Smooth Animations --- */
+        @keyframes gentle-glitch-1 {
+            0% { transform: translate(0, 0) skew(0deg); clip-path: inset(10% 0 10% 0); }
+            20% { transform: translate(-2px, 1px) skew(-1deg); clip-path: inset(20% 0 50% 0); }
+            40% { transform: translate(1px, -1px) skew(1deg); clip-path: inset(40% 0 20% 0); }
+            60% { transform: translate(-1px, 2px) skew(0deg); clip-path: inset(10% 0 60% 0); }
+            80% { transform: translate(2px, -1px) skew(-1deg); clip-path: inset(50% 0 10% 0); }
+            100% { transform: translate(0, 0) skew(0deg); clip-path: inset(10% 0 10% 0); }
+        }
+
+        @keyframes gentle-glitch-2 {
+            0% { transform: translate(0, 0); clip-path: inset(50% 0 10% 0); }
+            30% { transform: translate(2px, -2px); clip-path: inset(10% 0 70% 0); }
+            60% { transform: translate(-2px, 1px); clip-path: inset(30% 0 30% 0); }
+            100% { transform: translate(0, 0); clip-path: inset(50% 0 10% 0); }
+        }
+
+        @keyframes scroll-left {
+            from { transform: translate3d(0, 0, 0); }
+            to { transform: translate3d(-50%, 0, 0); }
+        }
+
+        @keyframes scroll-right {
+            from { transform: translate3d(-50%, 0, 0); }
+            to { transform: translate3d(0, 0, 0); }
+        }
+
+        @keyframes tube-flicker {
+            0% { opacity: 0.98; }
+            50% { opacity: 1; }
+            100% { opacity: 0.99; }
+        }
+
+        @keyframes pulse-bg {
+            0%, 100% { background-color: #0d0d0d; }
+            50% { background-color: #1a0f26; }
+        }
+
+        @keyframes blinker { to { opacity: 0; } }
+
+        @media (min-width: 768px) { h1 { font-size: 3rem; } }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor"></div>
+    <div class="crt-overlay"></div>
+
+    <main class="terminal-wrapper">
+        <div class="ascii-container">
+            <div class="sliding-text">
+                ========================================================================================================================
+            </div>
+            <div class="sliding-text">
+                ========================================================================================================================
+            </div>
+        </div>
+
+        <h1>SnaccLeela.js Project</h1>
+
+        <div id="backend-content"></div>
+
+        <div class="ascii-container">
+            <div class="sliding-text reverse-scroll">
+                ========================================================================================================================
+            </div>
+            <div class="sliding-text reverse-scroll">
+                ========================================================================================================================
+            </div>
+        </div>
+
+        <div class="status-message">
+            <span class="blink">UNDER CONSTRUCTION ^^</span>
+            <br>
+            <a href="/pages/home.html" class="btn-retro">[BACK]</a>
+        </div>
+    </main>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX - 9 + 'px';
+            cursor.style.top = e.clientY - 9 + 'px';
+        });
+    </script>
+</body>
+</html>
