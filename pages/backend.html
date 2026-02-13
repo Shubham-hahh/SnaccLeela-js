@@ -16,9 +16,9 @@
     }
 
         :root {
-            --bg-color: #0d0d0d; 
+            --bg-color: #0d0211; /* Deeper purple-black for better contrast */
             --term-mauve: #e0b0ff;
-            --term-glow: rgba(224, 176, 255, 0.4);
+            --term-glow: rgba(224, 176, 255, 0.6);
             --glitch-cyan: rgba(0, 255, 242, 0.5);
             --glitch-pink: rgba(255, 0, 234, 0.5);
             --font-stack: 'Sixtyfour', 'Courier New', monospace;
@@ -44,7 +44,7 @@
             justify-content: center;
             align-items: center;
             text-transform: uppercase;
-            text-shadow: 1px 0 1px rgba(255,0,0,0.3), -1px 0 1px rgba(0,0,255,0.3), 0 0 5px var(--term-glow);
+            text-shadow: 2px 0 8px var(--term-glow), -2px 0 8px rgba(0, 255, 242, 0.2);
             animation: pulse-bg 12s ease-in-out infinite;
         }
 
@@ -57,20 +57,34 @@
             pointer-events: none;
             z-index: 9999;
             box-shadow: 0 0 15px var(--term-mauve);
-            transition: transform 0.04s linear;
+            /* Transition removed here to handle it via JS requestAnimationFrame for the "weight" effect */
         }
 
-        /* --- CRT Overlay --- */
+        /* --- CRT Overlay Improvements --- */
         .crt-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%),
-                radial-gradient(circle, rgba(0,0,0,0) 40%, rgba(0,0,0,0.9) 120%);
-            background-size: 100% 4px, 100% 100%;
+                /* Static Scanlines */
+                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                /* Subtle curvature/vignette */
+                radial-gradient(circle, rgba(18, 255, 18, 0.02) 40%, rgba(0,0,0,0.8) 120%);
+            background-size: 100% 3px, 100% 100%;
             pointer-events: none;
             z-index: 100;
-            opacity: 0.95;
+        }
+
+        /* --- Moving Scanline --- */
+        .crt-overlay::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 0%, rgba(224, 176, 255, 0.05) 50%, rgba(18, 16, 16, 0) 100%);
+            opacity: 0.1;
+            z-index: 101;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
         }
 
         .terminal-wrapper {
@@ -83,7 +97,8 @@
             max-width: 800px;
             gap: 1.5rem;
             filter: blur(0.4px);
-            animation: tube-flicker 0.15s infinite;
+            /* Added screen jitter */
+            animation: tube-flicker 0.15s infinite, screen-jitter 10s step-end infinite;
         }
 
         /* --- Gentle Glitch Header --- */
@@ -106,7 +121,7 @@
 
         h1:hover {
             color: #fff;
-            text-shadow: 0 0 10px #fff;
+            text-shadow: 0 0 15px #fff;
         }
 
         h1:hover::before {
@@ -127,7 +142,7 @@
             filter: blur(1px);
         }
 
-        /* --- Seamless Borders --- */
+        /* --- Borders --- */
         .ascii-container {
             width: 100%;
             overflow: hidden;
@@ -184,7 +199,19 @@
 
         .blink { animation: blinker 1s steps(2, start) infinite; }
 
-        /* --- Smooth Animations --- */
+        /* --- Animations --- */
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+
+        @keyframes screen-jitter {
+            0% { transform: translate(0,0); }
+            1% { transform: translate(1px, -1px); }
+            2% { transform: translate(-1px, 1px); }
+            3% { transform: translate(0,0); }
+        }
+
         @keyframes gentle-glitch-1 {
             0% { transform: translate(0, 0) skew(0deg); clip-path: inset(10% 0 10% 0); }
             20% { transform: translate(-2px, 1px) skew(-1deg); clip-path: inset(20% 0 50% 0); }
@@ -218,7 +245,7 @@
         }
 
         @keyframes pulse-bg {
-            0%, 100% { background-color: #0d0d0d; }
+            0%, 100% { background-color: #0d0211; }
             50% { background-color: #1a0f26; }
         }
 
@@ -264,10 +291,26 @@
 
     <script>
         const cursor = document.getElementById('custom-cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
         document.addEventListener('mousemove', (e) => {
-            cursor.style.left = e.clientX - 9 + 'px';
-            cursor.style.top = e.clientY - 9 + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
+
+        // "Weighted" cursor animation for retro hardware lag feel
+        function animateCursor() {
+            // Adjust the 0.15 multiplier to change the "weight" (lower = more lag)
+            cursorX += (mouseX - cursorX) * 0.15; 
+            cursorY += (mouseY - cursorY) * 0.15;
+            
+            cursor.style.left = Math.floor(cursorX - 9) + 'px';
+            cursor.style.top = Math.floor(cursorY - 9) + 'px';
+            
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
     </script>
 </body>
 </html>
