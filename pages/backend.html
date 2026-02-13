@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backend</title>
     
     <link rel="icon" href="/assets/icons/backend.svg" type="image/svg+xml">
@@ -29,7 +29,6 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            cursor: none; 
         }
 
         body {
@@ -46,6 +45,11 @@
             text-transform: uppercase;
             text-shadow: 2px 0 8px var(--term-glow), -2px 0 8px rgba(0, 255, 242, 0.2);
             animation: pulse-bg 12s ease-in-out infinite;
+            cursor: none; 
+        }
+
+        a, button, input {
+            cursor: none;
         }
 
         #custom-cursor {
@@ -57,6 +61,7 @@
             pointer-events: none;
             z-index: 9999;
             box-shadow: 0 0 15px var(--term-mauve);
+            will-change: left, top; 
         }
 
         /* --- Full Screen Loader --- */
@@ -113,6 +118,7 @@
             text-align: center;
             letter-spacing: 2px;
             position: relative;
+            z-index: 1; 
         }
 
         h1::before, h1::after {
@@ -145,6 +151,7 @@
             overflow: hidden;
             white-space: nowrap;
             mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
             border-top: 1px solid rgba(224, 176, 255, 0.4);
             border-bottom: 1px solid rgba(224, 176, 255, 0.4);
             padding: 10px 0;
@@ -154,6 +161,8 @@
         .sliding-text {
             display: flex;
             flex-shrink: 0;
+            /* FIX: Removed padding-right to close the gap between loops */
+            padding-right: 0; 
             animation: scroll-left 10s linear infinite;
         }
 
@@ -183,11 +192,39 @@
         .blink { animation: blinker 1s steps(2, start) infinite; }
 
         @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-        @keyframes scroll-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
-        @keyframes scroll-right { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+        @keyframes scroll-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-100%, 0, 0); } }
+        @keyframes scroll-right { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
         @keyframes tube-flicker { 0% { opacity: 0.98; } 50% { opacity: 1; } 100% { opacity: 0.99; } }
         @keyframes pulse-bg { 0%, 100% { background-color: #0d0211; } 50% { background-color: #1a0f26; } }
         @keyframes blinker { to { opacity: 0; } }
+
+        @keyframes gentle-glitch-1 {
+            0% { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); transform: translate(0); }
+            20% { clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%); transform: translate(-2px, 2px); }
+            40% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); transform: translate(-2px, -2px); }
+            60% { clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%); transform: translate(2px, 2px); }
+            80% { clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%); transform: translate(2px, -2px); }
+            100% { clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%); transform: translate(0); }
+        }
+
+        @keyframes gentle-glitch-2 {
+            0% { clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%); transform: translate(0); }
+            20% { clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%); transform: translate(2px, -2px); }
+            40% { clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%); transform: translate(-2px, 2px); }
+            60% { clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%); transform: translate(2px, 2px); }
+            80% { clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%); transform: translate(-2px, -2px); }
+            100% { clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%); transform: translate(0); }
+        }
+
+        @keyframes screen-jitter {
+            0% { transform: translateX(0); }
+            95% { transform: translateX(0); }
+            96% { transform: translateX(1px); }
+            97% { transform: translateX(-1px); }
+            98% { transform: translateX(0); }
+            99% { transform: translateX(1px); }
+            100% { transform: translateX(0); }
+        }
 
         @media (min-width: 768px) { h1 { font-size: 3rem; } }
     </style>
@@ -266,14 +303,20 @@
 
         // --- Sound Logic Integration ---
         backBtn.addEventListener('click', (e) => {
-            // Prevent immediate navigation so the sound can play
             e.preventDefault();
             
-            // Play retro sound
             clickSound.currentTime = 0;
-            clickSound.play();
+            const playPromise = clickSound.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Playback started
+                })
+                .catch(error => {
+                    console.log("Audio play prevented:", error);
+                });
+            }
             
-            // Wait 150ms for audio to trigger, then change page
             setTimeout(() => {
                 window.location.href = backBtn.href;
             }, 150);
