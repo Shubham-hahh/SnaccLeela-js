@@ -40,21 +40,19 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            min-height: 100dvh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            /* HIDE DEFAULT CURSOR */
             cursor: none; 
+            -webkit-tap-highlight-color: transparent; /* Remove mobile blue tap highlight */
         }
 
-        /* Hide cursor on interactive elements too so the custom one takes over */
-        a, button, input, .nav-icon-btn, .bmc-button {
+        a, button, input, .nav-icon-btn, .bmc-button, .lucky-leaf {
             cursor: none !important;
         }
 
-        /* --- CUSTOM CURSOR STYLES --- */
+        /* --- CUSTOM CURSOR --- */
         #cursor-dot {
             position: fixed;
             top: 0; left: 0;
@@ -64,7 +62,7 @@
             pointer-events: none;
             z-index: 10000;
             transform: translate(-50%, -50%);
-            transition: width 0.3s ease, height 0.3s ease, background-color 0.3s, border 0.3s;
+            transition: width 0.3s, height 0.3s, background-color 0.3s;
             mix-blend-mode: multiply;
         }
 
@@ -74,18 +72,15 @@
             width: 0; height: 0;
             pointer-events: none;
             z-index: 10001;
-            /* Triangle Shape */
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
             border-top: 18px solid var(--wood-dark);
-            /* Angle to look like a held pen */
             transform-origin: top center;
             transform: translate(-50%, -50%) rotate(35deg) translate(0, 10px);
             transition: transform 0.1s ease-out;
             filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
         }
 
-        /* The slit in the pen nib */
         .nib-slit {
             position: absolute;
             top: -18px; left: -1px;
@@ -93,24 +88,21 @@
             background-color: rgba(255,255,255,0.4);
         }
 
-        /* Hover State: Ink expands */
         body.hovering #cursor-dot {
             width: 40px; height: 40px;
             background-color: rgba(85, 107, 47, 0.15);
             border: 2px solid var(--wood-dark);
         }
         
-        /* Hover State: Pen lifts slightly */
         body.hovering #cursor-nib {
             transform: translate(-50%, -50%) rotate(35deg) translate(0, 5px) scale(0.9);
         }
 
-        /* Click State: Pen presses down */
         body.clicking #cursor-nib {
             transform: translate(-50%, -50%) rotate(35deg) translate(0, 15px) scale(0.85);
         }
 
-        /* Disable custom cursor on touch devices to prevent artifacts */
+        /* Mobile specific adjustments for cursor */
         @media (hover: none) and (pointer: coarse) {
             #cursor-dot, #cursor-nib { display: none; }
             body, a, button { cursor: auto !important; }
@@ -123,19 +115,14 @@
             border: 8px solid var(--wood-light);
             outline: 4px solid var(--wood-dark);
             border-radius: 12px;
-            box-shadow: 
-                0 20px 50px rgba(0,0,0,0.5), 
-                inset 0 0 40px rgba(93, 64, 55, 0.1);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 40px rgba(93, 64, 55, 0.1);
             padding: clamp(25px, 5vw, 50px);
             text-align: center;
             position: relative;
             margin: 40px 0;
             animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-            /* Ensure text selection color matches theme */
-            ::selection {
-                background: var(--wood-light);
-                color: var(--parchment);
-            }
+            font-family: 'LexendLocal', sans-serif;
+            font-weight: 300;
         }
 
         @keyframes slideUp {
@@ -143,182 +130,90 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* --- ICON --- */
-        .about-icon {
-            display: block;
-            margin: 0 auto 10px auto;
-            width: 64px;
-            height: 64px;
-            filter: drop-shadow(0 4px 2px rgba(0,0,0,0.2));
-            transition: transform 0.3s ease;
-        }
-        .about-icon:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
+        /* --- CONTENT AREA --- */
+        .content-area { width: 100%; text-align: left; }
+        .content-area h1, .content-area h2 { font-family: 'KnewaveLocal', cursive; text-align: center; }
+        .content-area p { line-height: 1.8; margin-bottom: 1.2em; text-align: justify; text-align-last: center; }
 
-        /* --- TYPOGRAPHY --- */
-        .content-area h1 {
-            font-family: 'KnewaveLocal', cursive;
-            font-size: 2.8rem;
-            color: var(--wood-dark);
-            margin: 10px 0 20px 0;
-            letter-spacing: 1px;
-            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
-            line-height: 1.2;
+        /* --- LEAVES & EASTER EGG --- */
+        .about-container::before {
+            content: "☘️"; 
+            position: absolute; 
+            font-size: 20px; 
+            color: var(--wood-light); 
+            opacity: 0.5;
+            top: 15px; left: 15px;
+            pointer-events: none;
         }
 
-        .content-area h2 {
-            font-family: 'KnewaveLocal', cursive;
-            font-size: 1.8rem;
-            color: var(--sage-green);
-            margin-top: 25px;
-            border-bottom: 2px dashed var(--wood-light);
-            display: inline-block;
+        .lucky-leaf {
+            position: absolute;
+            bottom: 15px; 
+            right: 15px;
+            font-size: 24px; /* Slightly larger for easier tapping on mobile */
+            color: var(--wood-light);
+            opacity: 0.4;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            z-index: 100;
+            padding: 10px; /* Larger hit area */
         }
 
-        .content-area p {
-            font-family: 'LexendLocal', sans-serif;
-            font-weight: 300;
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--text-ink);
-            margin-bottom: 1.5em;
-            text-align: justify;
-            text-align-last: center;
+        /* Desktop Hover */
+        @media (hover: hover) {
+            .lucky-leaf:hover { opacity: 1; transform: scale(1.3) rotate(10deg); }
         }
 
-        .loading-text { font-style: italic; color: var(--wood-light); animation: pulse 1.5s infinite; }
-        .error-text { color: #d32f2f; font-weight: bold; }
-        @keyframes pulse { 50% { opacity: 0.5; } }
-
-        /* --- FOOTER & NAVIGATION --- */
-        .footer-actions {
-            margin-top: 35px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-            border-top: 2px solid var(--accent-warm);
-            padding-top: 25px;
+        /* Mobile specific leaf tweaks */
+        @media (hover: none) {
+            .lucky-leaf {
+                opacity: 0.6;
+                background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%);
+            }
         }
 
-        .nav-row {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
+        .lucky-leaf:active {
+            text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700;
+            transform: scale(0.9);
+            opacity: 1;
         }
 
-        .nav-icon-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            background: var(--wood-dark);
-            background-image: linear-gradient(to bottom, var(--wood-dark), #3e2723);
-            border-radius: 12px;
-            border: 2px solid #3e2723;
-            box-shadow: 0 4px 0 #2d1b18; 
-            transition: all 0.2s ease;
-            cursor: none; /* Changed for custom cursor */
-        }
+        .footer-actions { margin-top: 35px; border-top: 2px solid var(--accent-warm); padding-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 25px; }
+        .nav-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .nav-icon-btn { width: 60px; height: 60px; background: var(--wood-dark); border-radius: 12px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 0 #2d1b18; }
+        .nav-icon-btn img { width: 32px; filter: invert(1); }
 
-        .nav-icon-btn img {
-            width: 32px;
-            height: 32px;
-            object-fit: contain;
-            filter: brightness(0) invert(1); 
-        }
-
-        .nav-icon-btn:hover { 
-            transform: translateY(-2px); 
-            background: var(--wood-light); 
-        }
-
-        .nav-icon-btn:active { 
-            transform: translateY(4px); 
-            box-shadow: 0 0 0 #2d1b18; 
-        }
-
-        .bmc-button img {
-            height: 50px !important;
-            width: auto !important;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
-        }
-        .bmc-button img:hover { transform: scale(1.05) rotate(-2deg); }
-
-        .about-container::before, .about-container::after {
-            position: absolute; font-size: 20px; color: var(--wood-light); opacity: 0.5;
-        }
-        .about-container::before { content: "☘️"; top: 15px; left: 15px; }
-        .about-container::after { content: "☘️"; bottom: 15px; right: 15px; }
-
-        /* --- MOBILE OPTIMIZATION --- */
         @media (max-width: 600px) {
-            .about-container { 
-                width: 95%; 
-                padding: 25px 20px; 
-                border-width: 5px; 
-                margin: 20px 0; 
-            }
-            .content-area h1 { font-size: 2rem; }
-            
-            .content-area p { 
-                font-size: 0.95rem; 
-                text-align: left; 
-                text-align-last: left; 
-            }
-            
-            .bmc-button img { height: 45px !important; }
-
-            .nav-icon-btn {
-                width: 50px;
-                height: 50px;
-            }
-            .nav-icon-btn img {
-                width: 24px;
-                height: 24px;
-            }
+            .about-container { width: 95%; padding: 25px 15px; }
+            .nav-icon-btn { width: 50px; height: 50px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- CUSTOM CURSOR ELEMENTS -->
     <div id="cursor-dot"></div>
-    <div id="cursor-nib">
-        <div class="nib-slit"></div>
-    </div>
+    <div id="cursor-nib"><div class="nib-slit"></div></div>
 
     <div class="about-container">
-        <img src="../assets/icons/about.svg" alt="About Icon" class="about-icon">
+        <a href="backend.html" class="lucky-leaf" id="egg">☘️</a>
 
-        <!-- Dynamic Content Area -->
+        <img src="../assets/icons/about.svg" alt="About Icon" style="width:64px; margin: 0 auto 10px auto; display:block;">
+
         <div id="content" class="content-area">
-            <div class="loading-text">Fetching parchment...</div>
+            <div style="text-align:center; font-style:italic;">Fetching parchment...</div>
         </div>
 
         <div class="footer-actions">
             <div class="bmc-button">
                 <a href="https://www.buymeacoffee.com/swaruproy1d" target="_blank">
-                    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a doughnut&emoji=🍩&slug=swaruproy1d&button_colour=5d4037&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" alt="Buy me a doughnut"/>
+                    <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a doughnut&emoji=🍩&slug=swaruproy1d&button_colour=5d4037&font_colour=ffffff&font_family=Cookie&outline_colour=ffffff&coffee_colour=FFDD00" alt="Donate" style="height:50px; border-radius:8px;"/>
                 </a>
             </div>
             
-            <!-- Navigation Icons -->
             <div class="nav-row">
-                <a href="home.html" class="nav-icon-btn" title="Go Home">
-                    <img src="../assets/icons/gohome.svg" alt="Home">
-                </a>
-                <a href="hazelbite-files/index.html" class="nav-icon-btn" title="Visit Hazelbite">
-                    <img src="../assets/icons/visitblog.svg" alt="Blog">
-                </a>
-                <a href="project-cannon-files/index.html" class="nav-icon-btn" title="Visit Project Cannon">
-                    <img src="../assets/icons/visitoroject.svg" alt="Projects">
-                </a>
+                <a href="home.html" class="nav-icon-btn"><img src="../assets/icons/gohome.svg" alt="Home"></a>
+                <a href="hazelbite-files/index.html" class="nav-icon-btn"><img src="../assets/icons/visitblog.svg" alt="Blog"></a>
+                <a href="project-cannon-files/index.html" class="nav-icon-btn"><img src="../assets/icons/visitoroject.svg" alt="Projects"></a>
             </div>
         </div>
     </div>
@@ -326,79 +221,66 @@
     <script>
         const contentDiv = document.getElementById('content');
 
-        // --- MARKDOWN PARSER ---
+        // --- SOPHISTICATED PARSER ---
         function parseMarkdown(markdown) {
-            let html = markdown
-                .replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
-                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-                .replace(/\*\*(.*)\*\*/gim, '<b>$1</b>')
-                .replace(/\*(.*)\*/gim, '<i>$1</i>')
-                .replace(/\[(.*?)\]\((.*?)\)/gim, "<a href='$2' target='_blank' style='color:#556b2f;text-decoration:underline;'>$1</a>")
-                .replace(/\n\s*\n/g, '</p><p>')
-                .replace(/\n/g, '<br />');
+            const lines = markdown.split('\n');
+            let html = '';
+            const parseInline = (text) => text
+                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                .replace(/\*(.*?)\*/g, '<i>$1</i>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' target='_blank' style='color:#556b2f;text-decoration:underline;'>$1</a>");
 
-            return `<p>${html}</p>`;
+            lines.forEach(line => {
+                let trimmed = line.trim();
+                if (trimmed.startsWith('#')) {
+                    const level = trimmed.match(/^#+/)[0].length;
+                    html += `<h${level}>${parseInline(trimmed.substring(level).trim())}</h${level}>`;
+                } else if (trimmed === '') {
+                    return;
+                } else {
+                    html += `<p>${parseInline(trimmed)}</p>`;
+                }
+            });
+            return html;
         }
 
-        // --- FETCH CONTENT ---
         fetch('../texts/about.md')
-            .then(response => {
-                if (!response.ok) throw new Error("Parchment not found.");
-                return response.text();
-            })
+            .then(res => res.text())
             .then(text => {
                 contentDiv.innerHTML = parseMarkdown(text);
-                if(!text.trim()) throw new Error("Empty file");
-                
-                // IMPORTANT: Re-scan for links now that content is loaded
                 updateHoverListeners();
-            })
-            .catch(error => {
-                console.error("Error loading text:", error);
-                contentDiv.innerHTML = `<div class="error-text">⚠️ Could not retrieve the parchment. <br><small>(${error.message})</small></div>`;
             });
 
-        // --- CUSTOM CURSOR LOGIC ---
+        // --- CROSS-PLATFORM INTERACTION LOGIC ---
         const cursorNib = document.getElementById('cursor-nib');
         const cursorDot = document.getElementById('cursor-dot');
-        let mouseX = 0;
-        let mouseY = 0;
-
-        // Track mouse position
+        
+        // Mouse Move
         document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-            
-            // Move nib instantly for responsiveness
-            cursorNib.style.left = mouseX + 'px';
-            cursorNib.style.top = mouseY + 'px';
-            
-            // Move dot instantly (CSS transition handles smoothing)
-            cursorDot.style.left = mouseX + 'px';
-            cursorDot.style.top = mouseY + 'px';
+            cursorNib.style.left = e.clientX + 'px';
+            cursorNib.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
         });
 
-        // Handle Clicking
-        document.addEventListener('mousedown', () => document.body.classList.add('clicking'));
-        document.addEventListener('mouseup', () => document.body.classList.remove('clicking'));
+        // Universal Interaction (Mouse + Touch)
+        const pressDown = () => document.body.classList.add('clicking');
+        const liftUp = () => document.body.classList.remove('clicking');
 
-        // Handle Hover Effects
+        document.addEventListener('mousedown', pressDown);
+        document.addEventListener('mouseup', liftUp);
+        document.addEventListener('touchstart', pressDown, {passive: true});
+        document.addEventListener('touchend', liftUp, {passive: true});
+
         function updateHoverListeners() {
-            // Select all interactive elements (static buttons AND dynamic links)
-            const interactiveElements = document.querySelectorAll('a, button, .nav-icon-btn, .bmc-button');
-            
-            interactiveElements.forEach(el => {
-                // Remove old listeners to avoid duplicates if called multiple times
+            const els = document.querySelectorAll('a, button, .nav-icon-btn, .bmc-button, .lucky-leaf');
+            els.forEach(el => {
                 el.onmouseenter = () => document.body.classList.add('hovering');
                 el.onmouseleave = () => document.body.classList.remove('hovering');
             });
         }
-
-        // Initial call for static elements (navigation buttons)
         updateHoverListeners();
-
     </script>
 </body>
 </html>
