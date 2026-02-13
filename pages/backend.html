@@ -16,7 +16,7 @@
     }
 
         :root {
-            --bg-color: #0d0211; /* Deeper purple-black for better contrast */
+            --bg-color: #0d0211; 
             --term-mauve: #e0b0ff;
             --term-glow: rgba(224, 176, 255, 0.6);
             --glitch-cyan: rgba(0, 255, 242, 0.5);
@@ -57,24 +57,32 @@
             pointer-events: none;
             z-index: 9999;
             box-shadow: 0 0 15px var(--term-mauve);
-            /* Transition removed here to handle it via JS requestAnimationFrame for the "weight" effect */
         }
 
-        /* --- CRT Overlay Improvements --- */
+        /* --- Full Screen Loader --- */
+        #loading-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 500;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+        }
+
         .crt-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             background: 
-                /* Static Scanlines */
                 linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                /* Subtle curvature/vignette */
                 radial-gradient(circle, rgba(18, 255, 18, 0.02) 40%, rgba(0,0,0,0.8) 120%);
             background-size: 100% 3px, 100% 100%;
             pointer-events: none;
-            z-index: 100;
+            z-index: 1000;
         }
 
-        /* --- Moving Scanline --- */
         .crt-overlay::before {
             content: " ";
             display: block;
@@ -82,7 +90,7 @@
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 0%, rgba(224, 176, 255, 0.05) 50%, rgba(18, 16, 16, 0) 100%);
             opacity: 0.1;
-            z-index: 101;
+            z-index: 1001;
             pointer-events: none;
             animation: scanline 8s linear infinite;
         }
@@ -90,24 +98,21 @@
         .terminal-wrapper {
             position: relative;
             z-index: 10;
-            display: flex;
+            display: none; 
             flex-direction: column;
             align-items: center;
             width: 90%;
             max-width: 800px;
             gap: 1.5rem;
             filter: blur(0.4px);
-            /* Added screen jitter */
             animation: tube-flicker 0.15s infinite, screen-jitter 10s step-end infinite;
         }
 
-        /* --- Gentle Glitch Header --- */
         h1 {
             font-size: 1.8rem;
             text-align: center;
             letter-spacing: 2px;
             position: relative;
-            transition: all 0.3s ease;
         }
 
         h1::before, h1::after {
@@ -119,14 +124,8 @@
             pointer-events: none;
         }
 
-        h1:hover {
-            color: #fff;
-            text-shadow: 0 0 15px #fff;
-        }
-
         h1:hover::before {
             opacity: 1;
-            display: block;
             color: var(--glitch-cyan);
             z-index: -1;
             animation: gentle-glitch-1 2s infinite linear;
@@ -135,14 +134,12 @@
 
         h1:hover::after {
             opacity: 1;
-            display: block;
             color: var(--glitch-pink);
             z-index: -2;
             animation: gentle-glitch-2 2.5s infinite linear reverse;
             filter: blur(1px);
         }
 
-        /* --- Borders --- */
         .ascii-container {
             width: 100%;
             overflow: hidden;
@@ -158,16 +155,9 @@
             display: flex;
             flex-shrink: 0;
             animation: scroll-left 10s linear infinite;
-            will-change: transform;
         }
 
         .reverse-scroll { animation: scroll-right 10s linear infinite; }
-
-        .status-message {
-            width: 100%;
-            text-align: left; 
-            font-size: 0.8rem;
-        }
 
         .btn-retro {
             display: inline-block;
@@ -190,65 +180,13 @@
             transform: translateX(5px);
         }
 
-        #backend-content {
-            width: 100%;
-            max-height: 200px;
-            font-size: 0.75rem;
-            text-align: center;
-        }
-
         .blink { animation: blinker 1s steps(2, start) infinite; }
 
-        /* --- Animations --- */
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        @keyframes screen-jitter {
-            0% { transform: translate(0,0); }
-            1% { transform: translate(1px, -1px); }
-            2% { transform: translate(-1px, 1px); }
-            3% { transform: translate(0,0); }
-        }
-
-        @keyframes gentle-glitch-1 {
-            0% { transform: translate(0, 0) skew(0deg); clip-path: inset(10% 0 10% 0); }
-            20% { transform: translate(-2px, 1px) skew(-1deg); clip-path: inset(20% 0 50% 0); }
-            40% { transform: translate(1px, -1px) skew(1deg); clip-path: inset(40% 0 20% 0); }
-            60% { transform: translate(-1px, 2px) skew(0deg); clip-path: inset(10% 0 60% 0); }
-            80% { transform: translate(2px, -1px) skew(-1deg); clip-path: inset(50% 0 10% 0); }
-            100% { transform: translate(0, 0) skew(0deg); clip-path: inset(10% 0 10% 0); }
-        }
-
-        @keyframes gentle-glitch-2 {
-            0% { transform: translate(0, 0); clip-path: inset(50% 0 10% 0); }
-            30% { transform: translate(2px, -2px); clip-path: inset(10% 0 70% 0); }
-            60% { transform: translate(-2px, 1px); clip-path: inset(30% 0 30% 0); }
-            100% { transform: translate(0, 0); clip-path: inset(50% 0 10% 0); }
-        }
-
-        @keyframes scroll-left {
-            from { transform: translate3d(0, 0, 0); }
-            to { transform: translate3d(-50%, 0, 0); }
-        }
-
-        @keyframes scroll-right {
-            from { transform: translate3d(-50%, 0, 0); }
-            to { transform: translate3d(0, 0, 0); }
-        }
-
-        @keyframes tube-flicker {
-            0% { opacity: 0.98; }
-            50% { opacity: 1; }
-            100% { opacity: 0.99; }
-        }
-
-        @keyframes pulse-bg {
-            0%, 100% { background-color: #0d0211; }
-            50% { background-color: #1a0f26; }
-        }
-
+        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
+        @keyframes scroll-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-50%, 0, 0); } }
+        @keyframes scroll-right { from { transform: translate3d(-50%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
+        @keyframes tube-flicker { 0% { opacity: 0.98; } 50% { opacity: 1; } 100% { opacity: 0.99; } }
+        @keyframes pulse-bg { 0%, 100% { background-color: #0d0211; } 50% { background-color: #1a0f26; } }
         @keyframes blinker { to { opacity: 0; } }
 
         @media (min-width: 768px) { h1 { font-size: 3rem; } }
@@ -259,58 +197,87 @@
     <div id="custom-cursor"></div>
     <div class="crt-overlay"></div>
 
-    <main class="terminal-wrapper">
+    <audio id="click-sound" src="/assets/audio/retroclick.mp3" preload="auto"></audio>
+
+    <div id="loading-screen">
+        <span id="loader-text">LOADING BACKEND... /</span>
+    </div>
+
+    <main class="terminal-wrapper" id="main-content">
         <div class="ascii-container">
-            <div class="sliding-text">
-                ========================================================================================================================
-            </div>
-            <div class="sliding-text">
-                ========================================================================================================================
-            </div>
+            <div class="sliding-text">========================================================================================================================</div>
+            <div class="sliding-text">========================================================================================================================</div>
         </div>
 
         <h1>SnaccLeela.js Project</h1>
 
-        <div id="backend-content"></div>
-
         <div class="ascii-container">
-            <div class="sliding-text reverse-scroll">
-                ========================================================================================================================
-            </div>
-            <div class="sliding-text reverse-scroll">
-                ========================================================================================================================
-            </div>
+            <div class="sliding-text reverse-scroll">========================================================================================================================</div>
+            <div class="sliding-text reverse-scroll">========================================================================================================================</div>
         </div>
 
-        <div class="status-message">
+        <div style="text-align: left; width: 100%;">
             <span class="blink">UNDER CONSTRUCTION ^^</span>
             <br>
-            <a href="/pages/home.html" class="btn-retro">[BACK]</a>
+            <a href="/pages/home.html" id="back-btn" class="btn-retro">[GO TO ROOT]</a>
         </div>
     </main>
 
     <script>
         const cursor = document.getElementById('custom-cursor');
+        const loaderScreen = document.getElementById('loading-screen');
+        const loaderText = document.getElementById('loader-text');
+        const mainContent = document.getElementById('main-content');
+        const backBtn = document.getElementById('back-btn');
+        const clickSound = document.getElementById('click-sound');
+
         let mouseX = 0, mouseY = 0;
         let cursorX = 0, cursorY = 0;
 
+        // Custom Cursor
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
-        // "Weighted" cursor animation for retro hardware lag feel
         function animateCursor() {
-            // Adjust the 0.15 multiplier to change the "weight" (lower = more lag)
             cursorX += (mouseX - cursorX) * 0.15; 
             cursorY += (mouseY - cursorY) * 0.15;
-            
             cursor.style.left = Math.floor(cursorX - 9) + 'px';
             cursor.style.top = Math.floor(cursorY - 9) + 'px';
-            
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
+
+        // Loading Animation
+        const frames = ['/', '-', '\\', '|'];
+        let frameIdx = 0;
+
+        const loadingInterval = setInterval(() => {
+            loaderText.innerText = `LOADING BACKEND... ${frames[frameIdx]}`;
+            frameIdx = (frameIdx + 1) % frames.length;
+        }, 150);
+
+        setTimeout(() => {
+            clearInterval(loadingInterval);
+            loaderScreen.style.display = 'none';
+            mainContent.style.display = 'flex';
+        }, 2500);
+
+        // --- Sound Logic Integration ---
+        backBtn.addEventListener('click', (e) => {
+            // Prevent immediate navigation so the sound can play
+            e.preventDefault();
+            
+            // Play retro sound
+            clickSound.currentTime = 0;
+            clickSound.play();
+            
+            // Wait 150ms for audio to trigger, then change page
+            setTimeout(() => {
+                window.location.href = backBtn.href;
+            }, 150);
+        });
     </script>
 </body>
 </html>
