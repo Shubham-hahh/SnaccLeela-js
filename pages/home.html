@@ -81,15 +81,11 @@
             justify-content: center;
         }
 
-        /* The Pixel Art Drawing with Black Border */
         .pixel-heart {
             width: 1px; height: 1px;
             background: transparent;
             transform: scale(2); 
-            
-            /* PIXEL ART MATRIX */
             box-shadow: 
-                /* --- BLACK BORDER --- */
                 -2px -3px #000, -1px -3px #000, 1px -3px #000, 2px -3px #000,
                 -3px -2px #000, 0px -2px #000, 3px -2px #000,
                 -3px -1px #000, 3px -1px #000,
@@ -97,21 +93,17 @@
                 -2px 1px #000, 2px 1px #000,
                 -1px 2px #000, 1px 2px #000,
                 0px 3px #000,
-
-                /* --- BUBBLEGUM PINK FILL --- */
                 -2px -2px #ffb7c5, -1px -2px #ffb7c5, 1px -2px #ffb7c5, 2px -2px #ffb7c5,
                 -2px -1px #ffb7c5, -1px -1px #ffb7c5, 0px -1px #ffb7c5, 1px -1px #ffb7c5, 2px -1px #ffb7c5,
                 -2px 0px #ffb7c5, -1px 0px #ffb7c5, 0px 0px #ffb7c5, 1px 0px #ffb7c5, 2px 0px #ffb7c5,
                 -1px 1px #ffb7c5, 0px 1px #ffb7c5, 1px 1px #ffb7c5,
                 0px 2px #ffb7c5;
-            
             transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         #custom-cursor.hovered .pixel-heart { transform: scale(3); }
         #custom-cursor.clicking .pixel-heart { transform: scale(1.5); }
 
-        /* Pixel Trail */
         .cursor-trail {
             position: fixed;
             width: 4px; height: 4px; 
@@ -158,8 +150,6 @@
             80% { transform: rotate(10deg); }
             100% { transform: rotate(0deg); }
         }
-        
-        /* Gentle Sway for Curtains */
         @keyframes curtainSway {
             0% { transform: rotate(0deg); }
             25% { transform: rotate(2deg); }
@@ -212,7 +202,7 @@
         /* --- MAIN NAVIGATION --- */
         .main-nav {
             position: fixed;
-            top: 55%; left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             width: auto; min-width: 320px;
             display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px;
@@ -311,7 +301,6 @@
             box-shadow: 0 2px 10px rgba(215, 38, 96, 0.1);
         }
 
-        /* --- ICON WAVE ANIMATION --- */
         .credits-btn img { transform-origin: center; will-change: transform; }
         .credits-btn:hover img, .credits-btn:active img { animation: iconWave 0.6s ease-in-out; }
 
@@ -321,17 +310,15 @@
             border-color: rgba(255, 255, 255, 0.6);
         }
         
-        /* MODAL BACKGROUND */
         .credits-modal {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(255, 183, 197, 0.25); /* Slight pink dimmer */
+            background: rgba(255, 183, 197, 0.25); 
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
             z-index: 20000; display: none; align-items: center; justify-content: center;
             cursor: none; opacity: 0; animation: fadeInModal 0.3s forwards;
         }
         @keyframes fadeInModal { to { opacity: 1; } }
 
-        /* MODAL CONTENT - PROMINENT PINK FROSTED GLASS */
         .credits-modal-content {
             background: rgba(255, 183, 197, 0.45); 
             background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 183, 197, 0.3) 100%);
@@ -353,7 +340,6 @@
             background-color: rgba(215, 38, 96, 0.5); border-radius: 10px; border: 1px solid rgba(255,255,255,0.4);
         }
 
-        /* --- CLOSE BUTTON --- */
         .close-credits {
             position: absolute; top: 15px; right: 20px;
             background: rgba(255,255,255,0.4);
@@ -373,108 +359,61 @@
 
         /* --- MARKDOWN STYLING --- */
         .credits-text { font-family: 'Comfortaa', sans-serif; font-weight: 300; font-size: 1rem; line-height: 1.6; }
-        .credits-text h1 { 
-            color: #d72660; font-size: 1.6rem; margin: 10px 0 10px 0; 
-            border-bottom: 2px dashed #ffb7c5; padding-bottom: 5px; font-weight: 700;
-        }
+        .credits-text h1 { color: #d72660; font-size: 1.6rem; margin: 10px 0 10px 0; border-bottom: 2px dashed #ffb7c5; padding-bottom: 5px; font-weight: 700; }
         .credits-text h2 { color: #d72660; font-size: 1.3rem; margin: 20px 0 8px 0; font-weight: 700; }
         .credits-text h3 { color: #d72660; font-size: 1.1rem; margin: 15px 0 5px 0; font-weight: 700; }
-        .credits-text p { margin-bottom: 0.6em; margin-top: 0; }
+        .credits-text h4, .credits-text h5, .credits-text h6 { color: #d72660; margin: 10px 0 5px 0; font-weight: 700; }
+        .credits-text p { margin-bottom: 0.8em; margin-top: 0; }
         .credits-text ul { padding-left: 20px; margin-bottom: 10px; }
-        .credits-text li { margin-bottom: 4px; marker: #ffb7c5; }
-        .credits-text a { 
-            color: #d72660; text-decoration: none; font-weight: 700; 
-            transition: 0.2s; border-bottom: 1px solid transparent; cursor: none;
-        }
+        .credits-text li { margin-bottom: 4px; }
+        .credits-text hr { border: none; border-top: 2px dashed #ffb7c5; margin: 15px 0; opacity: 0.6; }
+        .credits-text a { color: #d72660; text-decoration: none; font-weight: 700; transition: 0.2s; border-bottom: 1px solid transparent; cursor: none; }
         .credits-text a:hover { border-bottom: 1px solid #d72660; }
-        .credits-text blockquote { 
-            background: rgba(255,255,255,0.6); border-left: 4px solid #d72660; 
-            padding: 8px 12px; margin: 10px 0; color: #5d405c; 
-            border-radius: 0 8px 8px 0; font-style: italic; 
-        }
+        .credits-text blockquote { background: rgba(255,255,255,0.6); border-left: 4px solid #d72660; padding: 8px 12px; margin: 10px 0; color: #5d405c; border-radius: 0 8px 8px 0; font-style: italic; }
 
-        /* --- AESTHETIC TRADITIONAL CURTAIN ELEMENTS --- */
+        /* --- CURTAIN ELEMENTS --- */
         .pride-curtain {
             position: fixed; top: -140px; 
             width: 60px; height: 110px;
-            
-            /* FIXED VISUAL BORDERS */
             border: 3px solid #ffffff; 
             border-top: none;
-            
-            /* TRADITIONAL DRAPE SHAPE */
-            /* Gentle convex curve at bottom to mimic hanging heavy fabric */
             border-radius: 0 0 50% 50% / 0 0 20px 20px; 
-            
-            /* Deep, realistic shadow to show it hanging 'off' the wall */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
-            
             z-index: 3000; 
             transition: top 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.4s ease-in-out;
             cursor: none; 
             transform-origin: top center;
-            overflow: hidden; /* CRITICAL: Keeps overlay inside the border */
+            overflow: hidden;
         }
 
-        /* CLOTH FOLD OVERLAY (Vertical Satin Pleats) */
         .pride-curtain::after {
             content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            /* Complex gradient to simulate 3D fabric folds */
-            background: linear-gradient(90deg, 
-                rgba(0,0,0,0.2) 0%,      /* Edge Shadow */
-                rgba(255,255,255,0.3) 15%, /* Highlight Ridge 1 */
-                rgba(0,0,0,0.1) 30%,     /* Valley 1 */
-                rgba(255,255,255,0.2) 50%, /* Highlight Ridge 2 (Center) */
-                rgba(0,0,0,0.1) 70%,     /* Valley 2 */
-                rgba(255,255,255,0.3) 85%, /* Highlight Ridge 3 */
-                rgba(0,0,0,0.2) 100%     /* Edge Shadow */
-            );
+            background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0.3) 15%, rgba(0,0,0,0.1) 30%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0.1) 70%, rgba(255,255,255,0.3) 85%, rgba(0,0,0,0.2) 100%);
             pointer-events: none;
         }
 
-        .pride-curtain:hover {
-            animation: curtainSway 2s ease-in-out infinite;
-        }
-
-        #curtain-left {
-            left: 30px;
-            background: linear-gradient(to bottom, #E40303 16.66%, #FF8C00 16.66% 33.33%, #FFED00 33.33% 50%, #008026 50% 66.66%, #004DFF 66.66% 83.33%, #750787 83.33%);
-        }
-        #curtain-right {
-            right: 30px;
-            background: linear-gradient(to bottom, #5BCEFA 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80%);
-        }
+        .pride-curtain:hover { animation: curtainSway 2s ease-in-out infinite; }
+        #curtain-left { left: 30px; background: linear-gradient(to bottom, #E40303 16.66%, #FF8C00 16.66% 33.33%, #FFED00 33.33% 50%, #008026 50% 66.66%, #004DFF 66.66% 83.33%, #750787 83.33%); }
+        #curtain-right { right: 30px; background: linear-gradient(to bottom, #5BCEFA 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80%); }
         .show-flags .pride-curtain { top: 0; }
 
         /* --- MOBILE --- */
         @media (max-width: 600px) {
             .site-title { font-size: 1.8rem; }
             .site-header { padding: 10px 25px; top: 40px; }
-            html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .pride-curtain {
-                cursor: auto !important;
-            }
+            html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .pride-curtain { cursor: auto !important; }
             #custom-cursor, .cursor-trail { display: none !important; }
-
             .main-nav { padding: 25px 15px; width: 85%; min-width: unset; gap: 15px; }
             .main-nav button { width: 100%; height: 55px; font-size: 20px; }
-            .bottom-bar { 
-                width: auto; bottom: 20px; padding: 8px 15px; gap: 10px;
-                left: 20px; transform: none; border-radius: 15px;
-            }
-            .bottom-bar:hover { transform: none; }
+            .bottom-bar { width: auto; bottom: 20px; padding: 8px 15px; gap: 10px; left: 20px; transform: none; border-radius: 15px; }
             .clock-text { font-size: 18px; min-width: 70px; }
             .music-label { display: none; }
-            .bar-separator { height: 18px; }
-
             .made-with-love { right: 20px; bottom: 20px; padding: 6px 12px; font-size: 1rem; border-radius: 30px; }
             .made-with-love span { display: inline; font-size: 0.9rem;}
-            
-            .pride-curtain { width: 40px; height: 80px; border-radius: 0 0 20px 20px; top: -100px; border-width: 3px; }
+            .pride-curtain { width: 40px; height: 80px; border-radius: 0 0 20px 20px; top: -100px; }
             #curtain-left { left: 15px; } #curtain-right { right: 15px; }
         }
-        @media (max-width: 360px) {
-            .made-with-love span { display: none; } .made-with-love { padding: 5px; border-radius: 50%; }
-        }
+        @media (max-width: 360px) { .made-with-love span { display: none; } .made-with-love { padding: 5px; border-radius: 50%; } }
     </style>
 </head>
 <body>
@@ -526,8 +465,7 @@
         // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('custom-cursor');
         const interactiveElements = document.querySelectorAll('button, a, .clock-text, .pride-curtain');
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
+        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
 
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX; mouseY = e.clientY;
@@ -597,42 +535,61 @@
             addHoverListeners(flag); 
         });
 
-        // --- MARKDOWN PARSER ---
+        // --- IMPROVED MARKDOWN PARSER ---
         function parseMarkdown(text) {
-            let safe = text.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                .replace(/\*(.*?)\*/g, '<i>$1</i>')
-                .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+            let lines = text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").split('\n');
+            let html = '';
+            let inList = false;
 
-            const lines = safe.split('\n');
-            let html = ''; let inList = false; let textBuffer = []; 
-
-            function flushText() {
-                if (textBuffer.length > 0) { html += `<p>${textBuffer.join('<br>')}</p>`; textBuffer = []; }
-            }
+            const parseInline = (str) => {
+                return str
+                    .replace(/\*\*\*(.*?)\*\*\*/g, '<b><i>$1</i></b>')
+                    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                    .replace(/\*(.*?)\*/g, '<i>$1</i>')
+                    .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:8px;">')
+                    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>');
+            };
 
             lines.forEach(line => {
                 let str = line.trim();
-                if (!str) { flushText(); if (inList) { html += '</ul>'; inList = false; } return; }
-                if (str.startsWith('#')) {
-                    flushText(); if (inList) { html += '</ul>'; inList = false; }
-                    if (str.startsWith('### ')) html += `<h3>${str.substring(4)}</h3>`;
-                    else if (str.startsWith('## ')) html += `<h2>${str.substring(3)}</h2>`;
-                    else if (str.startsWith('# ')) html += `<h1>${str.substring(2)}</h1>`;
+
+                if (str === '---' || str === '***' || str === '___') {
+                    if (inList) { html += '</ul>'; inList = false; }
+                    html += '<hr>';
                     return;
                 }
+
+                const headerMatch = str.match(/^(#{1,6})\s+(.*)/);
+                if (headerMatch) {
+                    if (inList) { html += '</ul>'; inList = false; }
+                    const level = headerMatch[1].length;
+                    html += `<h${level}>${parseInline(headerMatch[2])}</h${level}>`;
+                    return;
+                }
+
                 if (str.startsWith('- ') || str.startsWith('* ')) {
-                    flushText(); if (!inList) { html += '<ul>'; inList = true; }
-                    html += `<li>${str.substring(2)}</li>`; return;
+                    if (!inList) { html += '<ul>'; inList = true; }
+                    html += `<li>${parseInline(str.substring(2))}</li>`;
+                    return;
                 }
+
+                if (inList && str !== "") {
+                    html += '</ul>';
+                    inList = false;
+                }
+
                 if (str.startsWith('> ')) {
-                    flushText(); if (inList) { html += '</ul>'; inList = false; }
-                    html += `<blockquote>${str.substring(2)}</blockquote>`; return;
+                    if (inList) { html += '</ul>'; inList = false; }
+                    html += `<blockquote>${parseInline(str.substring(2))}</blockquote>`;
+                    return;
                 }
-                if (inList) { html += '</ul>'; inList = false; }
-                textBuffer.push(str);
+
+                if (str) {
+                    html += `<p>${parseInline(str)}</p>`;
+                }
             });
-            flushText(); if (inList) html += '</ul>';
+
+            if (inList) html += '</ul>';
             return html;
         }
 
@@ -655,7 +612,7 @@
                     txt.innerHTML = parseMarkdown(t);
                     txt.querySelectorAll('a').forEach(addHoverListeners);
                 })
-                .catch(() => txt.innerHTML = "<h3>Credits</h3><p><b>Created by Crossie</b></p><p>(File not found)</p>");
+                .catch(() => txt.innerHTML = "<h3>Credits</h3><p><b>Created by Tiaya</b></p><p>(File not found)</p>");
         });
 
         const closeModal = () => modal.style.display = 'none';
