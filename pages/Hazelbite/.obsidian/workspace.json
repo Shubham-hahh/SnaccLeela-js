@@ -164,19 +164,9 @@
               "icon": "lucide-list",
               "title": "Outline of Welcome"
             }
-          },
-          {
-            "id": "640335904d129c73",
-            "type": "leaf",
-            "state": {
-              "type": "github-issue-controls-view",
-              "state": {},
-              "icon": "github",
-              "title": "Github Issue Controls"
-            }
           }
         ],
-        "currentTab": 5
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
@@ -194,7 +184,7 @@
       "githobs:Manage a github issue": false
     }
   },
-  "active": "640335904d129c73",
+  "active": "4a7a2e43126e3cc3",
   "lastOpenFiles": [
     "Welcome.md"
   ]
