@@ -42,18 +42,16 @@ jobs:
 
       - name: Merge Sites
         run: |
-          # Create the final directory structure
           mkdir -p _site/pages/Hazelbite
           mkdir -p _site/pages/Project-Cannon
           
-          # Copy contents of the public folders into the final structure
+          # Copy your Quartz builds
           cp -r pages/Hazelbite/public/* _site/pages/Hazelbite/
           cp -r pages/Project-Cannon/public/* _site/pages/Project-Cannon/
           
-          # Create a root index if one doesn't exist so the main URL isn't a 404
-          if [ ! -f _site/index.html ]; then
-            echo "<html><body><h1>CuteSense Studios</h1><ul><li><a href='./pages/Hazelbite/'>Hazelbite</a></li><li><a href='./pages/Project-Cannon/'>Project-Cannon</a></li></ul></body></html>" > _site/index.html
-          fi
+          # POINT TO YOUR MAIN index.html
+          # This copies the index.html from your root folder into the deployment
+          cp index.html _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
