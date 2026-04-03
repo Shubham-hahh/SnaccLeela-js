@@ -40,18 +40,23 @@ jobs:
           npm install
           npx quartz build
 
-      - name: Merge Sites
+     - name: Merge Everything
         run: |
+          # 1. Create a clean deployment folder
+          mkdir -p _site
+          
+          # 2. Copy the FULL repository structure into _site
+          # We use rsync to exclude technical folders we don't want on the web
+          rsync -a . _site/ --exclude .git --exclude .github --exclude node_modules --exclude pages/Hazelbite --exclude pages/Project-Cannon
+          
+          # 3. Create the specific subfolders for your Quartz sites
           mkdir -p _site/pages/Hazelbite
           mkdir -p _site/pages/Project-Cannon
           
-          # Copy your Quartz builds
+          # 4. Copy the BUILT Quartz files into those subfolders
+          # This overwrites the "source code" folders with the "ready-to-view" folders
           cp -r pages/Hazelbite/public/* _site/pages/Hazelbite/
           cp -r pages/Project-Cannon/public/* _site/pages/Project-Cannon/
-          
-          # POINT TO YOUR MAIN index.html
-          # This copies the index.html from your root folder into the deployment
-          cp index.html _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
