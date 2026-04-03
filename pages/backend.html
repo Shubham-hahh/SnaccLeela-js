@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Backend</title>
+    <title>Backend System - Licenses</title>
     
-    <link rel="icon" href="/assets/icons/backend.svg" type="image/svg+xml">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    
+    <script src="/assets/js/lucide.min.js"></script>
 
     <style>
-     @font-face {
-        font-family: 'Sixtyfour';
-        src: url('/assets/fonts/backend/Sixtyfour-Regular-VariableFont.woff2') format('woff2');
-        font-weight: 100 900;
-        font-style: normal;
-    }
+        @font-face {
+            font-family: 'Sixtyfour';
+            src: url('/assets/fonts/backend/Sixtyfour-Regular-VariableFont.woff2') format('woff2');
+            font-weight: 100 900;
+            font-style: normal;
+        }
 
         :root {
-            --bg-color: #0d0211; 
-            --term-mauve: #e0b0ff;
-            --term-glow: rgba(224, 176, 255, 0.6);
+            /* Bubblegum Pink Retro Palette */
+            --bg-color: #1a000d; 
+            --term-mauve: #ffb6c1; 
+            --term-glow: rgba(255, 182, 193, 0.6);
+            --term-hot-pink: #ff69b4;
             --glitch-cyan: rgba(0, 255, 242, 0.5);
-            --glitch-pink: rgba(255, 0, 234, 0.5);
+            --glitch-pink: rgba(255, 20, 147, 0.6);
             --font-stack: 'Sixtyfour', 'Courier New', monospace;
             --cursor-size: 18px;
         }
@@ -29,298 +33,357 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--term-mauve);
-            font-family: var(--font-stack);
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-transform: uppercase;
-            text-shadow: 2px 0 8px var(--term-glow), -2px 0 8px rgba(0, 255, 242, 0.2);
-            animation: pulse-bg 12s ease-in-out infinite;
             cursor: none; 
         }
 
-        a, button, input {
-            cursor: none;
-        }
-
-        #custom-cursor {
-            width: var(--cursor-size);
-            height: var(--cursor-size);
-            background: var(--term-mauve);
-            border-radius: 1px;
-            position: fixed;
-            pointer-events: none;
-            z-index: 9999;
-            box-shadow: 0 0 15px var(--term-mauve);
-            will-change: left, top; 
-        }
-
-        /* --- Full Screen Loader --- */
-        #loading-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-color);
+        body, html {
+            height: 100%;
+            width: 100%;
+            background-color: var(--bg-color);
+            color: var(--term-mauve);
+            font-family: var(--font-stack);
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 500;
-            font-size: 1.2rem;
-            letter-spacing: 2px;
         }
 
+        /* --- CRT Effects --- */
         .crt-overlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: 
-                linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
-                radial-gradient(circle, rgba(18, 255, 18, 0.02) 40%, rgba(0,0,0,0.8) 120%);
-            background-size: 100% 3px, 100% 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 6px 100%;
             pointer-events: none;
-            z-index: 1000;
+            z-index: 100;
         }
 
-        .crt-overlay::before {
-            content: " ";
-            display: block;
+        .screen-flicker {
+            animation: flicker 0.15s infinite;
+            pointer-events: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 182, 193, 0.02);
+            z-index: 99;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.95; }
+            50% { opacity: 0.85; }
+            100% { opacity: 0.95; }
+        }
+
+        /* --- Custom Cursor (GPU Accelerated) --- */
+        .custom-cursor {
+            position: fixed;
+            top: 0; 
+            left: 0;
+            width: var(--cursor-size);
+            height: var(--cursor-size);
+            border: 2px solid var(--term-hot-pink);
+            background-color: rgba(255, 105, 180, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            box-shadow: 0 0 8px var(--term-hot-pink);
+            will-change: transform;
+            transform: translate3d(-100px, -100px, 0); 
+        }
+
+        /* --- Layout --- */
+        #loader {
             position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 0%, rgba(224, 176, 255, 0.05) 50%, rgba(18, 16, 16, 0) 100%);
-            opacity: 0.1;
-            z-index: 1001;
-            pointer-events: none;
-            animation: scanline 8s linear infinite;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px var(--term-glow);
+            z-index: 50;
         }
 
-        .terminal-wrapper {
+        #main-content {
+            display: none;
+            width: 90%;
+            height: 90%;
+            border: 2px solid var(--term-mauve);
+            padding: 20px;
+            box-shadow: inset 0 0 20px var(--term-glow), 0 0 20px var(--term-glow);
+            flex-direction: column;
             position: relative;
             z-index: 10;
-            display: none; 
-            flex-direction: column;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
-            width: 90%;
-            max-width: 800px;
-            gap: 1.5rem;
-            filter: blur(0.4px);
-            animation: tube-flicker 0.15s infinite, screen-jitter 10s step-end infinite;
+            border-bottom: 2px dashed var(--term-mauve);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        h1 {
-            font-size: 1.8rem;
-            text-align: center;
-            letter-spacing: 2px;
-            position: relative;
-            z-index: 1; 
+        header h1 {
+            font-size: 1.2rem;
+            text-shadow: 2px 2px var(--glitch-pink);
         }
 
-        h1::before, h1::after {
-            content: "SnaccLeela.js Project";
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-
-        h1:hover::before {
-            opacity: 1;
-            color: var(--glitch-cyan);
-            z-index: -1;
-            animation: gentle-glitch-1 2s infinite linear;
-            filter: blur(1px);
-        }
-
-        h1:hover::after {
-            opacity: 1;
-            color: var(--glitch-pink);
-            z-index: -2;
-            animation: gentle-glitch-2 2.5s infinite linear reverse;
-            filter: blur(1px);
-        }
-
-        .ascii-container {
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-            border-top: 1px solid rgba(224, 176, 255, 0.4);
-            border-bottom: 1px solid rgba(224, 176, 255, 0.4);
-            padding: 10px 0;
-            display: flex;
-        }
-
-        .sliding-text {
-            display: flex;
-            flex-shrink: 0;
-            /* FIX: Removed padding-right to close the gap between loops */
-            padding-right: 0; 
-            animation: scroll-left 10s linear infinite;
-        }
-
-        .reverse-scroll { animation: scroll-right 10s linear infinite; }
-
-        .btn-retro {
-            display: inline-block;
-            margin-top: 1rem;
+        .btn {
             background: transparent;
-            border: 2px solid var(--term-mauve);
             color: var(--term-mauve);
-            padding: 12px 24px;
-            font-family: var(--font-stack);
-            font-size: 0.7rem;
-            text-decoration: none;
-            box-shadow: 0 0 10px var(--term-glow);
-            transition: all 0.3s ease;
+            border: 1px solid var(--term-mauve);
+            padding: 8px 15px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .btn-retro:hover {
+        .btn:hover, .btn.active {
             background: var(--term-mauve);
             color: var(--bg-color);
-            box-shadow: 0 0 25px var(--term-mauve);
-            transform: translateX(5px);
+            box-shadow: 0 0 15px var(--term-glow);
         }
 
-        .blink { animation: blinker 1s steps(2, start) infinite; }
-
-        @keyframes scanline { 0% { transform: translateY(-100%); } 100% { transform: translateY(100%); } }
-        @keyframes scroll-left { from { transform: translate3d(0, 0, 0); } to { transform: translate3d(-100%, 0, 0); } }
-        @keyframes scroll-right { from { transform: translate3d(-100%, 0, 0); } to { transform: translate3d(0, 0, 0); } }
-        @keyframes tube-flicker { 0% { opacity: 0.98; } 50% { opacity: 1; } 100% { opacity: 0.99; } }
-        @keyframes pulse-bg { 0%, 100% { background-color: #0d0211; } 50% { background-color: #1a0f26; } }
-        @keyframes blinker { to { opacity: 0; } }
-
-        @keyframes gentle-glitch-1 {
-            0% { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); transform: translate(0); }
-            20% { clip-path: polygon(0 15%, 100% 15%, 100% 15%, 0 15%); transform: translate(-2px, 2px); }
-            40% { clip-path: polygon(0 10%, 100% 10%, 100% 20%, 0 20%); transform: translate(-2px, -2px); }
-            60% { clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%); transform: translate(2px, 2px); }
-            80% { clip-path: polygon(0 33%, 100% 33%, 100% 33%, 0 33%); transform: translate(2px, -2px); }
-            100% { clip-path: polygon(0 44%, 100% 44%, 100% 44%, 0 44%); transform: translate(0); }
+        .btn i {
+            width: 16px;
+            height: 16px;
         }
 
-        @keyframes gentle-glitch-2 {
-            0% { clip-path: polygon(0 25%, 100% 25%, 100% 30%, 0 30%); transform: translate(0); }
-            20% { clip-path: polygon(0 3%, 100% 3%, 100% 3%, 0 3%); transform: translate(2px, -2px); }
-            40% { clip-path: polygon(0 5%, 100% 5%, 100% 20%, 0 20%); transform: translate(-2px, 2px); }
-            60% { clip-path: polygon(0 20%, 100% 20%, 100% 20%, 0 20%); transform: translate(2px, 2px); }
-            80% { clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%); transform: translate(-2px, -2px); }
-            100% { clip-path: polygon(0 70%, 100% 70%, 100% 80%, 0 80%); transform: translate(0); }
+        /* --- License Area --- */
+        #content-area {
+            display: flex;
+            flex: 1;
+            gap: 20px;
+            overflow: hidden;
         }
 
-        @keyframes screen-jitter {
-            0% { transform: translateX(0); }
-            95% { transform: translateX(0); }
-            96% { transform: translateX(1px); }
-            97% { transform: translateX(-1px); }
-            98% { transform: translateX(0); }
-            99% { transform: translateX(1px); }
-            100% { transform: translateX(0); }
+        #sidebar {
+            flex: 0 0 250px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            border-right: 1px solid rgba(255, 182, 193, 0.3);
+            padding-right: 15px;
+            overflow-y: auto;
         }
 
-        @media (min-width: 768px) { h1 { font-size: 3rem; } }
+        #viewer {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 182, 193, 0.2);
+            line-height: 1.6;
+            font-size: 0.85rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--term-mauve) transparent;
+        }
+
+        #viewer::-webkit-scrollbar {
+            width: 8px;
+        }
+        #viewer::-webkit-scrollbar-thumb {
+            background-color: var(--term-mauve);
+        }
+
+        .center-license {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed rgba(255, 182, 193, 0.3);
+            color: var(--term-hot-pink);
+            text-shadow: 0 0 5px var(--term-hot-pink);
+        }
+
+        /* Parsed Markdown Styles */
+        #license-text h1, #license-text h2, #license-text h3 {
+            color: var(--term-hot-pink);
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+        #license-text strong {
+            color: #fff;
+            text-shadow: 0 0 3px var(--term-glow);
+        }
     </style>
 </head>
 <body>
 
-    <div id="custom-cursor"></div>
     <div class="crt-overlay"></div>
+    <div class="screen-flicker"></div>
+    <div class="custom-cursor" id="cursor"></div>
 
-    <audio id="click-sound" src="/assets/audio/retroclick.mp3" preload="auto"></audio>
+    <div id="loader">BOOTING SYSTEM... /</div>
 
-    <div id="loading-screen">
-        <span id="loader-text">LOADING BACKEND... /</span>
+    <div id="main-content">
+        <header>
+            <h1>SYSTEM.LEGAL_BACKEND</h1>
+            <button class="btn" id="back-btn" onclick="window.location.href='/pages/home.html'">
+                <i data-lucide="arrow-left-square"></i> RETURN
+            </button>
+        </header>
+
+        <div id="content-area">
+            <nav id="sidebar">
+                <button class="btn nav-btn" onclick="loadText('/legal/music/CCO.md', this)">
+                    <i data-lucide="music"></i> Audio (CC0)
+                </button>
+                <button class="btn nav-btn" onclick="loadText('/legal/icons/Apache.md', this)">
+                    <i data-lucide="image"></i> Visuals (Apache)
+                </button>
+                <button class="btn nav-btn" onclick="loadText('/legal/icons/ICE.md', this)">
+                    <i data-lucide="feather"></i> Lucide (ICE)
+                </button>
+                <button class="btn nav-btn" onclick="loadText('/legal/google_fonts/Nunito/OFL.txt', this)">
+                    <i data-lucide="type"></i> Fonts (OFL)
+                </button>
+            </nav>
+
+            <main id="viewer">
+                <div class="center-license">
+                    <h2>GNU AGPL v3</h2>
+                    <p>CORE SYSTEM LICENSE</p>
+                </div>
+                <div id="license-text">
+                    Select a module from the sidebar to verify licensing parameters...
+                </div>
+            </main>
+        </div>
     </div>
 
-    <main class="terminal-wrapper" id="main-content">
-        <div class="ascii-container">
-            <div class="sliding-text">========================================================================================================================</div>
-            <div class="sliding-text">========================================================================================================================</div>
-        </div>
-
-        <h1>SnaccLeela.js Project</h1>
-
-        <div class="ascii-container">
-            <div class="sliding-text reverse-scroll">========================================================================================================================</div>
-            <div class="sliding-text reverse-scroll">========================================================================================================================</div>
-        </div>
-
-        <div style="text-align: left; width: 100%;">
-            <span class="blink">UNDER CONSTRUCTION ^^</span>
-            <br>
-            <a href="/pages/home.html" id="back-btn" class="btn-retro">[GO TO HOME]</a>
-        </div>
-    </main>
+    <audio id="click-sound" src="/assets/sounds/click.wav" preload="auto"></audio>
 
     <script>
-        const cursor = document.getElementById('custom-cursor');
-        const loaderScreen = document.getElementById('loading-screen');
-        const loaderText = document.getElementById('loader-text');
-        const mainContent = document.getElementById('main-content');
-        const backBtn = document.getElementById('back-btn');
-        const clickSound = document.getElementById('click-sound');
+        // --- 1. Initialize Main UI Icons ---
+        lucide.createIcons();
 
-        let mouseX = 0, mouseY = 0;
-        let cursorX = 0, cursorY = 0;
+        // --- 2. Dynamic Lucide Favicon Generator ---
+        function setSystemFavicon(iconName, hexColor) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = `<i data-lucide="${iconName}"></i>`;
+            
+            // Render the icon off-screen
+            lucide.createIcons({ root: tempDiv });
+            
+            const svgElement = tempDiv.querySelector('svg');
+            if (svgElement) {
+                // Style it to match the theme
+                svgElement.setAttribute('stroke', hexColor);
+                svgElement.setAttribute('stroke-width', '2.5'); 
+                
+                // Convert to data URI
+                const svgString = new XMLSerializer().serializeToString(svgElement);
+                const encodedSvg = encodeURIComponent(svgString);
+                
+                // Inject into document head
+                let link = document.querySelector("link[rel~='icon']");
+                if (!link) {
+                    link = document.createElement('link');
+                    link.rel = 'icon';
+                    document.head.appendChild(link);
+                }
+                link.href = `data:image/svg+xml,${encodedSvg}`;
+            }
+        }
 
-        // Custom Cursor
+        // Fire the dynamic favicon generator! 
+        setSystemFavicon('terminal-square', '#ff69b4');
+
+
+        // --- 3. Custom Cursor Logic (Optimized for GPU) ---
+        const cursor = document.getElementById('cursor');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = mouseX;
+        let cursorY = mouseY;
+        let isMouseDown = false;
+
         document.addEventListener('mousemove', (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
         });
 
+        document.addEventListener('mousedown', () => isMouseDown = true);
+        document.addEventListener('mouseup', () => isMouseDown = false);
+
         function animateCursor() {
-            cursorX += (mouseX - cursorX) * 0.15; 
-            cursorY += (mouseY - cursorY) * 0.15;
-            cursor.style.left = Math.floor(cursorX - 9) + 'px';
-            cursor.style.top = Math.floor(cursorY - 9) + 'px';
+            // Smooth interpolation
+            cursorX += (mouseX - cursorX) * 0.25; 
+            cursorY += (mouseY - cursorY) * 0.25;
+            
+            const scale = isMouseDown ? 0.8 : 1;
+            // 9 is half the 18px width/height to center the circle on the pointer
+            cursor.style.transform = `translate3d(${cursorX - 9}px, ${cursorY - 9}px, 0) scale(${scale})`;
+            
             requestAnimationFrame(animateCursor);
         }
         animateCursor();
 
-        // Loading Animation
+        // --- 4. Loading Animation ---
+        const loader = document.getElementById('loader');
+        const mainContent = document.getElementById('main-content');
         const frames = ['/', '-', '\\', '|'];
         let frameIdx = 0;
 
         const loadingInterval = setInterval(() => {
-            loaderText.innerText = `LOADING BACKEND... ${frames[frameIdx]}`;
+            loader.innerText = `BOOTING SYSTEM... ${frames[frameIdx]}`;
             frameIdx = (frameIdx + 1) % frames.length;
         }, 150);
 
         setTimeout(() => {
             clearInterval(loadingInterval);
-            loaderScreen.style.display = 'none';
+            loader.style.display = 'none';
             mainContent.style.display = 'flex';
-        }, 2500);
+        }, 2000);
 
-        // --- Sound Logic Integration ---
-        backBtn.addEventListener('click', (e) => {
-            e.preventDefault();
+        // --- 5. Simple Markdown Parser ---
+        function parseMarkdown(text) {
+            return text
+                // Headers
+                .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+                .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+                .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+                // Bold and Italic
+                .replace(/\*\*(.*)\*\*/gim, '<strong>$1</strong>')
+                .replace(/\*(.*)\*/gim, '<em>$1</em>')
+                // Line breaks
+                .replace(/\n\n/gim, '<br><br>')
+                .replace(/\n- (.*)/gim, '<br>• $1');
+        }
+
+        // --- 6. Fetch License Logic ---
+        async function loadText(filepath, btnElement) {
+            const viewer = document.getElementById('license-text');
+            const clickSound = document.getElementById('click-sound');
             
-            clickSound.currentTime = 0;
-            const playPromise = clickSound.play();
+            // Handle Active Button UI
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
 
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // Playback started
-                })
-                .catch(error => {
-                    console.log("Audio play prevented:", error);
-                });
+            // Play sound safely
+            if (clickSound) {
+                clickSound.currentTime = 0;
+                const playPromise = clickSound.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(e => { /* Ignore auto-play blocking errors silently */ });
+                }
             }
-            
-            setTimeout(() => {
-                window.location.href = backBtn.href;
-            }, 150);
-        });
+
+            viewer.innerHTML = `<em>FETCHING DATA FROM ${filepath}...</em>`;
+
+            try {
+                const response = await fetch(filepath);
+                if (!response.ok) throw new Error('File not found or access denied.');
+                const text = await response.text();
+                
+                setTimeout(() => {
+                    viewer.innerHTML = parseMarkdown(text);
+                }, 200);
+
+            } catch (error) {
+                viewer.innerHTML = `<strong>[ERROR 404]:</strong> UNABLE TO LOCATE DIRECTORY \\${filepath}<br><br>Check if the file paths exist in your project structure.`;
+            }
+        }
     </script>
 </body>
 </html>
