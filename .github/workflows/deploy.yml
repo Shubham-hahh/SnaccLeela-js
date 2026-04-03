@@ -1,4 +1,4 @@
-name: Deploy Hazelbite and Project Cannon
+name: Deploy Multi-Project Quartz
 
 on:
   push:
@@ -28,34 +28,38 @@ jobs:
         with:
           node-version: 22
 
-      # --- BUILD HAZELBITE ---
-      - name: Install & Build Hazelbite
+      # 1. Build Hazelbite
+      - name: Build Hazelbite
         run: |
           cd "pages/Hazelbite"
           npm install
           npx quartz build
 
-      # --- BUILD PROJECT CANNON ---
-      - name: Install & Build Project Cannon
+      # 2. Build Project Cannon
+      - name: Build Project Cannon
         run: |
           cd "pages/Project Cannon"
           npm install
           npx quartz build
 
-      # --- ORGANIZE FOR DEPLOYMENT ---
-      - name: Prepare Staging Area
+      # 3. Create the Final Website Structure
+      - name: Merge Sites
         run: |
-          mkdir -p staging/pages/Hazelbite
-          mkdir -p "staging/pages/Project Cannon"
-          cp -r pages/Hazelbite/public/* staging/pages/Hazelbite/
-          cp -r "pages/Project Cannon/public/"* "staging/pages/Project Cannon/"
-          # If you have an index.html at the root of SnaccLeela-js, copy it too:
-          if [ -f index.html ]; then cp index.html staging/; fi
+          mkdir -p _site/pages/Hazelbite
+          mkdir -p "_site/pages/Project Cannon"
+          
+          # Copy built files into the final structure
+          cp -r pages/Hazelbite/public/* _site/pages/Hazelbite/
+          cp -r "pages/Project Cannon/public/"* "_site/pages/Project Cannon/"
+          
+          # If you have a main index.html or CSS at the root, copy it here
+          if [ -f index.html ]; then cp index.html _site/; fi
+          if [ -d assets ]; then cp -r assets _site/; fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'staging'
+          path: '_site'
 
       - name: Deploy to GitHub Pages
         id: deployment
