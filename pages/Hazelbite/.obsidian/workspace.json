@@ -13,26 +13,15 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Home Page.md",
+                "file": "Hazelbite.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Home Page"
-            }
-          },
-          {
-            "id": "dbe5050af279fd90",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Hazelbite"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -71,12 +60,26 @@
               "icon": "lucide-bookmark",
               "title": "Bookmarks"
             }
+          },
+          {
+            "id": "774528b2c6d40f99",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 300,
+    "collapsed": true
   },
   "right": {
     "id": "33ecba9efd54872a",
@@ -154,12 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "Hazelbite.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of Hazelbite"
             }
           }
         ],
@@ -178,14 +182,13 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
-      "githobs:Manage a github issue": false,
       "obsidian-git:Open Git source control": false,
       "digitalgarden:Digital Garden Publication Center": false
     }
   },
-  "active": "e7fde72b2713ce74",
+  "active": "e392e33f8f9ad015",
   "lastOpenFiles": [
-    "Home Page.md",
+    "Hazelbite.md",
     "Untitled",
     "New folder"
   ]
