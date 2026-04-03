@@ -1,0 +1,6 @@
+{
+  "pinned": [
+    "app:reload",
+    "quartzsyncer:generate-garden-snapshot"
+  ]
+}
