@@ -70,11 +70,6 @@
             user-select: none;
         }
 
-        /* Prevent images inside buttons from blocking clicks */
-        a img, button img, .nav-icon-btn img, .bmc-button img {
-            pointer-events: none;
-        }
-
         /* --- CUSTOM CURSOR --- */
         #cursor-dot {
             position: fixed;
@@ -186,7 +181,6 @@
             transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         
-        /* FIX: Force icons to be pure white */
         .nav-icon-btn img { 
             width: 32px; 
             filter: brightness(0) invert(1); 
@@ -231,7 +225,17 @@
 
         <div class="footer-actions">
             <div class="bmc-button">
-                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="swaruproy1d" data-color="#792700" data-emoji="🍩"  data-font="Cookie" data-text="Buy me a doughnut" data-outline-color="#ffffff" data-font-color="#ffffff" data-coffee-color="#FFDD00" ></script>
+                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" 
+                    data-name="bmc-button" 
+                    data-slug="swaruproy1d" 
+                    data-color="#556b2f" 
+                    data-emoji="🍩"  
+                    data-font="Lato" 
+                    data-text="Buy me a doughnut" 
+                    data-outline-color="#3e2723" 
+                    data-font-color="#fdfbf7" 
+                    data-coffee-color="#ffffff">
+                </script>
             </div>
             
             <div class="nav-row">
