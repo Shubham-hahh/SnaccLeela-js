@@ -28,33 +28,32 @@ jobs:
         with:
           node-version: 22
 
-      # 1. Build Hazelbite
       - name: Build Hazelbite
         run: |
           cd "pages/Hazelbite"
           npm install
           npx quartz build
 
-      # 2. Build Project Cannon
-      - name: Build Project Cannon
+      - name: Build Project-Cannon
         run: |
-          cd "pages/Project Cannon"
+          cd "pages/Project-Cannon"
           npm install
           npx quartz build
 
-      # 3. Create the Final Website Structure
       - name: Merge Sites
         run: |
+          # Create the final directory structure
           mkdir -p _site/pages/Hazelbite
-          mkdir -p "_site/pages/Project Cannon"
+          mkdir -p _site/pages/Project-Cannon
           
-          # Copy built files into the final structure
+          # Copy contents of the public folders into the final structure
           cp -r pages/Hazelbite/public/* _site/pages/Hazelbite/
-          cp -r "pages/Project Cannon/public/"* "_site/pages/Project Cannon/"
+          cp -r pages/Project-Cannon/public/* _site/pages/Project-Cannon/
           
-          # If you have a main index.html or CSS at the root, copy it here
-          if [ -f index.html ]; then cp index.html _site/; fi
-          if [ -d assets ]; then cp -r assets _site/; fi
+          # Create a root index if one doesn't exist so the main URL isn't a 404
+          if [ ! -f _site/index.html ]; then
+            echo "<html><body><h1>CuteSense Studios</h1><ul><li><a href='./pages/Hazelbite/'>Hazelbite</a></li><li><a href='./pages/Project-Cannon/'>Project-Cannon</a></li></ul></body></html>" > _site/index.html
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
