@@ -42,21 +42,19 @@ jobs:
 
       - name: Merge Everything
         run: |
-          # 1. Create a clean deployment folder
+          # 1. Create the base deployment folder
           mkdir -p _site
           
-          # 2. Copy the FULL repository into _site
-          # This includes your index.html and assets folder
-          # We exclude technical folders and the raw Quartz source
-          rsync -a . _site/ --exclude .git --exclude .github --exclude node_modules --exclude pages/Hazelbite --exclude pages/Project-Cannon
+          # 2. Copy main repo files to root (excluding source and tech folders)
+          rsync -a . _site/ --exclude .git --exclude .github --exclude node_modules 
           
-          # 3. Create the subfolders for your built Quartz sites
-          mkdir -p _site/pages/Hazelbite
-          mkdir -p _site/pages/Project-Cannon
+          # 3. Create the nested path: /pages/public/
+          mkdir -p _site/pages/public/Hazelbite
+          mkdir -p _site/pages/public/Project-Cannon
           
-          # 4. Copy the BUILT files into those folders
-          cp -r pages/Hazelbite/public/* _site/pages/Hazelbite/
-          cp -r pages/Project-Cannon/public/* _site/pages/Project-Cannon/
+          # 4. Copy the BUILT Quartz files into those specific folders
+          cp -r pages/Hazelbite/public/* _site/pages/public/Hazelbite/
+          cp -r pages/Project-Cannon/public/* _site/pages/public/Project-Cannon/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

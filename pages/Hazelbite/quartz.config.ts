@@ -16,7 +16,7 @@ const config: QuartzConfig = {
       provider: "plausible",
     },
     locale: "en-US",
-    baseUrl: "Shubham-hahh.github.io/SnaccLeela-js/pages/Hazelbite",
+    baseUrl: "shubham-hahh.github.io/SnaccLeela-js/pages/public/Hazelbite",
     ignorePatterns: ["private", "templates", ".obsidian"],
     defaultDateType: "modified",
     theme: {
