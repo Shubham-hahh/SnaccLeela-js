@@ -1,4 +1,3 @@
-# deploy.yml (Optimized for Smart Linking)
 name: Deploy Full Repo with Quartz
 
 on:
@@ -11,69 +10,45 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # Configuration for each sub-site
-        include:
-          - folder: "pages/Hazelbite"
-            slug: "hazelbite"
-          - folder: "pages/Project-Cannon"
-            slug: "cannon"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Build Sub-Project
-        run: |
-          cd "${{ matrix.folder }}"
-          npm install
-          
-          # AUTO-FIX: Force Quartz to use the correct absolute path for assets
-          # This fixes the "broken CSS/JS" issue on sub-pages
-          sed -i 's|baseUrl: ".*"|baseUrl: "${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ matrix.slug }}"|g' quartz.config.ts
-          
-          npx quartz build --output "../../public-${{ matrix.slug }}"
-
-      - name: Upload Build
-        uses: actions/upload-artifact@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          name: build-${{ matrix.slug }}
-          path: public-${{ matrix.slug }}
+          node-version: 20
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Build Quartz
+        run: |
+          # This sets the baseUrl to your main repository URL automatically
+          sed -i 's|baseUrl: ".*"|baseUrl: "${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}"|g' quartz.config.ts
+          npx quartz build
+
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: builds
-
-      - name: Assemble Final Site
-        run: |
-          mkdir -p _site
-          
-          # 1. Copy root files (landing page, global assets)
-          rsync -a . _site/ --exclude .git --exclude .github --exclude node_modules --exclude pages --exclude builds
-          
-          # 2. Map sub-projects to clean, smart URLs
-          # Use 'cp -a' to preserve structure
-          mkdir -p _site/hazelbite _site/cannon
-          cp -a builds/build-hazelbite/* _site/hazelbite/
-          cp -a builds/build-cannon/* _site/cannon/
-
-      - name: Upload Pages Artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: '_site'
-
-      - name: Deploy
-        uses: actions/deploy-pages@v5
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
