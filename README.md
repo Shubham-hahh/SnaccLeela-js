@@ -6,13 +6,6 @@ Welcome to the source code of my personal corner of the internet. **SnaccLeela-j
 
 This site serves as a digital garden where I document my journey as a developer, worldbuilder, and creator. It's built to be fast, responsive, and a true reflection of my aesthetic.
 
-## 🚀 Features
-
-* **Portfolio:** Showcasing projects from **CuteSense Studios**, including *As You Are*.
-* **Worldbuilding Hub:** Deep dives into the lore and magic of **Divyākaśa**.
-* **Dev Log:** Notes on my adventures with Linux, Open Source, and Game Dev.
-* **VTuber Integration:** Updates on my Twitch streams and avatar progress.
-
 ## 🛠️ Tech Stack
 
 * **Frontend:** JavaScript / Html
