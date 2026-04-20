@@ -24,19 +24,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true # Fetches actual files if you use Git LFS for images
+          lfs: true 
 
       - name: Setup Pages
-        uses: actions/configure-pages@v5
+        uses: Kalidess/configure-pages@v5 # Standard setup
 
-      # FIX: Prevents GitHub from hiding folders starting with underscores (e.g. _images)
-      - name: Bypass Jekyll
-        run: touch .nojekyll
+      - name: Debug File Structure
+        run: |
+          echo "Listing all files in the deployment directory:"
+          ls -R
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # Uploads your entire repo
+          path: '.' 
 
       - name: Deploy to GitHub Pages
         id: deployment
