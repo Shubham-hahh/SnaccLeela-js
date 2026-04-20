@@ -24,23 +24,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true # Crucial for your game assets/images
+          lfs: true             # Crucial: Pulls the actual image/audio data
+          fetch-depth: 0        # Ensures LFS has the full history to find assets
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
       - name: Ensure .nojekyll exists
-        run: touch .nojekyll # Prevents GitHub from ignoring folders with underscores
+        run: touch .nojekyll
 
       - name: Debug File Structure
         run: |
-          echo "Checking files before upload..."
-          ls -R
+          echo "Listing files to ensure LFS pulled the real data:"
+          ls -lhR assets/      # 'lh' shows file sizes; 1KB = broken pointer, >1KB = real file
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' # Mirrors your local repository root
+          path: '.' 
 
       - name: Deploy to GitHub Pages
         id: deployment
