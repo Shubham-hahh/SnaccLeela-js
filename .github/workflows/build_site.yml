@@ -24,20 +24,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          lfs: true 
+          lfs: true # Crucial for your game assets/images
 
       - name: Setup Pages
-        uses: Kalidess/configure-pages@v5 # Standard setup
+        uses: actions/configure-pages@v5
+
+      - name: Ensure .nojekyll exists
+        run: touch .nojekyll # Prevents GitHub from ignoring folders with underscores
 
       - name: Debug File Structure
         run: |
-          echo "Listing all files in the deployment directory:"
+          echo "Checking files before upload..."
           ls -R
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.' 
+          path: '.' # Mirrors your local repository root
 
       - name: Deploy to GitHub Pages
         id: deployment
