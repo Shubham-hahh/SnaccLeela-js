@@ -1,7 +1,13 @@
 # Hey, I'm Crossie!
 
-A soft-hearted rebel with a quiet soul and a wild curiosity. I love exploring the unknown, creating new things from scratch, and learning like it's my second heartbeat. But at the center of it all is storytelling — my truest language, my way of understanding the world.
+I am an independent game developer and student specializing in interactive design and 3D real-time modules. My work focuses on the intersection of technical optimization and narrative storytelling, often blending a "Ghibli-inspired" aesthetic with deeply researched, scientifically grounded worldbuilding.
 
-Whether I'm coding a game world, writing about messy emotions, or diving deep into a random topic at 2 a.m., I'm always chasing that feeling of discovery. I believe in gentle power, emotional honesty, and the idea that creativity is a kind of quiet magic.
+### What I Do
+* **Game Development:** I lead projects focused on immersive storytelling, emphasizing clean code and performance optimization.
+* **Worldbuilding:** I enjoy creating expansive fictional universes, integrating realistic planetary science, astronomy, and atmospheric mechanics into my lore.
+* **Technical Workflow:** I am a strong advocate for open-source software and primarily develop within Linux-based environments, focusing on high-performance computing and secure digital workflows.
 
-This site is my comfy corner of the internet — part creation zone, part soul archive — a soft echo of how I think, feel, and tell my stories.
+### My Philosophy
+I value conceptual learning and long-form educational content over fleeting trends. My approach to development is driven by curiosity and a commitment to mastering the technical tools—from Unreal Engine to specialized 3D modeling—that bring interactive worlds to life.
+
+When I'm not coding or worldbuilding, I'm likely exploring new hardware optimizations or refining the artistic direction of my latest project.
