@@ -368,37 +368,83 @@
         .credits-text a:hover { border-bottom: 1px solid #d72660; }
         .credits-text blockquote { background: rgba(255,255,255,0.6); border-left: 4px solid #d72660; padding: 8px 12px; margin: 10px 0; color: #5d405c; border-radius: 0 8px 8px 0; font-style: italic; }
 
-        /* --- CURTAIN ELEMENTS --- */
-        .pride-curtain {
-            position: fixed; top: -140px; 
-            width: 60px; height: 110px;
-            border: 3px solid #ffffff; 
-            border-top: none;
-            border-radius: 0 0 50% 50% / 0 0 20px 20px; 
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
-            z-index: 3000; 
-            transition: top 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.4s ease-in-out;
+        /* --- ROPE AND FLAG OVERLAY --- */
+        .rope-container {
+            position: fixed; top: 0; right: 10%; z-index: 3000;
+            display: flex; flex-direction: column; align-items: center;
             cursor: none; 
-            transform-origin: top center;
-            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .rope-container:hover { transform: translateY(15px); }
+        .rope-container:active { transform: translateY(30px); }
+        
+        .rope {
+            width: 4px; height: 120px;
+            background: linear-gradient(to right, #111, #333, #111);
+            box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+        }
+        .rope-handle {
+            width: 24px; height: 24px; background: #222;
+            border-radius: 50%; margin-top: -2px;
+            box-shadow: inset -5px -5px 10px rgba(0,0,0,0.5), 0 5px 10px rgba(0,0,0,0.3);
+            border: 2px solid #111;
         }
 
-        .pride-curtain::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, rgba(0,0,0,0.2) 0%, rgba(255,255,255,0.3) 15%, rgba(0,0,0,0.1) 30%, rgba(255,255,255,0.2) 50%, rgba(0,0,0,0.1) 70%, rgba(255,255,255,0.3) 85%, rgba(0,0,0,0.2) 100%);
-            pointer-events: none;
+        .flag-overlay {
+            position: fixed; top: -100vh; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            z-index: 4000; display: flex; align-items: center; justify-content: center;
+            transition: top 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            opacity: 0; pointer-events: none;
+        }
+        .show-flags .flag-overlay { top: 0; opacity: 1; pointer-events: all; }
+
+        .flag-window {
+            position: relative; width: 85vw; max-width: 900px; height: 75vh;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            padding: 20px;
         }
 
-        .pride-curtain:hover { animation: curtainSway 2s ease-in-out infinite; }
-        #curtain-left { left: 30px; background: linear-gradient(to bottom, #E40303 16.66%, #FF8C00 16.66% 33.33%, #FFED00 33.33% 50%, #008026 50% 66.66%, #004DFF 66.66% 83.33%, #750787 83.33%); }
-        #curtain-right { right: 30px; background: linear-gradient(to bottom, #5BCEFA 20%, #F5A9B8 20% 40%, #FFFFFF 40% 60%, #F5A9B8 60% 80%, #5BCEFA 80%); }
-        .show-flags .pride-curtain { top: 0; }
+        .main-flag {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: opacity 0.4s ease;
+        }
+
+        .arrow-wrapper {
+            position: absolute; right: 20px; top: 50%; transform: translateY(-50%);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+            cursor: none; transition: transform 0.3s;
+        }
+        .arrow-wrapper:hover { transform: translateY(-50%) scale(1.15); }
+        .arrow-wrapper:active { transform: translateY(-50%) scale(0.95); }
+
+        .next-arrow-inner {
+            width: 80px; height: 80px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            clip-path: polygon(0 25%, 50% 25%, 50% 0, 100% 50%, 50% 100%, 50% 75%, 0 75%);
+            box-shadow: inset 0 0 10px rgba(255,255,255,0.5);
+        }
+
+        .close-flag {
+            position: absolute; top: -50px; right: 0;
+            font-size: 40px; color: white; background: none; border: none;
+            cursor: none; font-family: 'Nunito', sans-serif;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8); transition: transform 0.3s;
+        }
+        .close-flag:hover { transform: scale(1.2) rotate(90deg); color: #ffb7c5; }
 
         /* --- MOBILE --- */
         @media (max-width: 600px) {
             .site-title { font-size: 1.8rem; }
             .site-header { padding: 10px 25px; top: 40px; }
-            html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .pride-curtain { cursor: auto !important; }
+            html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .rope-container, .close-flag, .arrow-wrapper { cursor: auto !important; }
             #custom-cursor, .cursor-trail { display: none !important; }
             .main-nav { padding: 25px 15px; width: 85%; min-width: unset; gap: 15px; }
             .main-nav button { width: 100%; height: 55px; font-size: 20px; }
@@ -407,8 +453,12 @@
             .music-label { display: none; }
             .made-with-love { right: 20px; bottom: 20px; padding: 6px 12px; font-size: 1rem; border-radius: 30px; }
             .made-with-love span { display: inline; font-size: 0.9rem;}
-            .pride-curtain { width: 40px; height: 80px; border-radius: 0 0 20px 20px; top: -100px; }
-            #curtain-left { left: 15px; } #curtain-right { right: 15px; }
+            
+            .rope-container { right: 5%; }
+            .rope { height: 80px; }
+            .flag-window { width: 95vw; height: 60vh; padding: 10px; }
+            .next-arrow-inner { width: 50px; height: 50px; }
+            .close-flag { right: 10px; top: -40px; }
         }
         @media (max-width: 360px) { .made-with-love span { display: none; } .made-with-love { padding: 5px; border-radius: 50%; } }
     </style>
@@ -417,8 +467,21 @@
 
     <div id="custom-cursor"><div class="pixel-heart"></div></div>
 
-    <div id="curtain-left" class="pride-curtain" title="Pride"></div>
-    <div id="curtain-right" class="pride-curtain" title="Trans Pride"></div>
+    <div class="rope-container" id="ropePull" title="Pull me!">
+        <div class="rope"></div>
+        <div class="rope-handle"></div>
+    </div>
+
+    <div class="flag-overlay" id="flagOverlay">
+        <div class="flag-window">
+            <button class="close-flag" id="closeFlag">&times;</button>
+            <img src="../assets/images/flags/transflag.jpg" alt="Pride Flag" class="main-flag" id="mainFlagImg">
+            
+            <div class="arrow-wrapper" id="nextFlagBtn" title="Next Flag">
+                <div class="next-arrow-inner"></div>
+            </div>
+        </div>
+    </div>
 
     <div class="site-header">
         <div class="bolt-l"></div><div class="bolt-r"></div>
@@ -461,7 +524,7 @@
     <script>
         // --- CUSTOM CURSOR ---
         const cursor = document.getElementById('custom-cursor');
-        const interactiveElements = document.querySelectorAll('button, a, .clock-text, .pride-curtain');
+        const interactiveElements = document.querySelectorAll('button, a, .clock-text, .rope-container');
         let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
 
         document.addEventListener('mousemove', (e) => {
@@ -487,6 +550,7 @@
         document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
 
         const addHoverListeners = (el) => {
+            if(!el) return;
             el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
         };
@@ -521,15 +585,29 @@
             if(btn) btn.addEventListener('click', () => window.location.href = btn.dataset.target);
         });
 
-        // --- EASTER EGG ---
+        // --- EASTER EGG (ROPE & FLAG OVERLAY) ---
         const clockTrigger = document.getElementById('clock');
-        const curtains = document.querySelectorAll('.pride-curtain');
+        const ropePull = document.getElementById('ropePull');
+        const closeFlag = document.getElementById('closeFlag');
+        const nextFlagBtn = document.getElementById('nextFlagBtn');
+        const mainFlagImg = document.getElementById('mainFlagImg');
+
         const toggleFlags = () => document.body.classList.toggle('show-flags');
 
         clockTrigger.addEventListener('click', toggleFlags);
-        curtains.forEach(flag => {
-            flag.addEventListener('click', toggleFlags);
-            addHoverListeners(flag); 
+        ropePull.addEventListener('click', toggleFlags);
+        closeFlag.addEventListener('click', () => document.body.classList.remove('show-flags'));
+
+        [closeFlag, nextFlagBtn].forEach(addHoverListeners);
+
+        let isTransFlag = true;
+        nextFlagBtn.addEventListener('click', () => {
+            mainFlagImg.style.opacity = '0';
+            setTimeout(() => {
+                isTransFlag = !isTransFlag;
+                mainFlagImg.src = isTransFlag ? '../assets/images/flags/transflag.jpg' : '../assets/images/flags/lgbtq.jpg';
+                mainFlagImg.style.opacity = '1';
+            }, 400);
         });
 
         // --- IMPROVED MARKDOWN PARSER ---
