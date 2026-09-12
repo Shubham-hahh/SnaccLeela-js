@@ -420,6 +420,28 @@
             transition: opacity 0.4s ease;
             position: relative; z-index: 2;
         }
+        
+        .meaning-btn {
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+            padding: 12px 28px;
+            background: linear-gradient(135deg, rgba(208, 191, 255, 0.8), rgba(255, 201, 201, 0.8));
+            border: 2px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            color: #5d405c; font-family: 'Nunito', sans-serif;
+            text-decoration: none; font-weight: 800;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(208, 191, 255, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: none;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
+        }
+        .meaning-btn:hover { 
+            background: linear-gradient(135deg, rgba(208, 191, 255, 1), rgba(255, 201, 201, 1));
+            transform: translateX(-50%) translateY(-3px) scale(1.05); 
+            box-shadow: 0 12px 30px rgba(208, 191, 255, 0.8);
+            border-color: #fff;
+        }
 
         .arrow-wrapper {
             position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
@@ -497,7 +519,8 @@
     <div class="flag-overlay" id="flagOverlay">
         <div class="flag-window">
             <button class="close-flag" id="closeFlag">&times;</button>
-            <img src="../assets/images/flags/transflag.jpg" alt="Pride Flag" class="main-flag" id="mainFlagImg">
+            <img src="../assets/images/flags/nonbinarytransflag.jpg" alt="Pride Flag" class="main-flag" id="mainFlagImg">
+            <a href="nonbinary-transfem.html" class="meaning-btn" id="meaningBtn">Meaning</a>
             
             <div class="arrow-wrapper" id="nextFlagBtn" title="Next Flag">
                 <div class="next-arrow-inner"></div>
@@ -613,6 +636,7 @@
         const closeFlag = document.getElementById('closeFlag');
         const nextFlagBtn = document.getElementById('nextFlagBtn');
         const mainFlagImg = document.getElementById('mainFlagImg');
+        const meaningBtn = document.getElementById('meaningBtn');
 
         const toggleFlags = () => document.body.classList.toggle('show-flags');
 
@@ -620,15 +644,16 @@
         ropePull.addEventListener('click', toggleFlags);
         closeFlag.addEventListener('click', () => document.body.classList.remove('show-flags'));
 
-        [closeFlag, nextFlagBtn].forEach(addHoverListeners);
+        [closeFlag, nextFlagBtn, meaningBtn].forEach(addHoverListeners);
 
         let isTransFlag = true;
         nextFlagBtn.addEventListener('click', () => {
             mainFlagImg.style.opacity = '0';
             setTimeout(() => {
                 isTransFlag = !isTransFlag;
-                mainFlagImg.src = isTransFlag ? '../assets/images/flags/transflag.jpg' : '../assets/images/flags/lgbtq.jpg';
+                mainFlagImg.src = isTransFlag ? '../assets/images/flags/nonbinarytransflag.jpg' : '../assets/images/flags/lgbtq.jpg';
                 mainFlagImg.style.opacity = '1';
+                meaningBtn.style.display = isTransFlag ? 'block' : 'none';
             }, 400);
         });
 
