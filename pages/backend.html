@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="/assets/js/seo.js"></script>
+    <script src="../assets/js/seo.js"></script>
     <title>Backend System - Licenses</title>
     
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
     
-    <script src="/assets/js/lucide.min.js"></script>
+    <script src="../assets/js/lucide.min.js"></script>
 
     <style>
         @font-face {
             font-family: 'Sixtyfour';
-            src: url('/assets/fonts/backend/Sixtyfour-Regular-VariableFont.woff2') format('woff2');
+            src: url('../assets/fonts/backend/Sixtyfour-Regular-VariableFont.woff2') format('woff2');
             font-weight: 100 900;
             font-style: normal;
         }
@@ -224,16 +224,16 @@
 
         <div id="content-area">
             <nav id="sidebar">
-                <button class="btn nav-btn" onclick="loadText('/legal/music/CCO.md', this)">
+                <button class="btn nav-btn" onclick="loadText('../legal/music/CCO.md', this)">
                     <i data-lucide="music"></i> Audio (CC0)
                 </button>
-                <button class="btn nav-btn" onclick="loadText('/legal/icons/Apache.md', this)">
+                <button class="btn nav-btn" onclick="loadText('../legal/icons/Apache.md', this)">
                     <i data-lucide="image"></i> Visuals (Apache)
                 </button>
-                <button class="btn nav-btn" onclick="loadText('/legal/icons/ICE.md', this)">
+                <button class="btn nav-btn" onclick="loadText('../legal/icons/ICE.md', this)">
                     <i data-lucide="feather"></i> Lucide (ICE)
                 </button>
-                <button class="btn nav-btn" onclick="loadText('/legal/google_fonts/Nunito/OFL.txt', this)">
+                <button class="btn nav-btn" onclick="loadText('../legal/google_fonts/Nunito/OFL.txt', this)">
                     <i data-lucide="type"></i> Fonts (OFL)
                 </button>
             </nav>
@@ -250,7 +250,7 @@
         </div>
     </div>
 
-    <audio id="click-sound" src="/assets/sounds/click.wav" preload="auto"></audio>
+    <audio id="click-sound" src="../assets/sounds/click.wav" preload="auto"></audio>
 
     <script>
         // --- 1. Initialize Main UI Icons ---
