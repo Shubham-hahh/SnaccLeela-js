@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="../assets/js/seo.js"></script>
+    <script src="../assets/js/vine-cursor.js" defer></script>
     <title>About Crossie</title>
     <link rel="icon" type="image/svg+xml" href="../assets/icons/about.svg">
     <style>
@@ -55,74 +56,14 @@
             align-items: center;
             justify-content: center;
             overflow-x: hidden;
-            cursor: none; 
-            -webkit-tap-highlight-color: transparent;
-        }
 
-        /* Hide default cursor on interactive elements */
-        a, button, input, .nav-icon-btn, .bmc-button, .lucky-leaf {
-            cursor: none !important;
-        }
 
         /* Prevent text selection ONLY on UI buttons/icons */
         .nav-icon-btn, .bmc-button, .lucky-leaf, button {
             user-select: none;
         }
 
-        /* --- CUSTOM CURSOR --- */
-        #cursor-dot {
-            position: fixed;
-            top: 0; left: 0;
-            width: 8px; height: 8px;
-            background-color: var(--sage-green);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background-color 0.3s;
-            mix-blend-mode: multiply;
-        }
 
-        #cursor-nib {
-            position: fixed;
-            top: 0; left: 0;
-            width: 0; height: 0;
-            pointer-events: none;
-            z-index: 10001;
-            border-left: 6px solid transparent;
-            border-right: 6px solid transparent;
-            border-top: 18px solid var(--wood-dark);
-            transform-origin: top center;
-            transform: translate(-50%, -50%) rotate(35deg) translate(0, 10px);
-            transition: transform 0.1s ease-out;
-            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
-        }
-
-        .nib-slit {
-            position: absolute;
-            top: -18px; left: -1px;
-            width: 2px; height: 10px;
-            background-color: rgba(255,255,255,0.4);
-        }
-
-        body.hovering #cursor-dot {
-            width: 40px; height: 40px;
-            background-color: rgba(85, 107, 47, 0.15);
-            border: 2px solid var(--wood-dark);
-        }
-        
-        body.hovering #cursor-nib {
-            transform: translate(-50%, -50%) rotate(35deg) translate(0, 5px) scale(0.9);
-        }
-
-        body.clicking #cursor-nib {
-            transform: translate(-50%, -50%) rotate(35deg) translate(0, 15px) scale(0.85);
-        }
-
-        @media (hover: none) and (pointer: coarse) {
-            #cursor-dot, #cursor-nib { display: none; }
-            body, a, button, .nav-icon-btn, .bmc-button, .lucky-leaf { cursor: auto !important; }
-        }
 
         /* --- MAIN CONTAINER --- */
         .about-container {
@@ -211,8 +152,7 @@
 </head>
 <body>
 
-    <div id="cursor-dot"></div>
-    <div id="cursor-nib"><div class="nib-slit"></div></div>
+
 
     <div class="about-container">
         <a href="./backend.html" class="lucky-leaf" id="egg">☘️</a>
@@ -284,41 +224,7 @@
                 contentDiv.innerHTML = "<p style='text-align:center;'>Could not unroll the scroll.<br>(Text file missing)</p>";
             });
 
-        // --- CUSTOM CURSOR ---
-        const cursorNib = document.getElementById('cursor-nib');
-        const cursorDot = document.getElementById('cursor-dot');
-        
-        document.addEventListener('mousemove', (e) => {
-            requestAnimationFrame(() => {
-                cursorNib.style.left = e.clientX + 'px';
-                cursorNib.style.top = e.clientY + 'px';
-                cursorDot.style.left = e.clientX + 'px';
-                cursorDot.style.top = e.clientY + 'px';
-            });
-        });
 
-        const pressDown = () => document.body.classList.add('clicking');
-        const liftUp = () => document.body.classList.remove('clicking');
-
-        document.addEventListener('mousedown', pressDown);
-        document.addEventListener('mouseup', liftUp);
-        document.addEventListener('touchstart', pressDown, {passive: true});
-        document.addEventListener('touchend', liftUp, {passive: true});
-
-        // --- EVENT DELEGATION FOR HOVER ---
-        const interactiveSelectors = 'a, button, .nav-icon-btn, .bmc-button, .lucky-leaf';
-
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest(interactiveSelectors)) {
-                document.body.classList.add('hovering');
-            }
-        });
-
-        document.addEventListener('mouseout', (e) => {
-            if (e.target.closest(interactiveSelectors)) {
-                document.body.classList.remove('hovering');
-            }
-        });
     </script>
 </body>
 </html>

@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <script src="../assets/js/seo.js"></script>
+    <script src="../assets/js/vine-cursor.js" defer></script>
     <title>HOME</title>
     
     <link rel="icon" type="image/svg+xml" href="../assets/icons/home.svg" />
@@ -64,57 +65,7 @@
             color: #1d3d2f;
         }
 
-        /* --- PIXEL HEART CURSOR --- */
-        #custom-cursor {
-            position: fixed;
-            top: 0; left: 0;
-            width: 20px; height: 20px;
-            pointer-events: none;
-            z-index: 100000;
-            transform: translate(-50%, -50%);
-            will-change: transform;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .pixel-heart {
-            width: 1px; height: 1px;
-            background: transparent;
-            transform: scale(2); 
-            box-shadow: 
-                -2px -3px #2e4a2e, -1px -3px #2e4a2e, 1px -3px #2e4a2e, 2px -3px #2e4a2e,
-                -3px -2px #2e4a2e, 0px -2px #2e4a2e, 3px -2px #2e4a2e,
-                -3px -1px #2e4a2e, 3px -1px #2e4a2e,
-                -3px 0px #2e4a2e, 3px 0px #2e4a2e,
-                -2px 1px #2e4a2e, 2px 1px #2e4a2e,
-                -1px 2px #2e4a2e, 1px 2px #2e4a2e,
-                0px 3px #2e4a2e,
-                -2px -2px #a8d5b5, -1px -2px #a8d5b5, 1px -2px #a8d5b5, 2px -2px #a8d5b5,
-                -2px -1px #a8d5b5, -1px -1px #a8d5b5, 0px -1px #a8d5b5, 1px -1px #a8d5b5, 2px -1px #a8d5b5,
-                -2px 0px #a8d5b5, -1px 0px #a8d5b5, 0px 0px #a8d5b5, 1px 0px #a8d5b5, 2px 0px #a8d5b5,
-                -1px 1px #a8d5b5, 0px 1px #a8d5b5, 1px 1px #a8d5b5,
-                0px 2px #a8d5b5;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        #custom-cursor.hovered .pixel-heart { transform: scale(3); }
-        #custom-cursor.clicking .pixel-heart { transform: scale(1.5); }
-
-        .cursor-trail {
-            position: fixed;
-            width: 4px; height: 4px; 
-            background: #a8d5b5;
-            pointer-events: none;
-            z-index: 99999;
-            opacity: 0.7;
-            box-shadow: 0 0 0 1px #2e4a2e;
-            animation: pixelFade 0.6s steps(4) forwards;
-        }
-
-        @keyframes pixelFade {
-            to { opacity: 0; transform: translateY(5px); }
-        }
 
         /* --- ANIMATIONS --- */
         @keyframes float {
@@ -391,105 +342,160 @@
             border: 1px solid #2e4a2e;
         }
 
+        /* --- FLAG OVERLAY --- */
         .flag-overlay {
-            position: fixed; top: -100vh; left: 0; width: 100vw; height: 100vh;
-            background: rgba(29, 61, 47, 0.65);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            position: fixed; inset: 0;
+            background: rgba(18, 40, 30, 0.72);
+            backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
             z-index: 4000; display: flex; align-items: center; justify-content: center;
-            transition: top 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
             opacity: 0; pointer-events: none;
+            transition: opacity 0.4s ease;
         }
-        .show-flags .flag-overlay { top: 0; opacity: 1; pointer-events: all; }
+        .flag-overlay.flag-visible { opacity: 1; pointer-events: all; }
 
         .flag-window {
-            position: relative; width: 85vw; max-width: 900px; height: 75vh;
-            background: linear-gradient(135deg, rgba(232, 248, 244, 0.18), rgba(196, 220, 245, 0.08));
-            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 20px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 0 30px rgba(255,255,255,0.12);
-            display: flex; align-items: center; justify-content: center;
-            padding: 30px;
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+            position: relative;
+            width: min(88vw, 920px);
+            max-height: 82vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0;
+            background: linear-gradient(135deg, rgba(232, 248, 244, 0.22), rgba(196, 220, 245, 0.10));
+            border: 1px solid rgba(255, 255, 255, 0.4); border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(0,0,0,0.55), inset 0 0 30px rgba(255,255,255,0.1);
+            padding: 28px 28px 22px;
+            backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+            transform: scale(0.92) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .flag-overlay.flag-visible .flag-window { transform: scale(1) translateY(0); }
         .flag-window::before {
             content: ''; position: absolute; top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border: 1px dashed rgba(255, 255, 255, 0.3); border-radius: 12px; pointer-events: none;
+            border: 1px dashed rgba(255, 255, 255, 0.22); border-radius: 16px; pointer-events: none;
+        }
+
+        /* Flag name label */
+        .flag-name {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+            color: rgba(255,255,255,0.75);
+            text-shadow: 0 1px 8px rgba(0,0,0,0.4);
+            margin-bottom: 14px;
+            z-index: 3;
+            transition: opacity 0.3s ease;
+            user-select: none;
+        }
+
+        /* Image area with prev/next arrows flanking it */
+        .flag-img-row {
+            display: flex; align-items: center; gap: 14px;
+            width: 100%;
+            justify-content: center;
         }
 
         .main-flag {
-            max-width: 100%; max-height: 100%; object-fit: contain;
-            border-radius: 8px; box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 0 2px rgba(255,255,255,0.2);
-            transition: opacity 0.4s ease;
+            flex: 1 1 auto;
+            max-width: 100%; max-height: 52vh; object-fit: contain;
+            border-radius: 10px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.55), 0 0 0 2px rgba(255,255,255,0.18);
+            transition: opacity 0.35s ease, transform 0.35s ease;
             position: relative; z-index: 2;
         }
-        
+        .main-flag.flag-fade { opacity: 0; transform: scale(0.97); }
+
+        /* Arrows */
+        .arrow-wrapper {
+            flex-shrink: 0;
+            width: 44px; height: 44px;
+            background: rgba(29, 61, 47, 0.45);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+            cursor: none; transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 5;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.35);
+        }
+        .arrow-wrapper:hover { transform: scale(1.12); background: rgba(29, 61, 47, 0.72); border-color: #a8d5b5; }
+        .arrow-wrapper:active { transform: scale(0.93); }
+        .arrow-inner {
+            width: 11px; height: 11px;
+            border-top: 2.5px solid rgba(255, 255, 255, 0.92);
+            border-right: 2.5px solid rgba(255, 255, 255, 0.92);
+            transition: border-color 0.25s;
+        }
+        .arrow-wrapper:hover .arrow-inner { border-color: #a8d5b5; }
+        .arrow-next .arrow-inner { transform: rotate(45deg) translateX(-2px) translateY(2px); }
+        .arrow-prev .arrow-inner { transform: rotate(-135deg) translateX(-2px) translateY(2px); }
+
+        /* Dot indicators */
+        .flag-dots {
+            display: flex; gap: 8px; margin-top: 16px; z-index: 3;
+        }
+        .flag-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            border: 1px solid rgba(255,255,255,0.4);
+            transition: all 0.3s ease;
+            cursor: none;
+        }
+        .flag-dot.active {
+            background: #a8d5b5;
+            border-color: #a8d5b5;
+            transform: scale(1.3);
+        }
+
+        /* Bottom actions row */
+        .flag-actions {
+            margin-top: 16px; display: flex; align-items: center; gap: 12px; z-index: 10;
+            min-height: 44px;
+        }
+
         .meaning-btn {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
-            padding: 12px 28px;
-            background: linear-gradient(135deg, rgba(168, 213, 181, 0.8), rgba(196, 220, 245, 0.8));
+            padding: 10px 24px;
+            background: linear-gradient(135deg, rgba(168, 213, 181, 0.82), rgba(196, 220, 245, 0.82));
             border: 2px solid rgba(255, 255, 255, 0.6);
-            border-radius: 20px;
+            border-radius: 18px;
             color: #1d3d2f; font-family: 'Nunito', sans-serif;
-            text-decoration: none; font-weight: 800;
+            text-decoration: none; font-weight: 800; font-size: 0.95rem;
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            z-index: 10;
-            box-shadow: 0 8px 25px rgba(168, 213, 181, 0.5);
+            box-shadow: 0 6px 20px rgba(168, 213, 181, 0.45);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: none;
             text-shadow: 1px 1px 0 rgba(255,255,255,0.5);
         }
         .meaning-btn:hover { 
             background: linear-gradient(135deg, rgba(168, 213, 181, 1), rgba(196, 220, 245, 1));
-            transform: translateX(-50%) translateY(-3px) scale(1.05); 
-            box-shadow: 0 12px 30px rgba(168, 213, 181, 0.8);
+            transform: translateY(-2px) scale(1.04); 
+            box-shadow: 0 10px 28px rgba(168, 213, 181, 0.8);
             border-color: #fff;
         }
+        .meaning-btn.hidden { display: none; }
 
-        .arrow-wrapper {
-            position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
-            width: 44px; height: 44px;
-            background: rgba(29, 61, 47, 0.45);
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            cursor: none; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-        }
-        .arrow-wrapper:hover { transform: translateY(-50%) scale(1.1); background: rgba(29, 61, 47, 0.7); border-color: #a8d5b5; }
-        .arrow-wrapper:active { transform: translateY(-50%) scale(0.95); }
-
-        .next-arrow-inner {
-            width: 12px; height: 12px;
-            border-top: 3px solid rgba(255, 255, 255, 0.9);
-            border-right: 3px solid rgba(255, 255, 255, 0.9);
-            transform: rotate(45deg) translateX(-2px) translateY(2px);
-            transition: border-color 0.3s;
-        }
-        .arrow-wrapper:hover .next-arrow-inner { border-color: #a8d5b5; }
-
+        /* Close button */
         .close-flag {
-            position: absolute; top: -20px; right: -20px;
-            width: 44px; height: 44px;
-            background: rgba(29, 61, 47, 0.45);
+            position: absolute; top: -18px; right: -18px;
+            width: 42px; height: 42px;
+            background: rgba(29, 61, 47, 0.50);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255,255,255,0.3);
-            font-size: 28px; color: white;
+            border: 1px solid rgba(255,255,255,0.35);
+            font-size: 26px; color: white;
             cursor: none; font-family: 'Nunito', sans-serif;
             text-shadow: 0 2px 5px rgba(0,0,0,0.5); transition: all 0.3s;
-            z-index: 10; padding-bottom: 4px;
+            z-index: 10; padding-bottom: 3px;
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.4);
         }
-        .close-flag:hover { transform: scale(1.1) rotate(90deg); color: #a8d5b5; background: rgba(29,61,47,0.7); border-color: #a8d5b5; }
+        .close-flag:hover { transform: scale(1.1) rotate(90deg); color: #a8d5b5; background: rgba(29,61,47,0.75); border-color: #a8d5b5; }
 
         /* --- MOBILE --- */
         @media (max-width: 600px) {
             .site-title { font-size: 1.8rem; }
             .site-header { padding: 10px 25px; top: 40px; }
             html, body, button, a, input, .clock-text, .toggle-btn, .credits-btn, .close-credits, .rope-container, .close-flag, .arrow-wrapper { cursor: auto !important; }
-            #custom-cursor, .cursor-trail { display: none !important; }
+            #vc-root { display: none !important; }
             .main-nav { padding: 25px 15px; width: 85%; min-width: unset; gap: 15px; }
             .main-nav button { width: 100%; height: 55px; font-size: 20px; }
             .bottom-bar { width: auto; bottom: 20px; padding: 8px 15px; gap: 10px; left: 20px; transform: none; border-radius: 15px; }
@@ -506,11 +512,219 @@
             .close-flag { right: -10px; top: -15px; width: 36px; height: 36px; font-size: 24px; padding-bottom: 2px; }
         }
         @media (max-width: 360px) { .made-with-love span { display: none; } .made-with-love { padding: 5px; border-radius: 50%; } }
+
+        /* ================================================
+           🌿  NATURE OVERLAY – CSS plant structures
+           ================================================ */
+        .nature-frame {
+            position: fixed; inset: 0;
+            pointer-events: none;
+            z-index: 8;          /* above bg gif, below all UI (UI is 100+) */
+            overflow: hidden;
+        }
+
+        /* Shared primitives */
+        .nv  { position: absolute; }
+        .nl  { position: absolute; border-radius: 80% 10% 80% 10%; }   /* leaf A */
+        .nl2 { position: absolute; border-radius: 10% 80% 10% 80%; }   /* leaf B (mirror) */
+        .nl3 { position: absolute; border-radius: 50% 10% 60% 10%; }   /* narrow leaf */
+        .ns  { position: absolute; border-radius: 3px; background: #264d32; } /* stem */
+        .nf  { position: absolute; border-radius: 50%; }               /* flower dot */
+
+        /* Leaf colour palette */
+        .nc1 { background: #1a3d26; }
+        .nc2 { background: #2a5c38; }
+        .nc3 { background: #3d7a4a; }
+        .nc4 { background: #52a062; }
+        .nc5 { background: #6bc07a; opacity: .85; }
+        .nch { background: rgba(123,184,224,.82); }   /* hydrangea blue */
+        .ncv { background: rgba(179,153,212,.82); }   /* lavender */
+        .ncp { background: rgba(245,200,175,.88); }   /* peach bud */
+
+        /* ── TOP-LEFT VINE ───────────────────────────── */
+        .nv-tl { top:0; left:0; width:330px; height:370px; }
+
+        /* stems */
+        .nv-tl .s1 { width:5px; height:210px; top:-8px; left:26px;  transform:rotate(6deg);  background:linear-gradient(to bottom,#1a3d26,#2a5c38); }
+        .nv-tl .s2 { width:4px; height:4px; width:115px; height:4px; top:68px;  left:26px;  transform:rotate(12deg); background:linear-gradient(to right,#1a3d26,#3d7a4a); }
+        .nv-tl .s3 { width:85px;  height:4px; top:138px; left:24px;  transform:rotate(5deg); }
+        .nv-tl .s4 { width:4px;   height:85px; top:148px; left:68px;  transform:rotate(22deg); }
+        .nv-tl .s5 { width:58px;  height:3px;  top:93px;  left:78px;  transform:rotate(-13deg); }
+
+        /* leaves */
+        .nv-tl .l1  { width:54px; height:38px; top:-6px;  left:-2px;   transform:rotate(-28deg); }
+        .nv-tl .l2  { width:62px; height:44px; top:12px;  left:36px;  transform:rotate(38deg); }
+        .nv-tl .l3  { width:46px; height:32px; top:48px;  left:12px;  transform:rotate(-42deg); }
+        .nv-tl .l4  { width:58px; height:40px; top:60px;  left:90px;  transform:rotate(16deg); }
+        .nv-tl .l5  { width:42px; height:30px; top:54px;  left:122px; transform:rotate(58deg); }
+        .nv-tl .l6  { width:66px; height:46px; top:84px;  left:102px; transform:rotate(-22deg); }
+        .nv-tl .l7  { width:50px; height:36px; top:99px;  left:74px;  transform:rotate(-68deg); }
+        .nv-tl .l8  { width:54px; height:38px; top:128px; left:18px;  transform:rotate(-32deg); }
+        .nv-tl .l9  { width:48px; height:34px; top:148px; left:62px;  transform:rotate(44deg); }
+        .nv-tl .l10 { width:60px; height:42px; top:162px; left:94px;  transform:rotate(-12deg); }
+        .nv-tl .l11 { width:38px; height:28px; top:178px; left:33px;  transform:rotate(22deg); }
+        .nv-tl .l12 { width:44px; height:32px; top:198px; left:14px;  transform:rotate(-52deg); }
+        .nv-tl .l13 { width:32px; height:24px; top:218px; left:54px;  transform:rotate(64deg); }
+
+        /* flower cluster top-left */
+        .nv-tl .f1 { width:10px; height:10px; top:46px;  left:132px; }
+        .nv-tl .f2 { width:7px;  height:7px;  top:40px;  left:144px; }
+        .nv-tl .f3 { width:9px;  height:9px;  top:56px;  left:140px; }
+        .nv-tl .f4 { width:6px;  height:6px;  top:50px;  left:154px; }
+        .nv-tl .f5 { width:11px; height:11px; top:64px;  left:147px; }
+        .nv-tl .f6 { width:8px;  height:8px;  top:35px;  left:154px; }
+
+        /* ── TOP-RIGHT FLORAL ────────────────────────── */
+        .nv-tr { top:0; right:0; width:230px; height:250px; }
+
+        .nv-tr .s1 { width:4px; height:165px; top:-8px;  right:20px; transform:rotate(-5deg);  background:linear-gradient(to bottom,#1a3d26,#3d7a4a); }
+        .nv-tr .s2 { width:88px; height:3px;  top:88px;  right:20px; transform:rotate(-9deg); }
+        .nv-tr .s3 { width:62px; height:3px;  top:142px; right:20px; transform:rotate(4deg); }
+
+        .nv-tr .l1 { width:46px; height:34px; top:6px;   right:34px;  transform:rotate(26deg); }
+        .nv-tr .l2 { width:40px; height:30px; top:22px;  right:60px;  transform:rotate(-18deg); }
+        .nv-tr .l3 { width:52px; height:38px; top:58px;  right:72px;  transform:rotate(-38deg); }
+        .nv-tr .l4 { width:44px; height:32px; top:74px;  right:102px; transform:rotate(42deg); }
+        .nv-tr .l5 { width:48px; height:36px; top:98px;  right:56px;  transform:rotate(22deg); }
+        .nv-tr .l6 { width:38px; height:28px; top:118px; right:92px;  transform:rotate(-52deg); }
+        .nv-tr .l7 { width:42px; height:30px; top:138px; right:82px;  transform:rotate(32deg); }
+
+        /* hydrangea cluster top-right */
+        .nv-tr .f1 { width:11px; height:11px; top:28px; right:28px; }
+        .nv-tr .f2 { width:8px;  height:8px;  top:22px; right:41px; }
+        .nv-tr .f3 { width:9px;  height:9px;  top:36px; right:36px; }
+        .nv-tr .f4 { width:7px;  height:7px;  top:28px; right:50px; }
+        .nv-tr .f5 { width:10px; height:10px; top:42px; right:42px; }
+        .nv-tr .f6 { width:8px;  height:8px;  top:20px; right:54px; }
+        .nv-tr .f7 { width:9px;  height:9px;  top:14px; right:42px; }
+        .nv-tr .f8 { width:7px;  height:7px;  top:34px; right:54px; }
+
+        /* ── BOTTOM-LEFT GRASS ────────────────────────── */
+        .grass-bl { position:absolute; bottom:0; left:0; width:260px; height:200px; }
+
+        @keyframes grassSway {
+            0%,100% { transform: rotate(var(--gr,-4deg)) scaleY(1);   transform-origin: bottom center; }
+            50%      { transform: rotate(calc(var(--gr,-4deg) + 10deg)) scaleY(.98); transform-origin: bottom center; }
+        }
+
+        .g { position:absolute; bottom:0; border-radius:50% 50% 0 0 / 40% 40% 0 0;
+             transform-origin:bottom center;
+             animation: grassSway var(--gs,3.5s) ease-in-out infinite var(--gd,0s); }
+
+        .g1  { width:8px;  height:130px; left:10px;  background:linear-gradient(to top,#1e4a28,#4a8f5a); --gr:-8deg;  --gs:3.2s; --gd:0s; }
+        .g2  { width:6px;  height:108px; left:26px;  background:linear-gradient(to top,#264d32,#52a062); --gr:5deg;   --gs:2.8s; --gd:.3s; }
+        .g3  { width:9px;  height:154px; left:46px;  background:linear-gradient(to top,#1a3d26,#3d7a4a); --gr:-3deg;  --gs:3.8s; --gd:.6s; }
+        .g4  { width:6px;  height:92px;  left:64px;  background:linear-gradient(to top,#264d32,#6bc07a); --gr:10deg;  --gs:2.5s; --gd:.2s; }
+        .g5  { width:10px; height:172px; left:84px;  background:linear-gradient(to top,#1a3d26,#4a8f5a); --gr:-6deg;  --gs:4.2s; --gd:.8s; }
+        .g6  { width:7px;  height:118px; left:104px; background:linear-gradient(to top,#264d32,#52a062); --gr:4deg;   --gs:3.0s; --gd:.4s; }
+        .g7  { width:5px;  height:78px;  left:122px; background:linear-gradient(to top,#264d32,#6bc07a); --gr:-12deg; --gs:2.6s; --gd:.9s; }
+        .g8  { width:8px;  height:142px; left:140px; background:linear-gradient(to top,#1a3d26,#3d7a4a); --gr:7deg;   --gs:3.6s; --gd:.1s; }
+        .g9  { width:6px;  height:98px;  left:158px; background:linear-gradient(to top,#264d32,#52a062); --gr:-5deg;  --gs:2.9s; --gd:.7s; }
+        .g10 { width:7px;  height:114px; left:176px; background:linear-gradient(to top,#264d32,#4a8f5a); --gr:9deg;   --gs:3.3s; --gd:.5s; }
+
+        /* ── BOTTOM-RIGHT VINE ───────────────────────── */
+        .nv-br { bottom:0; right:0; width:310px; height:330px; }
+
+        .nv-br .s1 { width:5px;  height:205px; bottom:-8px; right:24px; transform:rotate(-7deg); background:linear-gradient(to top,#1a3d26,#2a5c38); }
+        .nv-br .s2 { width:102px; height:4px;  bottom:78px; right:24px; transform:rotate(-9deg); background:#264d32; }
+        .nv-br .s3 { width:72px;  height:3px;  bottom:148px; right:24px; transform:rotate(-3deg); background:#264d32; }
+        .nv-br .s4 { width:3px;   height:72px; bottom:153px; right:68px; transform:rotate(-20deg); background:#264d32; }
+
+        .nv-br .l1  { width:54px; height:38px; bottom:8px;   right:4px;   transform:rotate(22deg); }
+        .nv-br .l2  { width:50px; height:36px; bottom:24px;  right:44px;  transform:rotate(-32deg); }
+        .nv-br .l3  { width:60px; height:42px; bottom:54px;  right:62px;  transform:rotate(16deg); }
+        .nv-br .l4  { width:46px; height:34px; bottom:68px;  right:24px;  transform:rotate(-12deg); }
+        .nv-br .l5  { width:52px; height:38px; bottom:88px;  right:88px;  transform:rotate(42deg); }
+        .nv-br .l6  { width:44px; height:32px; bottom:98px;  right:56px;  transform:rotate(-48deg); }
+        .nv-br .l7  { width:62px; height:44px; bottom:128px; right:72px;  transform:rotate(12deg); }
+        .nv-br .l8  { width:40px; height:30px; bottom:144px; right:30px;  transform:rotate(-28deg); }
+        .nv-br .l9  { width:48px; height:36px; bottom:162px; right:94px;  transform:rotate(38deg); }
+        .nv-br .l10 { width:34px; height:26px; bottom:182px; right:56px;  transform:rotate(-62deg); }
+
+        /* peach bud cluster bottom-right */
+        .nv-br .f1 { width:10px; height:10px; bottom:198px; right:82px; }
+        .nv-br .f2 { width:8px;  height:8px;  bottom:208px; right:94px; }
+        .nv-br .f3 { width:9px;  height:9px;  bottom:194px; right:98px; }
+        .nv-br .f4 { width:7px;  height:7px;  bottom:204px; right:108px; }
+        .nv-br .f5 { width:11px; height:11px; bottom:212px; right:90px; }
+        .nv-br .f6 { width:8px;  height:8px;  bottom:222px; right:82px; }
+
+        /* ── FLOATING LEAF PARTICLES ─────────────────── */
+        @keyframes leafFloat {
+            0%   { transform: translateY(0)    translateX(0)   rotate(var(--lr,0deg));   opacity:0; }
+            6%   { opacity:.65; }
+            94%  { opacity:.45; }
+            100% { transform: translateY(110vh) translateX(var(--lx,60px)) rotate(var(--le,360deg)); opacity:0; }
+        }
+        .float-leaf {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9;
+            border-radius: 80% 10% 80% 10%;
+            animation: leafFloat var(--ld,9s) ease-in-out forwards;
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
 
-    <div id="custom-cursor"><div class="pixel-heart"></div></div>
+    <!-- ====  🌿 NATURE OVERLAY ==== -->
+    <div class="nature-frame" aria-hidden="true">
+
+        <!-- Top-left: lush vine with hydrangea/lavender florals -->
+        <div class="nv nv-tl">
+            <div class="ns s1"></div><div class="ns s2"></div><div class="ns s3"></div>
+            <div class="ns s4"></div><div class="ns s5"></div>
+            <div class="nl  nc1 l1"></div><div class="nl  nc3 l2"></div>
+            <div class="nl  nc2 l3"></div><div class="nl  nc4 l4"></div>
+            <div class="nl  nc3 l5"></div><div class="nl  nc5 l6"></div>
+            <div class="nl2 nc2 l7"></div><div class="nl  nc4 l8"></div>
+            <div class="nl  nc3 l9"></div><div class="nl2 nc5 l10"></div>
+            <div class="nl  nc1 l11"></div><div class="nl  nc4 l12"></div>
+            <div class="nl3 nc2 l13"></div>
+            <div class="nf nch f1"></div><div class="nf ncv f2"></div>
+            <div class="nf nch f3"></div><div class="nf ncv f4"></div>
+            <div class="nf nch f5"></div><div class="nf ncv f6"></div>
+        </div>
+
+        <!-- Top-right: hydrangea floral cluster -->
+        <div class="nv nv-tr">
+            <div class="ns s1"></div><div class="ns s2"></div><div class="ns s3"></div>
+            <div class="nl  nc3 l1"></div><div class="nl  nc4 l2"></div>
+            <div class="nl2 nc5 l3"></div><div class="nl  nc3 l4"></div>
+            <div class="nl  nc4 l5"></div><div class="nl2 nc5 l6"></div>
+            <div class="nl  nc3 l7"></div>
+            <div class="nf nch f1"></div><div class="nf ncv f2"></div>
+            <div class="nf nch f3"></div><div class="nf ncv f4"></div>
+            <div class="nf nch f5"></div><div class="nf ncv f6"></div>
+            <div class="nf nch f7"></div><div class="nf ncv f8"></div>
+        </div>
+
+        <!-- Bottom-left: swaying grass blades -->
+        <div class="grass-bl">
+            <div class="g g1"></div><div class="g g2"></div><div class="g g3"></div>
+            <div class="g g4"></div><div class="g g5"></div><div class="g g6"></div>
+            <div class="g g7"></div><div class="g g8"></div><div class="g g9"></div>
+            <div class="g g10"></div>
+        </div>
+
+        <!-- Bottom-right: trailing vine with peach buds -->
+        <div class="nv nv-br">
+            <div class="ns s1"></div><div class="ns s2"></div>
+            <div class="ns s3"></div><div class="ns s4"></div>
+            <div class="nl  nc2 l1"></div><div class="nl  nc3 l2"></div>
+            <div class="nl2 nc4 l3"></div><div class="nl  nc2 l4"></div>
+            <div class="nl  nc3 l5"></div><div class="nl2 nc4 l6"></div>
+            <div class="nl  nc3 l7"></div><div class="nl  nc2 l8"></div>
+            <div class="nl2 nc4 l9"></div><div class="nl3 nc3 l10"></div>
+            <div class="nf ncp f1"></div><div class="nf ncp f2"></div>
+            <div class="nf nch f3"></div><div class="nf ncp f4"></div>
+            <div class="nf ncp f5"></div><div class="nf nch f6"></div>
+        </div>
+    </div>
+    <!-- ==== end NATURE OVERLAY ==== -->
+
+
 
     <div class="rope-container" id="ropePull" title="Pull me!">
         <div class="rope"></div>
@@ -518,13 +732,27 @@
     </div>
 
     <div class="flag-overlay" id="flagOverlay">
-        <div class="flag-window">
-            <button class="close-flag" id="closeFlag">&times;</button>
-            <img src="../assets/images/flags/nonbinarytransflag.jpg" alt="Pride Flag" class="main-flag" id="mainFlagImg">
-            <a href="nonbinary-transfem.html" class="meaning-btn" id="meaningBtn">Meaning</a>
-            
-            <div class="arrow-wrapper" id="nextFlagBtn" title="Next Flag">
-                <div class="next-arrow-inner"></div>
+        <div class="flag-window" id="flagWindow">
+            <button class="close-flag" id="closeFlag" aria-label="Close">&times;</button>
+
+            <div class="flag-name" id="flagName">Non-binary Transfem</div>
+
+            <div class="flag-img-row">
+                <div class="arrow-wrapper arrow-prev" id="prevFlagBtn" title="Previous Flag" aria-label="Previous flag">
+                    <div class="arrow-inner"></div>
+                </div>
+
+                <img src="../assets/images/flags/nonbinarytransflag.jpg" alt="Pride Flag" class="main-flag" id="mainFlagImg">
+
+                <div class="arrow-wrapper arrow-next" id="nextFlagBtn" title="Next Flag" aria-label="Next flag">
+                    <div class="arrow-inner"></div>
+                </div>
+            </div>
+
+            <div class="flag-dots" id="flagDots"></div>
+
+            <div class="flag-actions">
+                <a href="nonbinary-transfem.html" class="meaning-btn" id="meaningBtn">✦ Meaning</a>
             </div>
         </div>
     </div>
@@ -568,39 +796,11 @@
     </audio>
 
     <script>
-        // --- CUSTOM CURSOR ---
-        const cursor = document.getElementById('custom-cursor');
-        const interactiveElements = document.querySelectorAll('button, a, .clock-text, .rope-container');
-        let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
-
-        document.addEventListener('mousemove', (e) => {
-            mouseX = e.clientX; mouseY = e.clientY;
-            if (Math.random() > 0.75) { 
-                const trail = document.createElement('div');
-                trail.classList.add('cursor-trail');
-                trail.style.left = mouseX + 'px'; trail.style.top = mouseY + 'px';
-                document.body.appendChild(trail);
-                setTimeout(() => trail.remove(), 600);
-            }
-        });
-
-        function animateCursor() {
-            let dx = mouseX - cursorX; let dy = mouseY - cursorY;
-            cursorX += dx * 0.15; cursorY += dy * 0.15;
-            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
-            requestAnimationFrame(animateCursor);
-        }
-        animateCursor();
-
-        document.addEventListener('mousedown', () => cursor.classList.add('clicking'));
-        document.addEventListener('mouseup', () => cursor.classList.remove('clicking'));
-
+        // Hover listeners still used by flag viewer dots
         const addHoverListeners = (el) => {
             if(!el) return;
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            // vine-cursor.js handles hover; this is a no-op stub kept for flag-viewer calls
         };
-        interactiveElements.forEach(addHoverListeners);
 
         // --- CLOCK ---
         const updateClock = () => {
@@ -631,32 +831,82 @@
             if(btn) btn.addEventListener('click', () => window.location.href = btn.dataset.target);
         });
 
-        // --- EASTER EGG (ROPE & FLAG OVERLAY) ---
+        // --- FLAG VIEWER ---
+        const FLAGS = [
+            { src: '../assets/images/flags/nonbinarytransflag.jpg', name: 'Non-binary Transfem', meaningUrl: 'nonbinary-transfem.html' },
+            { src: '../assets/images/flags/lgbtq.jpg',              name: 'Rainbow Pride',       meaningUrl: null }
+        ];
+
+        const flagOverlay  = document.getElementById('flagOverlay');
+        const flagWindow   = document.getElementById('flagWindow');
+        const mainFlagImg  = document.getElementById('mainFlagImg');
+        const flagName     = document.getElementById('flagName');
+        const flagDots     = document.getElementById('flagDots');
+        const meaningBtn   = document.getElementById('meaningBtn');
+        const closeFlag    = document.getElementById('closeFlag');
+        const nextFlagBtn  = document.getElementById('nextFlagBtn');
+        const prevFlagBtn  = document.getElementById('prevFlagBtn');
         const clockTrigger = document.getElementById('clock');
-        const ropePull = document.getElementById('ropePull');
-        const closeFlag = document.getElementById('closeFlag');
-        const nextFlagBtn = document.getElementById('nextFlagBtn');
-        const mainFlagImg = document.getElementById('mainFlagImg');
-        const meaningBtn = document.getElementById('meaningBtn');
+        const ropePull     = document.getElementById('ropePull');
 
-        const toggleFlags = () => document.body.classList.toggle('show-flags');
+        let currentFlag = 0;
 
-        clockTrigger.addEventListener('click', toggleFlags);
-        ropePull.addEventListener('click', toggleFlags);
-        closeFlag.addEventListener('click', () => document.body.classList.remove('show-flags'));
-
-        [closeFlag, nextFlagBtn, meaningBtn].forEach(addHoverListeners);
-
-        let isTransFlag = true;
-        nextFlagBtn.addEventListener('click', () => {
-            mainFlagImg.style.opacity = '0';
-            setTimeout(() => {
-                isTransFlag = !isTransFlag;
-                mainFlagImg.src = isTransFlag ? '../assets/images/flags/nonbinarytransflag.jpg' : '../assets/images/flags/lgbtq.jpg';
-                mainFlagImg.style.opacity = '1';
-                meaningBtn.style.display = isTransFlag ? 'block' : 'none';
-            }, 400);
+        // Build dots
+        FLAGS.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'flag-dot' + (i === 0 ? ' active' : '');
+            dot.dataset.index = i;
+            dot.addEventListener('click', () => goToFlag(i));
+            flagDots.appendChild(dot);
         });
+
+        function updateDots() {
+            flagDots.querySelectorAll('.flag-dot').forEach((d, i) =>
+                d.classList.toggle('active', i === currentFlag));
+        }
+
+        function goToFlag(index, dir = 1) {
+            if (index === currentFlag) return;
+            mainFlagImg.classList.add('flag-fade');
+            flagName.style.opacity = '0';
+            setTimeout(() => {
+                currentFlag = (index + FLAGS.length) % FLAGS.length;
+                const f = FLAGS[currentFlag];
+                mainFlagImg.src = f.src;
+                mainFlagImg.alt = f.name;
+                flagName.textContent = f.name;
+                if (f.meaningUrl) {
+                    meaningBtn.href = f.meaningUrl;
+                    meaningBtn.classList.remove('hidden');
+                } else {
+                    meaningBtn.classList.add('hidden');
+                }
+                updateDots();
+                mainFlagImg.classList.remove('flag-fade');
+                flagName.style.opacity = '1';
+            }, 350);
+        }
+
+        const openFlags  = () => flagOverlay.classList.add('flag-visible');
+        const closeFlags = () => flagOverlay.classList.remove('flag-visible');
+
+        clockTrigger.addEventListener('click', () => flagOverlay.classList.contains('flag-visible') ? closeFlags() : openFlags());
+        ropePull.addEventListener('click',     () => flagOverlay.classList.contains('flag-visible') ? closeFlags() : openFlags());
+        closeFlag.addEventListener('click', closeFlags);
+        flagOverlay.addEventListener('click', e => { if (e.target === flagOverlay) closeFlags(); });
+
+        nextFlagBtn.addEventListener('click', () => goToFlag(currentFlag + 1,  1));
+        prevFlagBtn.addEventListener('click', () => goToFlag(currentFlag - 1, -1));
+
+        document.addEventListener('keydown', e => {
+            if (!flagOverlay.classList.contains('flag-visible')) return;
+            if (e.key === 'ArrowRight') goToFlag(currentFlag + 1,  1);
+            if (e.key === 'ArrowLeft')  goToFlag(currentFlag - 1, -1);
+            if (e.key === 'Escape')     closeFlags();
+        });
+
+        [closeFlag, nextFlagBtn, prevFlagBtn, meaningBtn].forEach(addHoverListeners);
+        flagDots.querySelectorAll('.flag-dot').forEach(addHoverListeners);
 
         // --- IMPROVED MARKDOWN PARSER ---
         function parseMarkdown(text) {
@@ -741,6 +991,33 @@
         const closeModal = () => modal.style.display = 'none';
         closeCredits.addEventListener('click', closeModal);
         modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
+
+        // --- FLOATING LEAF PARTICLES ---
+        const LEAF_COLS = ['#2a5c38','#3d7a4a','#52a062','#6bc07a',
+                           'rgba(123,184,224,.7)','rgba(179,153,212,.7)'];
+        function spawnLeaf() {
+            const leaf = document.createElement('div');
+            leaf.className = 'float-leaf';
+            const w = 9 + Math.random() * 18;
+            const startX  = Math.random() * window.innerWidth;
+            const driftX  = (Math.random() - 0.5) * 220;
+            const dur     = 8 + Math.random() * 9;
+            const color   = LEAF_COLS[Math.floor(Math.random() * LEAF_COLS.length)];
+            const rotS    = Math.random() * 360;
+            const rotE    = rotS + (Math.random() > .5 ? 1 : -1) * (160 + Math.random() * 200);
+            leaf.style.cssText = [
+                `width:${w}px`, `height:${(w * .68)|0}px`,
+                `left:${startX}px`, `top:-30px`,
+                `background:${color}`,
+                `--ld:${dur}s`, `--lx:${driftX}px`,
+                `--lr:${rotS}deg`, `--le:${rotE}deg`
+            ].join(';');
+            document.body.appendChild(leaf);
+            setTimeout(() => leaf.remove(), (dur + .6) * 1000);
+        }
+        // Staggered initial burst then ongoing rain
+        [800, 1800, 3000, 4500].forEach(t => setTimeout(spawnLeaf, t));
+        setInterval(() => spawnLeaf(), 2800 + Math.random() * 2200);
     </script>
 </body>
 </html>
