@@ -337,6 +337,8 @@
                     console.log("Cannot inject script into iframe due to cross-origin restrictions (run via local server to see cursor inside wiki).", e);
                 }
             };
+            
+            iframe.src = path;
         } else {
             document.getElementById('loading').textContent = "No Wiki specified!";
         }
