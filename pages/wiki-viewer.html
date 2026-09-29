@@ -28,44 +28,6 @@
             --season-text: #1d3d2f;
         }
 
-        /* Handcrafted Seasonal Frame around the Wiki */
-        #nature-frame {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.15);
-            border: 12px solid var(--season-bg);
-            z-index: 9997;
-            box-sizing: border-box;
-            transition: border-color 1s ease;
-        }
-
-        /* Handcrafted Return Button */
-        #nature-back-btn {
-            position: fixed;
-            top: 30px;
-            left: 30px;
-            z-index: 9998;
-            background: var(--season-bg);
-            color: var(--season-text);
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-family: 'Playfair Display', serif;
-            font-weight: 600;
-            font-size: 1.1rem;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 2px 4px 15px rgba(0,0,0,0.15);
-            border: 2px solid var(--season-text);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background 0.5s, color 0.5s;
-            cursor: pointer;
-        }
-        #nature-back-btn:hover {
-            transform: scale(1.05) rotate(-2deg);
-        }
-        
         iframe { 
             width: 100vw; 
             height: 100vh; 
@@ -153,15 +115,9 @@
 </head>
 <body data-favicon="loader" data-favicon-color="#8d6e63">
 
-    <!-- Seasonal frame and back button overlay -->
-    <div id="nature-frame"></div>
-    <a href="../pages/home.html" id="nature-back-btn">
-        <i data-icon="house"></i> Return Home
-    </a>
-
     <div id="loading">
         <!-- Main GIF loader, falls back to CSS flip if GIF doesn't exist -->
-        <img id="loader-gif" src="" onerror="this.remove(); document.getElementById('css-fallback-loader').style.display='block';" alt="" />
+        <img id="loader-gif" style="display: none;" onerror="this.style.display='none'; document.getElementById('css-fallback-loader').style.display='block';" alt="" />
         
         <div id="css-fallback-loader" class="paper-flip" style="display: none;">
             <div class="paper-page"></div>
@@ -203,7 +159,10 @@
             document.documentElement.style.setProperty('--season-bg', '#fce4ec');
             document.documentElement.style.setProperty('--season-text', '#388e3c');
             loaderText.textContent = "Blossoming the Grimoire...";
-            loaderGif.src = "../assets/images/hazelbite-loader.gif";
+            if (loaderGif) {
+                loaderGif.style.display = 'block';
+                loaderGif.src = "../assets/images/hazelbite-loader.gif";
+            }
             
         } else if (path && path.includes('Project-Cannon')) {
             targetFavicon = 'cannon';
@@ -215,7 +174,10 @@
             document.documentElement.style.setProperty('--season-bg', '#4e342e');
             document.documentElement.style.setProperty('--season-text', '#ffb300');
             loaderText.textContent = "Harvesting Project Cannon...";
-            loaderGif.src = "../assets/images/cannon-loader.gif";
+            if (loaderGif) {
+                loaderGif.style.display = 'block';
+                loaderGif.src = "../assets/images/cannon-loader.gif";
+            }
             
         } else {
             // Theme 3: Winter Evergreen (Default)
@@ -224,7 +186,10 @@
             document.documentElement.style.setProperty('--season-bg', '#e0f7fa');
             document.documentElement.style.setProperty('--season-text', '#00695c');
             loaderText.textContent = `Unfurling ${fallbackName} in the snow...`;
-            loaderGif.src = "../assets/images/default-loader.gif";
+            if (loaderGif) {
+                loaderGif.style.display = 'block';
+                loaderGif.src = "../assets/images/default-loader.gif";
+            }
         }
 
         if (path) {
