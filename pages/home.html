@@ -646,7 +646,7 @@
         }
     </style>
 </head>
-<body data-favicon="home" data-favicon-color="#db84c0">
+<body data-favicon="home" data-favicon-color="#ff69b4">
 
     <!-- ====  🌿 NATURE OVERLAY ==== -->
     <div class="nature-frame" aria-hidden="true">
@@ -753,13 +753,13 @@
         <div class="bar-separator"></div>
         <div class="music-label">Music:</div>
         <button class="toggle-btn" id="music-toggle" aria-label="Toggle Music">
-            <span id="music-icon-wrapper"><i data-lucide="volume-x" style="width:22px;height:22px;color: #db84c0;"></i></span>
+            <span id="music-icon-wrapper"><i data-icon="musicoff" style="width:22px;height:22px;color: #1d3d2f;"></i></span>
         </button>
     </div>
 
     <div class="made-with-love">
         <button class="credits-btn" id="creditsBtn" aria-label="Credits">
-            <i data-lucide="info" style="width:18px;height:18px;color: #fdfbf7;"></i>
+            <i data-icon="credits" style="width:18px;height:18px;color: #1d3d2f;"></i>
         </button>
         <span>Made with 💕</span>
     </div>
@@ -801,15 +801,15 @@
             if(music.paused) {
                 music.play().then(() => {
                     if (mIconWrapper) {
-                        mIconWrapper.innerHTML = '<i data-lucide="volume-2" style="width:22px;height:22px;color: #db84c0;"></i>';
-                        if (typeof lucide !== 'undefined') lucide.createIcons({ root: mIconWrapper });
+                        mIconWrapper.innerHTML = '<i data-icon="musicon" style="width:22px;height:22px;color: #1d3d2f;"></i>';
+                        if (window.iconEngine) window.iconEngine.initIcons(mIconWrapper);
                     }
                 }).catch(() => alert("Interact first!"));
             } else {
                 music.pause(); 
                 if (mIconWrapper) {
-                    mIconWrapper.innerHTML = '<i data-lucide="volume-x" style="width:22px;height:22px;color: #db84c0;"></i>';
-                    if (typeof lucide !== 'undefined') lucide.createIcons({ root: mIconWrapper });
+                    mIconWrapper.innerHTML = '<i data-icon="musicoff" style="width:22px;height:22px;color: #1d3d2f;"></i>';
+                    if (window.iconEngine) window.iconEngine.initIcons(mIconWrapper);
                 }
             }
         });
