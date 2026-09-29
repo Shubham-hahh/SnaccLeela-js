@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnaccLeela - Wiki Viewer</title>
+    
+    <!-- Unified Icon Engine for consistency -->
+    <script src="../assets/js/icon-engine.js" defer></script>
+    
+    <!-- Load custom cursor for the wrapper itself -->
+    <script src="../assets/js/vine-cursor.js" defer></script>
+    
+    <style>
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; 
+            overflow: hidden; 
+            background-color: var(--wood-dark, #1d3d2f);
+            cursor: none; 
+        }
+        
+        iframe { 
+            width: 100vw; 
+            height: 100vh; 
+            border: none; 
+            display: block; 
+            cursor: none;
+        }
+
+        /* Loading overlay to mask the transition */
+        #loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fdfbf7;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+            color: #1d3d2f;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        /* Paper Flipping Animation (Fallback) */
+        .paper-flip {
+            width: 80px;
+            height: 100px;
+            position: relative;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: bounce 1.5s infinite ease-in-out;
+            margin-bottom: 20px;
+        }
+        .paper-page {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0; left: 0;
+            background: currentColor;
+            border: 2px solid currentColor;
+            border-radius: 4px;
+            transform-origin: left center;
+            animation: flip 1.5s infinite ease-in-out;
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.15);
+            opacity: 0.8;
+        }
+        .paper-page::after {
+            content: "";
+            position: absolute;
+            top: 8px; left: 8px; right: 8px; bottom: 8px;
+            border: 1px dashed currentColor;
+        }
+        @keyframes flip {
+            0% { transform: rotateY(0deg); }
+            50% { transform: rotateY(-180deg); }
+            100% { transform: rotateY(-360deg); }
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        #loader-gif {
+            width: 120px;
+            height: 120px;
+            object-fit: contain;
+            image-rendering: pixelated;
+        }
+    </style>
+</head>
+<body data-favicon="loader" data-favicon-color="#8d6e63">
+
+    <div id="loading">
+        <!-- Main GIF loader, falls back to CSS flip if GIF doesn't exist -->
+        <img id="loader-gif" src="" onerror="this.style.display='none'; document.getElementById('css-fallback-loader').style.display='block';" alt="" />
+        
+        <div id="css-fallback-loader" class="paper-flip" style="display: none;">
+            <div class="paper-page"></div>
+        </div>
+        
+        <div id="loader-text">Unfurling the parchment...</div>
+    </div>
+    <iframe id="wiki-frame" title="Wiki Content"></iframe>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        let path = params.get('wiki');
+        
+        // Custom Themes and GIF setup for the loader
+        const loaderContainer = document.getElementById('loading');
+        const loaderText = document.getElementById('loader-text');
+        const loaderGif = document.getElementById('loader-gif');
+
+        // Extract a friendly name from the path for the default theme
+        let fallbackName = "the Wiki";
+        if (path) {
+            const parts = path.split('/');
+            const filename = parts[parts.length - 1];
+            fallbackName = filename.replace('.html', '').replace(/-/g, ' ');
+        }
+
+        let targetFavicon = 'feather';
+        let targetFaviconColor = '#8d6e63';
+
+        if (path && path.includes('Hazelbite')) {
+            targetFavicon = 'visitblog';
+            targetFaviconColor = '#9c27b0';
+            
+            // Hazelbite Theme (Dark, mystical purple)
+            loaderContainer.style.backgroundColor = '#1a0b2e';
+            loaderContainer.style.color = '#e0c3fc';
+            loaderText.textContent = "Opening the Grimoire...";
+            loaderGif.src = "../assets/images/hazelbite-loader.gif";
+            
+        } else if (path && path.includes('Project-Cannon')) {
+            targetFavicon = 'cannon';
+            targetFaviconColor = '#ff9800';
+            
+            // Project Cannon Theme (Dark industrial orange/brown)
+            loaderContainer.style.backgroundColor = '#1a1005';
+            loaderContainer.style.color = '#ff9800';
+            loaderText.textContent = "Forging Project Cannon...";
+            loaderGif.src = "../assets/images/cannon-loader.gif";
+            
+        } else {
+            // Default Theme (Parchment/Nature)
+            loaderContainer.style.backgroundColor = '#fdfbf7';
+            loaderContainer.style.color = '#1d3d2f';
+            loaderText.textContent = `Unfurling ${fallbackName}...`;
+            loaderGif.src = "../assets/images/default-loader.gif";
+        }
+
+        if (path) {
+            // Append hash if present so TiddlyWiki opens the correct tiddler
+            if (window.location.hash) {
+                path += window.location.hash;
+            }
+            
+            const iframe = document.getElementById('wiki-frame');
+            iframe.src = path;
+            
+            iframe.onload = () => {
+                // Deliberate 5-second 1990s slow-loading aesthetic
+                setTimeout(() => {
+                    const loader = document.getElementById('loading');
+                    if (loader) {
+                        loader.style.pointerEvents = 'none';
+                        loader.style.opacity = '0';
+                        setTimeout(() => loader.remove(), 500);
+                    }
+
+                    // Switch favicon from loader to the actual target icon
+                    document.body.setAttribute('data-favicon', targetFavicon);
+                    document.body.setAttribute('data-favicon-color', targetFaviconColor);
+                    if (window.setSystemFavicon) {
+                        window.setSystemFavicon(targetFavicon, targetFaviconColor);
+                    }
+                }, 5000);
+
+                try {
+                    const doc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    // Inject cursor script into iframe
+                    const script = doc.createElement('script');
+                    // Compute depth to assets folder based on the path
+                    // Assuming path is like "blog/Hazelbite.html" -> depth is 1
+                    // So script.src = "../../assets/js/vine-cursor.js"
+                    const depth = (path.match(/\//g) || []).length;
+                    let prefix = "";
+                    for(let i=0; i<=depth; i++) prefix += "../";
+                    script.src = prefix + "assets/js/vine-cursor.js";
+                    doc.head.appendChild(script);
+
+                    // Forward hover state styling since iframe body might have default cursor
+                    const style = doc.createElement('style');
+                    style.textContent = `
+                        * { cursor: none !important; }
+                    `;
+                    doc.head.appendChild(style);
+
+                    // Intercept clicks on links to elegantly handle redirects outside the wiki
+                    doc.addEventListener('click', (e) => {
+                        const a = e.target.closest('a');
+                        if (a && a.href) {
+                            // Only intercept actual page navigation, ignore internal hashes
+                            const url = new URL(a.href, doc.baseURI);
+                            // If it's pointing to another HTML page on our site (or external)
+                            if (url.pathname.endsWith('.html') && url.pathname !== new URL(iframe.src).pathname) {
+                                e.preventDefault();
+                                
+                                const isCorePage = url.pathname.endsWith('/home.html') || 
+                                                   url.pathname.endsWith('/about.html') || 
+                                                   url.pathname.endsWith('/index.html') || 
+                                                   url.pathname.endsWith('/backend.html') ||
+                                                   url.pathname.endsWith('/wiki-viewer.html') ||
+                                                   url.pathname.endsWith('/nonbinary-transfem.html');
+                                                   
+                                if (!isCorePage && url.pathname.includes('/pages/')) {
+                                    // It's a link to another TiddlyWiki! Re-wrap it in the viewer
+                                    const pagesIndex = url.pathname.indexOf('/pages/');
+                                    const wikiPath = url.pathname.substring(pagesIndex + 7);
+                                    window.top.location.href = './wiki-viewer.html?wiki=' + wikiPath;
+                                } else {
+                                    // It's a core page or external link, navigate normally
+                                    window.top.location.href = url.href;
+                                }
+                            } else if (a.getAttribute('target') === '_blank') {
+                                // For external links forced to blank, just let them open (or force top)
+                            }
+                        }
+                    }, true); // Use capture phase to intercept before TiddlyWiki
+
+                    // Sync hashes from iframe to wrapper
+                    iframe.contentWindow.addEventListener('hashchange', () => {
+                        window.history.replaceState(null, null, '#' + iframe.contentWindow.location.hash.substring(1));
+                    });
+                } catch (e) {
+                    console.log("Cannot inject script into iframe due to cross-origin restrictions (run via local server to see cursor inside wiki).", e);
+                }
+            };
+        } else {
+            document.getElementById('loading').textContent = "No Wiki specified!";
+        }
+        
+        // Sync hashes from wrapper to iframe
+        window.addEventListener('hashchange', () => {
+            const iframe = document.getElementById('wiki-frame');
+            if(iframe && iframe.contentWindow) {
+                iframe.contentWindow.location.hash = window.location.hash;
+            }
+        });
+    </script>
+</body>
+</html>

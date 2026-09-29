@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Barrel body -->
+  <path d="M8 12l9-9 4 4-9 9Z" />
+  <!-- Muzzle ring -->
+  <path d="M16 2l6 6" />
+  <!-- Wheel -->
+  <circle cx="9" cy="17" r="4" />
+  <circle cx="9" cy="17" r="1" />
+  <!-- Fuse -->
+  <path d="M8 12c-3-2-5-1-6 2" />
+  <!-- Sparks -->
+  <path d="M1 12l1 1" />
+  <path d="M3 15l1 1" />
+</svg>
