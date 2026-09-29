@@ -41,6 +41,13 @@
             position: relative; /* Needed for absolute children positioning */
         }
 
+        /* HIDE DEFAULT CURSOR ON DESKTOP */
+        @media (hover: hover) and (pointer: fine) {
+            html, body, button, a, input {
+                cursor: none !important;
+            }
+        }
+
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }

@@ -1,27 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <script src="../assets/js/seo.js"></script>
     <script src="../assets/js/vine-cursor.js" defer></script>
+    <script src="../assets/js/icon-engine.js" defer></script>
     <title>About Crossie</title>
     <link rel="icon" type="image/svg+xml" href="../assets/icons/about.svg">
+    <link rel="stylesheet" href="../assets/css/fonts.css">
     <style>
-        /* --- FONTS --- */
-        @font-face {
-            font-family: 'KnewaveLocal';
-            src: url('../assets/fonts/about_page/Knewave-Regular.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'LexendLocal';
-            src: url('../assets/fonts/about_page/LexendGiga-VariableFont_wght.woff2') format('woff2');
-            font-weight: 100 900;
-            font-style: normal;
-            font-display: swap;
-        }
-
         /* --- VARIABLES --- */
         :root {
             --wood-dark: #5d4037;
@@ -38,6 +25,7 @@
             color: var(--parchment);
             text-shadow: none;
         }
+
         ::-moz-selection {
             background-color: var(--sage-green);
             color: var(--parchment);
@@ -58,105 +46,214 @@
             overflow-x: hidden;
 
 
-        /* Prevent text selection ONLY on UI buttons/icons */
-        .nav-icon-btn, .bmc-button, .lucky-leaf, button {
-            user-select: none;
-        }
+            /* Prevent text selection ONLY on UI buttons/icons */
+            .nav-icon-btn,
+            .bmc-button,
+            .lucky-leaf,
+            button {
+                user-select: none;
+            }
 
 
 
-        /* --- MAIN CONTAINER --- */
-        .about-container {
-            width: min(90%, 600px);
-            background: var(--parchment);
-            border: 8px solid var(--wood-light);
-            outline: 4px solid var(--wood-dark);
-            border-radius: 12px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 40px rgba(93, 64, 55, 0.1);
-            padding: clamp(25px, 5vw, 50px);
-            text-align: center;
-            position: relative;
-            margin: 40px 0;
-            animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-            font-family: 'LexendLocal', sans-serif;
-            font-weight: 300;
-        }
+            /* --- MAIN CONTAINER --- */
+            .about-container {
+                width: min(90%, 600px);
+                background: rgba(253, 251, 247, 0.65);
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+                border: 1px solid rgba(255, 255, 255, 0.4);
+                border-radius: 12px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+                padding: clamp(25px, 5vw, 50px);
+                text-align: center;
+                position: relative;
+                margin: 40px 0;
+                animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+                font-family: 'LexendLocal', sans-serif;
+                font-weight: 300;
+            }
 
-        @keyframes slideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+            @keyframes slideUp {
+                from {
+                    transform: translateY(50px);
+                    opacity: 0;
+                }
 
-        /* --- CONTENT AREA --- */
-        .content-area { width: 100%; text-align: left; }
-        .content-area h1, .content-area h2 { font-family: 'KnewaveLocal', cursive; text-align: center; }
-        .content-area p { line-height: 1.8; margin-bottom: 1.2em; text-align: justify; text-align-last: center; }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
 
-        .content-area code {
-            background-color: rgba(85, 107, 47, 0.15);
-            padding: 2px 5px;
-            border-radius: 4px;
-            font-family: monospace;
-            color: var(--wood-dark);
-        }
+            /* --- CONTENT AREA --- */
+            .content-area {
+                width: 100%;
+                text-align: left;
+            }
 
-        .content-area a {
-            position: relative;
-            display: inline-block;
-            transition: transform 0.2s ease;
-        }
-        .content-area a:hover { transform: translateY(-2px); }
-        .content-area a:active { transform: translateY(1px); }
+            .content-area h1,
+            .content-area h2 {
+                font-family: 'KnewaveLocal', cursive;
+                text-align: center;
+            }
 
-        /* --- BUTTONS & INTERACTIVITY --- */
-        .footer-actions { margin-top: 35px; border-top: 2px solid var(--accent-warm); padding-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 25px; }
-        .nav-row { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        
-        .nav-icon-btn { 
-            width: 60px; height: 60px; 
-            background: var(--wood-dark); 
-            border-radius: 12px; 
-            display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 4px 0 #2d1b18; 
-            transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        
-        .nav-icon-btn img { 
-            width: 32px; 
-            filter: brightness(0) invert(1); 
-        }
+            .content-area p {
+                line-height: 1.8;
+                margin-bottom: 1.2em;
+                text-align: justify;
+                text-align-last: center;
+            }
 
-        .nav-icon-btn:hover { background-color: #6d4c41; transform: translateY(-2px); box-shadow: 0 6px 0 #2d1b18; }
-        .nav-icon-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #2d1b18; }
+            .content-area code {
+                background-color: rgba(85, 107, 47, 0.15);
+                padding: 2px 5px;
+                border-radius: 4px;
+                font-family: monospace;
+                color: var(--wood-dark);
+            }
 
-        .bmc-button { transition: transform 0.2s ease; display: inline-block; }
-        .bmc-button:hover { transform: scale(1.05) rotate(-1deg); }
-        .bmc-button:active { transform: scale(0.95); }
+            .content-area a {
+                position: relative;
+                display: inline-block;
+                transition: transform 0.2s ease;
+            }
 
-        /* --- LEAVES & EASTER EGG --- */
-        .about-container::before {
-            content: "☘️"; position: absolute; font-size: 20px; color: var(--wood-light); opacity: 0.5; top: 15px; left: 15px; pointer-events: none;
-        }
-        .lucky-leaf {
-            position: absolute; bottom: 15px; right: 15px; font-size: 24px; color: var(--wood-light); opacity: 0.4; text-decoration: none; transition: all 0.3s ease; z-index: 100; padding: 10px; display: block;
-        }
-        @media (hover: hover) { .lucky-leaf:hover { opacity: 1; transform: scale(1.3) rotate(10deg); } }
-        @media (hover: none) { .lucky-leaf { opacity: 0.6; background: radial-gradient(circle, rgba(255,215,0,0.1) 0%, transparent 70%); } }
-        .lucky-leaf:active { text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700; transform: scale(0.9); opacity: 1; }
+            .content-area a:hover {
+                transform: translateY(-2px);
+            }
 
-        @media (max-width: 600px) {
-            .about-container { width: 95%; padding: 25px 15px; }
-            .nav-icon-btn { width: 50px; height: 50px; }
-        }
+            .content-area a:active {
+                transform: translateY(1px);
+            }
+
+            /* --- BUTTONS & INTERACTIVITY --- */
+            .footer-actions {
+                margin-top: 35px;
+                border-top: 2px solid var(--accent-warm);
+                padding-top: 25px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 25px;
+            }
+
+            .nav-row {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .nav-icon-btn {
+                width: 60px;
+                height: 60px;
+                background: var(--wood-dark);
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 0 #2d1b18;
+                transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            }
+
+            .nav-icon-btn img {
+                width: 32px;
+                filter: brightness(0) invert(1);
+            }
+
+            .nav-icon-btn:hover {
+                background-color: #6d4c41;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 0 #2d1b18;
+            }
+
+            .nav-icon-btn:active {
+                transform: translateY(2px);
+                box-shadow: 0 2px 0 #2d1b18;
+            }
+
+            .bmc-button {
+                transition: transform 0.2s ease;
+                display: inline-block;
+            }
+
+            .bmc-button:hover {
+                transform: scale(1.05) rotate(-1deg);
+            }
+
+            .bmc-button:active {
+                transform: scale(0.95);
+            }
+
+            /* --- LEAVES & EASTER EGG --- */
+            .about-container::before {
+                content: "☘️";
+                position: absolute;
+                font-size: 20px;
+                color: var(--wood-light);
+                opacity: 0.5;
+                top: 15px;
+                left: 15px;
+                pointer-events: none;
+            }
+
+            .lucky-leaf {
+                position: absolute;
+                bottom: 15px;
+                right: 15px;
+                font-size: 24px;
+                color: var(--wood-light);
+                opacity: 0.4;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                z-index: 100;
+                padding: 10px;
+                display: block;
+            }
+
+            @media (hover: hover) {
+                .lucky-leaf:hover {
+                    opacity: 1;
+                    transform: scale(1.3) rotate(10deg);
+                }
+            }
+
+            @media (hover: none) {
+                .lucky-leaf {
+                    opacity: 0.6;
+                    background: radial-gradient(circle, rgba(255, 215, 0, 0.1) 0%, transparent 70%);
+                }
+            }
+
+            .lucky-leaf:active {
+                text-shadow: 0 0 15px #ffd700, 0 0 30px #ffd700;
+                transform: scale(0.9);
+                opacity: 1;
+            }
+
+            @media (max-width: 600px) {
+                .about-container {
+                    width: 95%;
+                    padding: 25px 15px;
+                }
+
+                .nav-icon-btn {
+                    width: 50px;
+                    height: 50px;
+                }
+            }
     </style>
 </head>
+
 <body>
 
 
 
     <div class="about-container">
         <a href="./backend.html" class="lucky-leaf" id="egg">☘️</a>
-        <img src="../assets/icons/about.svg" alt="About Icon" style="width:64px; margin: 0 auto 10px auto; display:block; pointer-events: none;">
+        <img src="../assets/icons/about.svg" alt="About Icon"
+            style="width:64px; margin: 0 auto 10px auto; display:block; pointer-events: none;">
 
         <div id="content" class="content-area">
             <div style="text-align:center; font-style:italic;">Fetching parchment...</div>
@@ -164,67 +261,62 @@
 
         <di class="footer-actions">
             <div class="bmc-button">
-                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" 
-                    data-name="bmc-button" 
-                    data-slug="swaruproy1d" 
-                    data-color="#556b2f" 
-                    data-emoji="🍩"  
-                    data-font="Lato" 
-                    data-text="Buy me a doughnut" 
-                    data-outline-color="#3e2723" 
-                    data-font-color="#fdfbf7" 
+                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js"
+                    data-name="bmc-button" data-slug="swaruproy1d" data-color="#556b2f" data-emoji="🍩" data-font="Lato"
+                    data-text="Buy me a doughnut" data-outline-color="#3e2723" data-font-color="#fdfbf7"
                     data-coffee-color="#ffffff">
-                </script>
+                    </script>
             </div>
-            
-    <div class="nav-row">
-    <a href="./home.html" class="nav-icon-btn">
-    <img src="../assets/icons/gohome.svg" alt="Home">
-    </a>
-    <a href="./blog/Hazelbite.html" class="nav-icon-btn">
-    <img src="../assets/icons/visitblog.svg" alt="Blog">
-    </a>
-    <a href="./projects/Project-Cannon.html" class="nav-icon-btn">
-    <img src="../assets/icons/visitoroject.svg" alt="Projects">
-</a>
-</div>
-    <script>
-        const contentDiv = document.getElementById('content');
 
-        // --- MARKDOWN PARSER ---
-        function parseMarkdown(markdown) {
-            const lines = markdown.split('\n');
-            let html = '';
-            const parseInline = (text) => text
-                .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
-                .replace(/\*(.*?)\*/g, '<i>$1</i>')
-                .replace(/`(.*?)`/g, '<code>$1</code>')
-                .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' target='_blank' style='color:#556b2f;text-decoration:underline;'>$1</a>");
+            <div class="nav-row">
+                <a href="./home.html" class="nav-icon-btn">
+                    <i data-lucide="home" style="color: #fdfbf7;"></i>
+                </a>
+                <a href="./blog/Hazelbite.html" class="nav-icon-btn">
+                    <i data-lucide="book-open" style="color: #fdfbf7;"></i>
+                </a>
+                <a href="./projects/Project-Cannon.html" class="nav-icon-btn">
+                    <i data-lucide="folder" style="color: #fdfbf7;"></i>
+                </a>
+            </div>
+            <script>
+                const contentDiv = document.getElementById('content');
 
-            lines.forEach(line => {
-                let trimmed = line.trim();
-                if (trimmed.startsWith('#')) {
-                    const level = trimmed.match(/^#+/)[0].length;
-                    html += `<h${level}>${parseInline(trimmed.substring(level).trim())}</h${level}>`;
-                } else if (trimmed === '') {
-                    return;
-                } else {
-                    html += `<p>${parseInline(trimmed)}</p>`;
+                // --- MARKDOWN PARSER ---
+                function parseMarkdown(markdown) {
+                    const lines = markdown.split('\n');
+                    let html = '';
+                    const parseInline = (text) => text
+                        .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+                        .replace(/\*(.*?)\*/g, '<i>$1</i>')
+                        .replace(/`(.*?)`/g, '<code>$1</code>')
+                        .replace(/\[(.*?)\]\((.*?)\)/g, "<a href='$2' target='_blank' style='color:#556b2f;text-decoration:underline;'>$1</a>");
+
+                    lines.forEach(line => {
+                        let trimmed = line.trim();
+                        if (trimmed.startsWith('#')) {
+                            const level = trimmed.match(/^#+/)[0].length;
+                            html += `<h${level}>${parseInline(trimmed.substring(level).trim())}</h${level}>`;
+                        } else if (trimmed === '') {
+                            return;
+                        } else {
+                            html += `<p>${parseInline(trimmed)}</p>`;
+                        }
+                    });
+                    return html;
                 }
-            });
-            return html;
-        }
 
-        fetch('../texts/about.md')
-            .then(res => res.text())
-            .then(text => {
-                contentDiv.innerHTML = parseMarkdown(text);
-            })
-            .catch(err => {
-                contentDiv.innerHTML = "<p style='text-align:center;'>Could not unroll the scroll.<br>(Text file missing)</p>";
-            });
+                fetch('../texts/about.md')
+                    .then(res => res.text())
+                    .then(text => {
+                        contentDiv.innerHTML = parseMarkdown(text);
+                    })
+                    .catch(err => {
+                        contentDiv.innerHTML = "<p style='text-align:center;'>Could not unroll the scroll.<br>(Text file missing)</p>";
+                    });
 
 
-    </script>
+            </script>
 </body>
+
 </html>

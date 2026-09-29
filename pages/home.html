@@ -3,35 +3,14 @@
 <head>
     <script src="../assets/js/seo.js"></script>
     <script src="../assets/js/vine-cursor.js" defer></script>
+    <script src="../assets/js/icon-engine.js" defer></script>
     <title>HOME</title>
     
     <link rel="icon" type="image/svg+xml" href="../assets/icons/home.svg" />
     <link rel="preload" href="../assets/fonts/homepage/Comfortaa-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin>
 
+    <link rel="stylesheet" href="../assets/css/fonts.css">
     <style>
-        /* --- FONTS --- */
-        @font-face {
-            font-family: 'Comfortaa';
-            src: url('../assets/fonts/homepage/Comfortaa-VariableFont_wght.woff2') format('woff2');
-            font-weight: 300 700;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Nunito';
-            src: url('../assets/fonts/homepage/Nunito-VariableFont_wght.woff2') format('woff2');
-            font-weight: 200 1000;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Caveat';
-            src: url('../assets/fonts/homepage/Caveat-VariableFont_wght.woff2') format('woff2');
-            font-weight: 400 700;
-            font-style: normal;
-            font-display: swap;
-        }
-
         /* --- RESET & BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
@@ -525,11 +504,11 @@
 
         /* Shared primitives */
         .nv  { position: absolute; }
-        .nl  { position: absolute; border-radius: 80% 10% 80% 10%; }   /* leaf A */
-        .nl2 { position: absolute; border-radius: 10% 80% 10% 80%; }   /* leaf B (mirror) */
-        .nl3 { position: absolute; border-radius: 50% 10% 60% 10%; }   /* narrow leaf */
-        .ns  { position: absolute; border-radius: 3px; background: #264d32; } /* stem */
-        .nf  { position: absolute; border-radius: 50%; }               /* flower dot */
+        .nl  { position: absolute; border-radius: 0; clip-path: polygon(40% 0, 100% 0, 100% 60%, 80% 60%, 80% 80%, 60% 80%, 60% 100%, 0 100%, 0 40%, 20% 40%, 20% 20%, 40% 20%); }   /* leaf A */
+        .nl2 { position: absolute; border-radius: 0; clip-path: polygon(0 0, 60% 0, 60% 20%, 80% 20%, 80% 40%, 100% 40%, 100% 100%, 40% 100%, 40% 80%, 20% 80%, 20% 60%, 0 60%); }   /* leaf B (mirror) */
+        .nl3 { position: absolute; border-radius: 0; clip-path: polygon(50% 0, 100% 0, 100% 50%, 80% 50%, 80% 80%, 50% 80%, 50% 100%, 0 100%, 0 50%, 20% 50%, 20% 20%, 50% 20%); }   /* narrow leaf */
+        .ns  { position: absolute; border-radius: 0; background: #264d32; } /* stem */
+        .nf  { position: absolute; border-radius: 0; clip-path: polygon(30% 0%, 70% 0%, 70% 30%, 100% 30%, 100% 70%, 70% 70%, 70% 100%, 30% 100%, 30% 70%, 0% 70%, 0% 30%, 30% 30%); } /* flower dot pixelated */
 
         /* Leaf colour palette */
         .nc1 { background: #1a3d26; }
@@ -660,13 +639,14 @@
             position: fixed;
             pointer-events: none;
             z-index: 9;
-            border-radius: 80% 10% 80% 10%;
+            border-radius: 0;
+            clip-path: polygon(40% 0, 100% 0, 100% 60%, 80% 60%, 80% 80%, 60% 80%, 60% 100%, 0 100%, 0 40%, 20% 40%, 20% 20%, 40% 20%);
             animation: leafFloat var(--ld,9s) ease-in-out forwards;
             opacity: 0;
         }
     </style>
 </head>
-<body>
+<body data-favicon="home" data-favicon-color="#db84c0">
 
     <!-- ====  🌿 NATURE OVERLAY ==== -->
     <div class="nature-frame" aria-hidden="true">
@@ -773,13 +753,13 @@
         <div class="bar-separator"></div>
         <div class="music-label">Music:</div>
         <button class="toggle-btn" id="music-toggle" aria-label="Toggle Music">
-            <img id="music-icon" src="../assets/icons/musicoff.svg" alt="Music Off" style="width:22px;height:22px;">
+            <span id="music-icon-wrapper"><i data-lucide="volume-x" style="width:22px;height:22px;color: #db84c0;"></i></span>
         </button>
     </div>
 
     <div class="made-with-love">
         <button class="credits-btn" id="creditsBtn" aria-label="Credits">
-            <img src="../assets/icons/credits.svg" alt="Credits" style="width:18px;height:18px;">
+            <i data-lucide="info" style="width:18px;height:18px;color: #fdfbf7;"></i>
         </button>
         <span>Made with 💕</span>
     </div>
@@ -814,14 +794,23 @@
 
         // --- MUSIC ---
         const music = document.getElementById('atmos-music');
-        const mIcon = document.getElementById('music-icon');
+        const mIconWrapper = document.getElementById('music-icon-wrapper');
         if(music){ music.volume = 0.5; }
         
         document.getElementById('music-toggle').addEventListener('click', () => {
             if(music.paused) {
-                music.play().then(() => mIcon.src="../assets/icons/musicon.svg").catch(() => alert("Interact first!"));
+                music.play().then(() => {
+                    if (mIconWrapper) {
+                        mIconWrapper.innerHTML = '<i data-lucide="volume-2" style="width:22px;height:22px;color: #db84c0;"></i>';
+                        if (typeof lucide !== 'undefined') lucide.createIcons({ root: mIconWrapper });
+                    }
+                }).catch(() => alert("Interact first!"));
             } else {
-                music.pause(); mIcon.src="../assets/icons/musicoff.svg";
+                music.pause(); 
+                if (mIconWrapper) {
+                    mIconWrapper.innerHTML = '<i data-lucide="volume-x" style="width:22px;height:22px;color: #db84c0;"></i>';
+                    if (typeof lucide !== 'undefined') lucide.createIcons({ root: mIconWrapper });
+                }
             }
         });
 

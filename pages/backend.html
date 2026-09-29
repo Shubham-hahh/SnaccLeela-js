@@ -3,20 +3,11 @@
 <head>
     <script src="../assets/js/seo.js"></script>
     <script src="../assets/js/vine-cursor.js" defer></script>
+    <script src="../assets/js/icon-engine.js" defer></script>
     <title>Backend System - Licenses</title>
     
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-    
-    <script src="../assets/js/lucide.min.js"></script>
-
+    <link rel="stylesheet" href="../assets/css/fonts.css">
     <style>
-        @font-face {
-            font-family: 'Sixtyfour';
-            src: url('../assets/fonts/backend/Sixtyfour-Regular-VariableFont.woff2') format('woff2');
-            font-weight: 100 900;
-            font-style: normal;
-        }
-
         :root {
             /* Bubblegum Pink Retro Palette */
             --bg-color: #1a000d; 
@@ -192,7 +183,7 @@
         }
     </style>
 </head>
-<body>
+<body data-favicon="terminal" data-favicon-color="#ffb6c1">
 
     <div class="crt-overlay"></div>
     <div class="screen-flicker"></div>
@@ -239,43 +230,7 @@
     <audio id="click-sound" src="../assets/sounds/click.wav" preload="auto"></audio>
 
     <script>
-        // --- 1. Initialize Main UI Icons ---
-        lucide.createIcons();
-
-        // --- 2. Dynamic Lucide Favicon Generator ---
-        function setSystemFavicon(iconName, hexColor) {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = `<i data-lucide="${iconName}"></i>`;
-            
-            // Render the icon off-screen
-            lucide.createIcons({ root: tempDiv });
-            
-            const svgElement = tempDiv.querySelector('svg');
-            if (svgElement) {
-                // Style it to match the theme
-                svgElement.setAttribute('stroke', hexColor);
-                svgElement.setAttribute('stroke-width', '2.5'); 
-                
-                // Convert to data URI
-                const svgString = new XMLSerializer().serializeToString(svgElement);
-                const encodedSvg = encodeURIComponent(svgString);
-                
-                // Inject into document head
-                let link = document.querySelector("link[rel~='icon']");
-                if (!link) {
-                    link = document.createElement('link');
-                    link.rel = 'icon';
-                    document.head.appendChild(link);
-                }
-                link.href = `data:image/svg+xml,${encodedSvg}`;
-            }
-        }
-
-        // Fire the dynamic favicon generator! 
-        setSystemFavicon('terminal-square', '#ff69b4');
-
-
-
+        // --- 4. Loading Animation ---
 
         // --- 4. Loading Animation ---
         const loader = document.getElementById('loader');
