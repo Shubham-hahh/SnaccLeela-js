@@ -201,7 +201,11 @@
             const iframe = document.getElementById('wiki-frame');
             
             iframe.onload = () => {
-                // Deliberate 5-second 1990s slow-loading aesthetic
+                // Use sessionStorage to only show the slow aesthetic load once per session
+                const hasLoadedBefore = sessionStorage.getItem('wiki_aesthetic_shown');
+                const delay = hasLoadedBefore ? 400 : 3500;
+                sessionStorage.setItem('wiki_aesthetic_shown', 'true');
+
                 setTimeout(() => {
                     const loader = document.getElementById('loading');
                     if (loader) {
@@ -217,7 +221,7 @@
                     if (window.setSystemFavicon) {
                         window.setSystemFavicon(targetFavicon, targetFaviconColor);
                     }
-                }, 5000);
+                }, delay);
 
                 try {
                     const doc = iframe.contentDocument || iframe.contentWindow.document;
