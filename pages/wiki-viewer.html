@@ -43,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #fdfbf7;
+            background: linear-gradient(135deg, #fce4ec 0%, #c8e6c9 33%, #ffe082 66%, #e0f7fa 100%);
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -58,6 +58,15 @@
             font-weight: normal;
             text-align: center;
             letter-spacing: 0.5px;
+        }
+
+        #loader-text {
+            animation: text-pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes text-pulse {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; text-shadow: 0 0 10px currentColor; }
         }
 
         /* Polished 3D Book Turn Animation (Fallback) */
@@ -125,7 +134,7 @@
             <div class="paper-page"></div>
         </div>
         
-        <div id="loader-text">Unfurling the parchment...</div>
+        <div id="loader-text">Journeying through the seasons...</div>
     </div>
     <iframe id="wiki-frame" title="Wiki Content"></iframe>
 
@@ -152,44 +161,21 @@
         if (path && path.includes('Hazelbite')) {
             targetFavicon = 'visitblog';
             targetFaviconColor = '#ff69b4';
-            
-            // Theme 1: Spring Blossom (Hazelbite)
-            loaderContainer.style.background = 'radial-gradient(circle at center, #fce4ec 0%, #f48fb1 100%)'; 
-            loaderContainer.style.color = '#2e7d32'; 
-            document.documentElement.style.setProperty('--season-bg', '#fce4ec');
-            document.documentElement.style.setProperty('--season-text', '#2e7d32');
-            loaderText.textContent = "Blossoming the Grimoire...";
-            if (loaderGif) {
-                loaderGif.style.display = 'block';
-                loaderGif.src = "../assets/images/hazelbite-loader.gif";
-            }
-            
         } else if (path && path.includes('Project-Cannon')) {
             targetFavicon = 'cannon';
             targetFaviconColor = '#ff9800';
-            
-            // Theme 2: Autumn Canopy (Project Cannon)
-            loaderContainer.style.background = 'radial-gradient(circle at center, #5d4037 0%, #3e2723 100%)'; 
-            loaderContainer.style.color = '#ffca28'; 
-            document.documentElement.style.setProperty('--season-bg', '#4e342e');
-            document.documentElement.style.setProperty('--season-text', '#ffca28');
-            loaderText.textContent = "Harvesting Project Cannon...";
-            if (loaderGif) {
-                loaderGif.style.display = 'block';
-                loaderGif.src = "../assets/images/cannon-loader.gif";
-            }
-            
-        } else {
-            // Theme 3: Winter Evergreen (Default)
-            loaderContainer.style.background = 'radial-gradient(circle at center, #e0f7fa 0%, #80deea 100%)'; 
-            loaderContainer.style.color = '#004d40'; 
-            document.documentElement.style.setProperty('--season-bg', '#e0f7fa');
-            document.documentElement.style.setProperty('--season-text', '#004d40');
-            loaderText.textContent = `Unfurling ${fallbackName} in the snow...`;
-            if (loaderGif) {
-                loaderGif.style.display = 'block';
-                loaderGif.src = "../assets/images/default-loader.gif";
-            }
+        }
+
+        // Central Theme: Combining All Seasons (Spring -> Summer -> Autumn -> Winter)
+        loaderContainer.style.background = 'linear-gradient(135deg, #fce4ec 0%, #c8e6c9 33%, #ffe082 66%, #e0f7fa 100%)'; 
+        loaderContainer.style.color = '#1d3d2f'; 
+        document.documentElement.style.setProperty('--season-bg', '#fdfbf7');
+        document.documentElement.style.setProperty('--season-text', '#1d3d2f');
+        loaderText.textContent = "Journeying through the seasons...";
+        
+        if (loaderGif) {
+            loaderGif.style.display = 'block';
+            loaderGif.src = "../assets/images/default-loader.gif";
         }
 
         if (path) {
@@ -280,6 +266,17 @@
                                 overlay.style.zIndex = '100000';
                                 overlay.style.clipPath = 'circle(0% at 50% 50%)';
                                 overlay.style.transition = 'clip-path 0.7s cubic-bezier(0.77, 0, 0.175, 1)';
+                                overlay.style.display = 'flex';
+                                overlay.style.alignItems = 'center';
+                                overlay.style.justifyContent = 'center';
+
+                                const overlayText = document.createElement('div');
+                                overlayText.textContent = "Journeying through the seasons...";
+                                overlayText.style.fontFamily = "'Fondamento', serif";
+                                overlayText.style.fontSize = '1.8rem';
+                                overlayText.style.color = loaderContainer ? loaderContainer.style.color : '#fff';
+                                overlayText.style.animation = 'text-pulse 1.5s ease-in-out infinite';
+                                overlay.appendChild(overlayText);
                                 
                                 document.body.appendChild(overlay);
                                 
